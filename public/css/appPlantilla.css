@@ -1,0 +1,358 @@
+.modal-lg {
+    max-width: 860px;
+}
+.modal-content {
+    padding: 20px;
+    border-radius: 28px;
+}
+#tbProductos_filter {
+    text-align: left;
+    padding: 5px;
+}
+div.dataTables_wrapper div.dataTables_filter input {
+    text-align: center;
+    width: auto;
+}
+
+table {
+    font-size: 12px;
+}
+
+table {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+table td {
+    font-size: 11px;
+    text-align: center;
+    margin: auto;
+    vertical-align: middle !important; /* Alineación vertical al centro */
+    width: 20px;
+    /* padding-bottom: 50px; */
+
+}
+
+#container .table td{
+    padding-bottom: 25px;
+}
+
+table th {
+    font-size: 11px;
+    text-align: center;
+    margin: auto;
+    vertical-align: middle !important; /* Alineación vertical al centro */
+    color: rgb(255, 255, 255);
+    background: rgb(0, 0, 0);
+}
+
+#container .table th {
+    font-size: 12px;
+    color: white;
+    text-align: center;
+    
+}
+
+#container .table th.theadControl {
+    color: rgb(0, 0, 0);
+}
+
+.dataTable table th {
+    font-size: 12px;
+    text-align: center;
+    margin: auto;
+    vertical-align: middle; /* Alineación vertical al centro */
+    background: #ffffff;
+}
+
+.btn-profesional {
+    padding: 8px 15px;
+    font-size: 6px;
+    font-weight: bold;
+    transition: all 0.3s;
+    /* border-radius: 25px; */
+    margin-left: 10px;
+    margin-right: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.btn-profesional:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-weight: bolder;
+    color: rgb(255, 255, 255) !important;
+}
+
+.navbar-top-links > li > a:hover {
+    /* background: #1f344b !important; */
+    /* background: #1976d2 !important; */
+    background: #1eb300 !important; 
+}
+
+/* Estilos para el tooltip  Label Flotante en los icconos de accion*/
+.btn-profesional {
+    position: relative;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.btn-profesional::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -29px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 7px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    /* Agrega sombra al tooltip */
+    transition: opacity 0.2s, visibility 0.2s;
+}
+
+.btn-profesional:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+.navbar-top-links > li {
+    float: center;
+    /* margin-right: 10px;
+    margin-left: 10px; */
+}
+
+.filters input {
+    color: black;
+}
+
+.filtersCR input {
+    color: black;
+}
+
+.opcionesHeadMenuE td {
+    font-weight: bold;
+    background: #e3e3e3;
+}
+
+.opcionesHeadMenu td {
+    font-weight: bold;
+    background: #e3e3e3;
+}
+
+.cajaImagenes {
+    max-height: 600px; /* Establece la altura máxima */
+    overflow-y: auto;
+}
+
+.form-control[disabled] {
+    background-color: rgb(245 248 251);
+    cursor: pointer;
+}
+
+.demo-psi-dot-vertical {
+    color: #141f2e;
+}
+
+.imagenProdContorno {
+    border: 2px dashed #000000;
+    border-radius: 10px;
+    background-color: #ffffff;
+    position: relative;
+}
+
+.imagenProdContorno .form-control[disabled] {
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+}
+
+.imagenProdContorno:hover {
+    background: white;
+    /* color: white;  */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.iconoNuevo {
+    font-size: 13px;
+    color: #1976d2;
+    margin: 0px 6px;
+    cursor: pointer;
+}
+
+.iconoNuevo:hover {
+    color: #1b2d42;
+}
+
+.iconoTb {
+    font-size: 11px;
+}
+
+.panelListaProductos,
+.panelListaProductosPendientes,
+.panelListaProductosPorDespachar {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.listaProductos li:has(input:checked),
+.listaProductosPendientes li:has(input:checked),
+.listaProductosPorDespachar li:has(input:checked) {
+    background: #ecffeb; /* Cambia el color de fondo según tus preferencias */
+}
+
+#selectEstado {
+    font-size: 12px;
+    margin: 9px;
+    padding: 7px;
+    color: blue;
+    border-radius: 10px;
+}
+
+.custom-swal-title {
+    color: blue; /* Por ejemplo, cambia el color a azul */
+    font-size: 20px; /* Ajusta el tamaño de fuente */
+}
+.swal2-title {
+    display: block;
+    font-weight: bold;
+    color: rgb(50 50 51);
+}
+
+.navbar-top-links > li > a {
+    color: white;
+}
+.mainnav-toggle {
+    color: white !important;
+}
+.brand-text {
+    color: white !important;
+}
+
+#mainnav {
+    background-color: #00181c;
+    color: #fafdff;
+}
+
+.mainnav-profile .profile-wrap {
+    background-color: #00181c;
+}
+
+#mainnav-menu ul a:hover, #mainnav-menu ul ul a:hover, #mainnav-menu ul .active-link a, .menu-popover .sub-menu ul a:hover, .menu-popover .sub-menu ul ul a:hover, .menu-popover .sub-menu ul .active-link a {
+    color: #b2b2b2;
+}
+
+#mainnav-menu>.active {
+    background-color: #1caa00;
+}
+#mainnav-menu>.active-sub>a, #mainnav-menu>.active-sub>a:hover {
+    color: #fff;
+    background-color: #aa4100;
+}
+
+#mainnav .mainnav-profile .list-group{
+    color: #fff;
+    background-color: #1caa00;
+}
+
+#mainnav .mainnav-profile .list-group-item:hover{
+    color: white;
+}
+.nav a {
+    font-size: 9px;
+    padding: 0px;
+    /* width: 60px; */
+    text-align: center;
+    margin: auto;
+}
+.navbar-header {
+    color: white;
+    background: #158000;
+}
+.navbar-content {
+    background-color: #1caa00;
+}
+
+.brand-title{
+    background-color: #1caa00;
+}
+.panel-control {
+    color: white;
+}
+
+/* Estilo inicial del input */
+input[type="search"] {
+    border: 2px solid #3498db; /* Azul */
+    transition: border-color 0.4s ease-in-out;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+/* Estilo intermitente del input */
+input[type="search"].blinking {
+    animation: blink 2s infinite;
+}
+
+/* Animación de cambio de color */
+@keyframes blink {
+    0%,
+    100% {
+        border-color: #3498db; /* Azul */
+    }
+    50% {
+        border-color: #e74c3c; /* Rojo */
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-dialog {
+        width: 90%;
+        max-width: 90%;
+    }
+}
+
+@media (min-width: 768px) {
+    .modal-dialog {
+        width: 75%;
+        max-width: 75%;
+    }
+}
+
+
+#content-container {
+    position: static !important;
+}
+
+
+img{
+    max-width: 50%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+div:where(.swal2-container).swal2-center>.swal2-popup{
+    border-radius: 25px;
+}
+
+
+
+#mainnav-container{
+    background: black;
+}
+
+
+@media only screen and (min-width: 768px) {
+    .swal2-modal {
+        width: 35% !important;
+    }
+}

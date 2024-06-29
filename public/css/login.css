@@ -1,0 +1,133 @@
+body {
+    margin: 0;
+    color: #edf3ff;
+    background: white;
+    margin: 0;
+    padding: 0;
+    background-image: url("/manuelPardoWhatsapp/public/imagesComunes/portadaVentas3.jpg");
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    font-family: "Montserrat", sans-serif;
+    overflow: hidden;
+}
+
+.parallax {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+
+h3 {
+	opacity: 0;
+	transform: scale(0.8);
+	animation: fadeInScale 1s ease-out forwards;
+}
+
+@keyframes fadeInScale {
+	to {
+		opacity: 0.9;
+		transform: scale(1);
+	}
+}
+
+/* .parallax:hover {
+    transform: scale(1.02);
+    transition: transform 0.3s ease-in-out;
+} */
+
+
+.login-wrap {
+    /* width:70%;
+	height:70%; */
+    margin: auto;
+    max-width: 500px;
+    /* min-height:450px;
+	position:relative; */
+    margin-top: 70px;
+    border-radius: 20px;
+    text-align: center;
+}
+.login-html {
+    width: 80%;
+    /* height:69%;
+	position:relative; */
+    /* padding:10px; */
+    background: rgba(0, 0, 0, 0.5);
+    /* margin-top: 1px; */
+    border-radius: 20px;
+    margin: auto;
+}
+
+.login-form .group {
+    margin: auto;
+    text-align: center;
+    padding: 7px;
+}
+
+.login-form .group .label,
+.login-form .group .input,
+.login-form .group .button {
+    width: 70%;
+    color: #000000;
+    display: block;
+    /* padding: 5px; */
+    margin: auto;
+    /* margin-bottom: 30px; */
+}
+.login-form .group .input,
+.login-form .group .button {
+    /* border:none; */
+    padding: 10px 15px;
+    border-radius: 15px;
+    background: rgb(255, 255, 255, 0.5);
+    letter-spacing: 0.2em;
+    word-spacing: 0.3em;
+    color: black;
+}
+.login-form {
+    box-shadow: 0 12px 15px 0 rgba(255, 255, 255, 0.24),
+        0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+.login-form .group .button {
+    background: rgb(0, 41, 116, 0.81);
+    color: rgb(255, 255, 255);
+    /* margin-left: 15px; */
+
+    transition: transform 0.3s ease-out;
+}
+
+::placeholder {
+    /* CSS3 */
+    color: #4e4c4c;
+}
+.hr {
+    height: 2px;
+    /* margin:60px 0 50px 0; */
+    background: rgba(255, 255, 255, 0.2);
+}
+.labelFormato {
+    font-size: 30px;
+
+    text-shadow: 3px 3px 3px black;
+    font-weight: bold;
+}
+
+.frase-olvido-contrasena {
+    font-size: 16px;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 20px;
+    box-shadow: 0 6px 9px 0 rgba(255, 255, 255, 0.24),
+        0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+.frase-olvido-contrasena:hover {
+    font-weight: bolder;
+}
+
+.mensaje {
+    margin: auto;
+}

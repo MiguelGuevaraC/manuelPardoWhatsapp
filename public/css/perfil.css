@@ -1,0 +1,28 @@
+.cajaPerfil{
+    border-radius: 25px;
+}
+.content-wrapper {
+    background: linear-gradient(white, rgb(231, 231, 231));
+}
+.btnPerfil{
+    background-color: #0077c2;
+    color: white;
+    padding: 5px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    letter-spacing: 0.1em;
+    word-spacing: 0.1em;
+    text-shadow: 2px 2px 2px #000000;
+}
+.btnPerfil:hover{
+    background-color: #015081;
+    color: white;
+}
+
+.infoPerfil{
+    width: 80%;
+    text-align: center;
+    margin: auto;
+}

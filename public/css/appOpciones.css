@@ -1,0 +1,446 @@
+#titulo {
+    color: black;
+    background: white;
+    font-size: 25px;
+    font-weight: bolder;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+.content-wrapper {
+    background-color: rgb(244 246 249);
+}
+
+.modal-lg {
+    max-width: 500px;
+}
+
+#modalCRUD .modal-lg {
+    max-width: 900px;
+}
+.modal-content {
+    border-radius: 20px;
+}
+
+.selectActivos {
+    font-weight: bolder;
+    background: #0251a6;
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 3px;
+    border: 4px outset rgb(0, 0, 0);
+    transition: background-color 0.3s ease;
+    width: 14%;
+    text-align: center;
+    word-spacing: 0.1em;
+    font-size: 12px;
+}
+
+.selectActivos option {
+    color: rgb(0, 0, 0);
+    background: #ffffff;
+}
+
+select option {
+    font-weight: bolder;
+    font-size: 15px;
+}
+
+.btonNuevo:hover,
+.selectActivos:hover {
+    color: rgb(255, 255, 255);
+    background: rgb(38, 145, 245);
+}
+
+.dataTables_wrapper .dt-buttons {
+    float: left;
+
+    margin-bottom: 15px;
+    /* o right, dependiendo de dónde quieras colocar los botones */
+}
+
+.excel,
+.pdf,
+.csv,
+.print,
+.copy {
+    color: rgb(255, 255, 255);
+    margin-right: 5px;
+    margin-left: 5px;
+    padding: 5px, 3px;
+    border-radius: 10px;
+    letter-spacing: 0.1em;
+    border: 3px outset grey;
+    font-size: 10px;
+}
+
+.contenedor {
+    /* display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    max-width: 48%; */
+
+    margin: auto;
+    margin-top: 30px;
+    max-width: 70%;
+    display: inline;
+}
+
+.modal-header {
+    background: #007bff;
+    color: white;
+    text-align: center;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    height: 55px;
+}
+
+.modal-title {
+    margin: auto;
+    letter-spacing: 0.1em;
+    word-spacing: 0.1em;
+    text-shadow: 3px 3px 3px #000000;
+}
+
+.btnEditar {
+    background-color: rgb(255, 171, 0);
+    color: white;
+    padding: 5px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    letter-spacing: 0.1em;
+    word-spacing: 0.1em;
+    text-shadow: 2px 2px 2px #000000;
+}
+
+.btnEditar:hover {
+    background-color: rgb(255, 171, 0);
+    text-shadow: 1px 2px 1px #000000;
+}
+
+.btnCloseCrud {
+    background-color: rgb(255, 171, 0);
+    color: white;
+    padding: 5px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    letter-spacing: 0.1em;
+    word-spacing: 0.1em;
+    text-shadow: 2px 2px 2px #000000;
+}
+
+.btnCloseCrud:hover {
+    background-color: #ff6100;
+    text-shadow: 1px 2px 1px #000000;
+}
+
+#labelPermission {
+    display: inline;
+    margin: 10px;
+    max-width: 120px;
+}
+
+#tbOpciones th {
+    text-align: center;
+    color: #fff;
+    max-width: 150px;
+}
+
+thead input {
+    width: 90%;
+    padding: 3px;
+    border: solid 1px #18b300;
+    border-radius: 7px;
+}
+thead input::placeholder {
+    padding: 4px;
+}
+
+#tbOpcionesMenu th {
+    text-align: center;
+    color: #fff;
+}
+
+.labelFormato {
+    color: rgba(0, 0, 0, 0.42);
+    font-size: 12px;
+}
+.form-group input,
+.form-group select {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    outline: none;
+    border-radius: none;
+    padding: 5px;
+}
+
+.ajuste {
+    margin: auto;
+    max-width: 90%;
+}
+
+.botonesModal,
+.botonesModalE {
+    margin: auto;
+    max-width: 100%;
+    text-align: center;
+}
+
+.anchoOpcion {
+    width: 130px;
+}
+
+/* ANIMACION PARA EL MODAL */
+.modal.fade .modal-dialog {
+    -webkit-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    -webkit-transition: -webkit-transform 0.3s ease-out;
+    transition: transform 0.3s ease-out;
+}
+
+.modal.fade.show .modal-dialog {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+}
+
+.btnCrear {
+    background-color: #0077c2;
+    color: white;
+    padding: 5px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    letter-spacing: 0.1em;
+    word-spacing: 0.1em;
+    text-shadow: 2px 2px 2px #000000;
+}
+
+.btnCrear:hover {
+    background-color: #0075ff;
+    text-shadow: 1px 2px 1px #000000;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #1360ac;
+}
+
+.custom-control-label::before {
+    background-color: #e4f2ff;
+}
+
+.custom-switch .custom-control-label::after {
+    background-color: #5692cf;
+}
+
+.cajaCrud {
+    margin: 40px;
+}
+
+table,
+table.dataTable thead th {
+    text-align: center;
+}
+
+.error-messageE,
+.error-message,
+.error-messageCRUD,
+.error-messageGrupo,
+.error-messageGrupoE {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.centrarFechas {
+    text-align: right;
+}
+
+.flatpickr-input[readonly] {
+    margin-top: 14px;
+    margin-right: 8px;
+    background-color: rgb(2 81 166);
+}
+.flatpickr-input[readonly]::placeholder {
+    color: rgb(255, 255, 255);
+}
+
+.activos {
+    margin-top: 0px;
+    margin-right: 8px;
+    margin-left: 5px;
+    background-color: rgb(2 81 166);
+    color: white;
+    width: 90%;
+}
+.sizeIcono {
+    font-size: 20px;
+    color: rgb(252, 248, 248);
+    padding: 5px;
+}
+
+.enviaFiltro {
+    margin-top: 8px;
+    margin-left: 18px;
+}
+
+thead th {
+    font-weight: bolder;
+    text-align: center;
+    border-bottom: 3px solid #dee2e6;
+    vertical-align: middle;
+}
+
+thead th:first-child {
+    border-top-left-radius: 8px;
+}
+
+thead th:last-child {
+    border-top-right-radius: 8px;
+}
+
+/* -----accesos directos */
+.main-header .nav-item:hover {
+    background-color: rgba(0, 80, 126, 0.336);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.main-header span {
+    text-align: center;
+    font-size: 22px;
+    padding: 0;
+    margin: 0;
+    color: white;
+    text-transform: uppercase;
+}
+
+.main-header svg {
+    font-size: 30px;
+    color: white;
+    padding-left: 18px;
+    padding-right: 18px;
+}
+aside a span b {
+    font-size: 20px;
+    margin: 5px;
+}
+
+.excel,
+.pdf,
+.csv,
+.print,
+.copy {
+    color: rgb(255, 255, 255);
+    margin-right: 5px;
+    margin-left: 5px;
+    padding: 5px, 3px;
+    border-radius: 10px;
+    letter-spacing: 0.1em;
+    border: 3px outset grey;
+    font-size: 12px;
+}
+
+#tituloPagina a {
+    text-align: center;
+    font-size: 17px;
+    padding: 10px;
+    margin: 0;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bolder;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.custom-header-bg th {
+    background-color: rgb(2 119 189);
+    color: #ffffff; /* Opcional: Cambia el color del texto si es necesario */
+}
+
+#tbCategoria th,
+#tbProducto th,
+#tbUnidad th {
+    background-color: rgb(2 119 189);
+    color: #ffffff; /* Opcional: Cambia el color del texto si es necesario */
+}
+/* FILAR PARES E IMPARES  */
+.odd-row {
+    background-color: #fff; /* Color de fondo para filas impares */
+}
+
+.even-row {
+    background-color: #fdfdfd; /* Color de fondo para filas pares */
+}
+
+.main-header {
+    background-color: rgb(2 119 189);
+    height: 58px;
+}
+
+.main-header a i {
+    font-size: 30px;
+    color: white;
+    padding-left: 18px;
+    padding-right: 18px;
+}
+
+.main-header .nav-link {
+    height: 55px;
+}
+
+.cajaAlrededor {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 1350px;
+    height: 100%;
+    margin: 0 auto;
+    border-radius: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    padding-top: 20px;
+    margin-bottom: 20px;
+}
+
+.btonNuevo {
+    margin-top: 7px;
+    font-weight: bolder;
+    background: rgb(2 81 166);
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 3px;
+    border: 4px outset rgb(0, 0, 0);
+    transition: background-color 0.3s ease;
+    width: 100%;
+    text-align: center;
+    word-spacing: 0.1em;
+}
+
+table {
+    font-size: 13px;
+    max-height: 200px;
+}
+
+table td {
+    font-size: 13px;
+    text-align: center;
+    margin: auto;
+    vertical-align: middle; /* Alineación vertical al centro */
+}
+
+table th {
+    text-align: center;
+    margin: auto;
+    vertical-align: middle; /* Alineación vertical al centro */
+    color: white;
+    background: #25476a;
+}
+
+#tituloPagina a#tituloPaginaLabel {
+    font-size: 16px;
+    margin: auto;
+    text-align: center;
+}

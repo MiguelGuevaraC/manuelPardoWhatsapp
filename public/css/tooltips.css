@@ -1,0 +1,56 @@
+.btn-profesional {
+    position: relative;
+}
+
+.btn-profesional::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%) scaleY(0); /* Escala vertical inicial a 0 */
+    transform-origin: bottom; /* Establece el punto de origen de la transformación en la parte inferior */
+    background-color: #333;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.4s ease-in-out, opacity 0.4s, visibility 0.4s;
+}
+
+.btn-profesional-Label{
+    font-size: 5px;
+}
+
+.btn-profesional:hover::before {
+    transform: translateX(-50%) scaleY(1); /* Escala vertical a 1 para mostrar de abajo a arriba */
+    opacity: 1;
+    visibility: visible;
+}
+
+
+
+
+
+.btn-profesional {
+    padding: 8px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    transition: all 0.3s;
+    border-radius: 25px;
+    margin-left: 8px;
+    margin-right: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.btn-profesional:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-weight: bolder;
+}

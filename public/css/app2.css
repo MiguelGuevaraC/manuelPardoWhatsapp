@@ -1,0 +1,712 @@
+.group {
+    margin-bottom: 10px;
+}
+.content-wrapper {
+    background-color: rgb(244 246 249);
+}
+
+.children-checkboxes {
+    display: none;
+    margin-left: 20px;
+}
+
+.parent-checkbox:checked + .children-checkboxes {
+    display: block;
+}
+
+.level-1 {
+    margin-left: 10px;
+}
+
+.level-2 {
+    margin-left: 30px;
+}
+
+/* --------------------------------------------------- */
+
+[class*="sidebar-dark-"] .sidebar a {
+    color: #fff;
+}
+
+#titulo {
+    color: black;
+    background: white;
+    font-size: 25px;
+    font-weight: bolder;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.selectActivos {
+    font-weight: bolder;
+    background: #0251a6;
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 3px;
+    border: 4px outset rgb(0, 0, 0);
+    transition: background-color 0.3s ease;
+    width: 14%;
+    text-align: center;
+    word-spacing: 0.1em;
+    font-size: 12px;
+
+}
+
+
+#btonNuevo {
+    margin-top: 7px;
+    font-weight: bolder;
+    background: rgb(2 81 166);
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 3px;
+    border: 4px outset rgb(0, 0, 0);
+    transition: background-color 0.3s ease;
+    width: 100%;
+    text-align: center;
+    word-spacing: 0.1em;
+}
+
+.selectActivos option {
+    color: rgb(0, 0, 0);
+    background: #ffffff;
+}
+
+select option {
+    font-weight: bolder;
+    font-size: 15px;
+}
+
+#btonNuevo:hover,
+.selectActivos:hover {
+    color: rgb(255, 255, 255);
+    background: rgb(38, 145, 245);
+    
+}
+
+.dataTables_wrapper .dt-buttons {
+    float: left;
+
+    margin-bottom: 15px;
+    /* o right, dependiendo de dónde quieras colocar los botones */
+}
+
+.excel,
+.pdf,
+.csv,
+.print,
+.copy {
+    color: rgb(255, 255, 255);
+    margin-right: 5px;
+    margin-left: 5px;
+    padding: 5px, 3px;
+    border-radius: 10px;
+    letter-spacing: 0.1em;
+    border: 3px outset grey;
+    font-size: 12px;
+}
+.contenedor {
+    /* display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    max-width: 48%; */
+
+    margin: auto;
+    margin-top: 30px;
+    max-width: 70%;
+    display: inline;
+}
+
+#cjaBtGraficos {
+    margin: auto;
+    text-align: center;
+    float: left;
+}
+
+#cjaBtGraficos button {
+    border-radius: 10px;
+    letter-spacing: 0.2em;
+    background: rgb(0, 0, 0);
+    color: white;
+    font-weight: bolder;
+    border: 3px solid black;
+    width: 200px;
+}
+
+#cjaBtGraficos button:hover {
+    background: rgb(255, 255, 255);
+    color: rgb(0, 204, 255);
+}
+
+#cjaBtGraficos > div {
+    margin: 15px;
+}
+
+#canvasCaja {
+    float: right;
+}
+
+#modalNuevoRol .modal-lg,
+#modalEditarRolE .modal-lg {
+    max-width: 1200px;
+}
+
+#modalApertura .modal-lg,
+#modalEgresos .modal-lg,
+#modalEgresosE .modal-lg,
+#modalCierre .modal-lg,
+#modalEditarMovCaja .modal-lg {
+    max-width: 1200px;
+}
+
+#modalNuevoRol td,
+#modalEditarRolE td {
+    width: 800px;
+}
+
+#modalNuevoUsuario .modal-lg,
+#modalNuevoUsuarioE .modal-lg {
+    max-width: 800px;
+}
+
+#modalNuevoOpcion .modal-lg {
+    max-width: 400px;
+}
+
+.modal-content {
+    border-radius: 20px;
+}
+
+.modal-footer {
+    margin: auto;
+}
+
+.modal-header {
+    background: #007bff;
+    color: white;
+    text-align: center;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    height: 55px;
+}
+
+.modal-title {
+    margin: auto;
+    letter-spacing: 0.1em;
+    word-spacing: 0.1em;
+    text-shadow: 3px 3px 3px #000000;
+}
+
+.btnEditar {
+    background-color: rgb(255, 171, 0);
+    color: white;
+    padding: 5px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    letter-spacing: 0.1em;
+    word-spacing: 0.1em;
+    text-shadow: 2px 2px 2px #000000;
+}
+
+.btnEditar:hover {
+    background-color: rgb(255, 171, 0);
+    text-shadow: 1px 2px 1px #000000;
+}
+
+#labelPermission {
+    display: inline;
+    margin: 10px;
+    max-width: 120px;
+}
+
+#opcionesHead th {
+    text-align: center;
+    background-color: #004080;
+    color: #fff;
+    font-weight: bolder;
+}
+.opcionesHeadMenu {
+    text-align: center;
+    background-color: #0077c2;
+    color: #fff;
+    font-weight: bolder;
+}
+
+#opcionesHeadE th {
+    text-align: center;
+    background-color: #ae7d00;
+    color: #fff;
+    font-weight: bolder;
+}
+.opcionesHeadMenuE {
+    text-align: center;
+    background-color: #ffb700e6;
+    color: #fff;
+    font-weight: bolder;
+}
+
+.labelFormato {
+    color: rgba(0, 0, 0, 0.42);
+    font-size: 12px;
+}
+.form-group input,
+.form-group select {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    outline: none;
+    border-radius: none;
+    padding: 5px;
+}
+.ajuste {
+    margin: auto;
+    max-width: 95%;
+}
+
+#modalNuevoUsuario .ajuste {
+    margin-left: 10px;
+    max-width: 89%;
+}
+
+.botonesModal,
+.botonesModalE {
+    margin: auto;
+    max-width: 80%;
+    text-align: center;
+}
+
+.ancho {
+    width: 160px;
+}
+
+.anchoOpcion {
+    width: 130px;
+}
+
+/* ANIMACION PARA EL MODAL */
+.modal.fade .modal-dialog {
+    -webkit-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    -webkit-transition: -webkit-transform 0.3s ease-out;
+    transition: transform 0.3s ease-out;
+}
+
+.modal.fade.show .modal-dialog {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+}
+
+.btnCrear {
+    background-color: #0077c2;
+    color: white;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    letter-spacing: 0.1em;
+    word-spacing: 0.1em;
+    text-shadow: 2px 2px 2px #000000;
+}
+
+.btnCrear:hover {
+    background-color: #0075ff;
+    text-shadow: 1px 2px 1px #000000;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #1360ac;
+}
+
+.custom-control-label::before {
+    background-color: #e4f2ff;
+}
+
+.custom-switch .custom-control-label::after {
+    background-color: #5692cf;
+}
+
+table,
+table.dataTable thead th {
+    text-align: center;
+}
+
+th {
+    background-color: red;
+}
+.centerTabla {
+    margin: auto;
+    max-width: 95%;
+    position: center;
+    overflow-y: scroll;
+    white-space: nowrap;
+    max-height: 500px;
+}
+
+.error-message,
+.error-messageE,
+.error-messageGrupo,
+.error-messageGrupoE {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.cajaPasswordEdit {
+    background: #ffab00;
+    color: white;
+    border-radius: 7px;
+    margin: 9px;
+    margin-bottom: 11px;
+}
+
+.PasswordEdit {
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    letter-spacing: 0.1em;
+    word-spacing: 0.1em;
+    text-shadow: 2px 2px 2px #000000;
+    padding: 2px;
+}
+
+.filtrarActivos {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.subTituloEmpresa {
+    background: #0077c2;
+    border-radius: 5px;
+}
+
+.subTituloEmpresa .labelFormato {
+    color: white;
+    text-decoration: none;
+    text-shadow: 2px 2px 2px rgb(0, 0, 0);
+    padding-top: 5px;
+    letter-spacing: 0.1em;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: #ffffff;
+    opacity: 1;
+}
+
+.circle {
+    width: 38px;
+    height: 38px;
+    background-color: rgb(2 119 189);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 30px;
+}
+
+.fa-message {
+    color: white;
+}
+
+.coments {
+    margin: auto;
+    text-align: justify;
+}
+
+.sizeIcono {
+    font-size: 18px;
+    color: rgb(252, 248, 248);
+    padding: 5px;
+}
+
+.imagen {
+    transition: transform 0.2s ease-in-out;
+    /* Efecto de transición suave */
+}
+
+.imagen:hover {
+    transform: scale(1.1);
+    /* Aumento del tamaño de la imagen */
+}
+
+img {
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+}
+
+.imagen {
+    transition: transform 0.3s ease-in-out;
+    /* Efecto de transición suave */
+}
+
+.imagen:hover {
+    transform: scale(1.5);
+    /* Aumento del tamaño de la imagen */
+}
+
+.imagen2 {
+    transition: transform 0.2s ease-in-out;
+    /* Efecto de transición suave */
+}
+
+.imagenFaq:hover {
+    transform: scale(1.1);
+    /* Aumento del tamaño de la imagen */
+}
+
+.imagenFaq {
+    transition: transform 0.2s ease-in-out;
+    /* Efecto de transición suave */
+}
+
+.imagen2:hover {
+    transform: scale(1.2);
+    /* Aumento del tamaño de la imagen */
+}
+
+.centro {
+    margin: auto;
+    text-align: center;
+    width: 90%;
+}
+
+.carousel-indicators li {
+    background-color: red;
+}
+
+/* ----------------------------------------------------- */
+
+#calendarioInicio::placeholder,
+#calendarioFin::placeholder {
+    color: rgb(255, 255, 255);
+}
+
+.centrarFechas {
+    text-align: right;
+}
+
+.flatpickr-input[readonly] {
+    margin-top: 14px;
+    margin-right: 8px;
+    background-color: rgb(2 81 166);
+}
+
+#activos {
+    margin-top: 0px;
+    margin-right: 8px;
+    margin-left: 5px;
+    background-color: rgb(2 81 166);
+    color: white;
+    width: 90%;
+}
+
+.enviaFiltro {
+    margin-top: 8px;
+    margin-left: 18px;
+}
+
+thead input {
+    width: 90%;
+    padding: 3px;
+    border: solid 1px #18b300;
+    border-radius: 7px;
+}
+
+thead input::placeholder {
+    padding: 4px;
+}
+
+#tbUsuarios thead input::placeholder {
+    padding: 2px;
+}
+
+thead th {
+    font-weight: bolder;
+    text-align: center;
+    border-bottom: 3px solid #dee2e6;
+    vertical-align: middle;
+}
+
+thead th:first-child {
+    border-top-left-radius: 8px;
+}
+
+thead th:last-child {
+    border-top-right-radius: 8px;
+}
+
+/* ---------------------------------- */
+
+/* Acceso directo */
+.main-header {
+    background-color: rgb(2 119 189);
+    height: 58px;
+}
+
+.main-header a i {
+    font-size: 30px;
+    color: white;
+    padding-left: 18px;
+    padding-right: 18px;
+}
+
+.main-header .nav-link {
+    height: 55px;
+}
+.main-header .nav-item:hover {
+    background-color: rgba(0, 80, 126, 0.336);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.main-header span {
+    text-align: center;
+    font-size: 22px;
+    padding: 0;
+    margin: 0;
+    color: white;
+    text-transform: uppercase;
+}
+aside a span b {
+    font-size: 20px;
+    margin: 5px;
+}
+
+.main-header svg {
+    font-size: 30px;
+    color: white;
+    padding-left: 18px;
+    padding-right: 18px;
+}
+
+#tituloPagina a {
+    text-align: center;
+    font-size: 20px;
+    padding: 10px;
+    margin: 0;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bolder;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#tbDetallePago {
+    font-size: 16px !important;
+    font-weight: normal !important;
+}
+
+#tbDetallePago th,
+#tbDetallePago td {
+    padding: 8px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.custom-header-bg th {
+    background-color: rgb(2 119 189);
+    color: #ffffff; /* Opcional: Cambia el color del texto si es necesario */
+}
+#tbMediosPago th,
+#tbMediosPagoE th,
+#tbMediosPagoEgr th,
+#tbMediosPagoEgrE th {
+    background-color: rgb(2 119 189);
+    color: #ffffff; /* Opcional: Cambia el color del texto si es necesario */
+}
+
+#tbMediosPagoEgrE td,
+#tbMediosPagoEgr td {
+    font-size: 15px;
+}
+
+/* FILAR PARES E IMPARES  */
+.odd-row {
+    background-color: #fff; /* Color de fondo para filas impares */
+}
+
+.even-row {
+    background-color: #fdfdfd; /* Color de fondo para filas pares */
+}
+
+.cajaAlrededor {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 1350px;
+    height: 100%;
+    margin: 0 auto;
+    border-radius: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    padding-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.tabla-carrito {
+    font-size: 14px;
+    max-height: 20px;
+    overflow-y: auto;
+}
+
+.temporizador-text {
+    color: #fff; /* Color del texto */
+    padding: 5px; /* Espaciado interior */
+    font-size: 13px;
+    display: inline-block; /* Asegura que el fondo se ajuste al contenido */
+}
+
+table {
+    font-size: 13px;
+    max-height:200px;
+}
+
+table td {
+    font-size: 13px;
+    text-align: center;
+    margin: auto;
+    vertical-align: middle; /* Alineación vertical al centro */
+}
+
+table th {
+
+    text-align: center;
+    margin: auto;
+    vertical-align: middle; /* Alineación vertical al centro */
+}
+
+
+/* Estilizar el select */
+#estado {
+    width: 100%; 
+
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    background-color: white;
+    color: black;
+    font-size: 17px; 
+    text-align: center;
+    text-transform: uppercase;
+
+}
+
+/* Estilizar las opciones del select */
+#estado option {
+    font-size: 14px; /* Ajustar el tamaño de fuente de las opciones */
+}
+
+/* Cambiar el estilo del borde cuando se enfoca */
+#estado:focus {
+    border-color: #007bff; /* Cambiar el color del borde cuando se enfoca */
+}
+
+
+#tituloPagina a#tituloPaginaLabel{
+    font-size: 16px;
+    margin: 0 auto;
+    text-align: center;
+    
+}
+

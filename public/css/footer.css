@@ -1,0 +1,66 @@
+/* Estilos CSS para el footer */
+footer {
+    left: 0;
+    bottom: 0;
+    max-width: 100%;
+    margin: auto;
+    height:10px;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 0, 10px;
+    text-align: center;
+}
+
+.main-footer{
+    margin: 0;
+    padding: 0;
+}
+
+.footer .col-md-6{
+    margin: 0;
+    padding: 0;
+}
+
+.footer-container {
+    text-align: center;
+    height:10px;
+}
+
+.footer-content {
+    margin: 0 auto;
+    height: 10px;
+}
+
+.footer-bottom {
+    text-align: center;
+    ;
+}
+
+.footer-social ul {
+    list-style: none;
+    padding: 0;
+  }
+
+.footer-social li {
+    display: inline-block;
+    margin-right: 5px;
+    margin-left: 5px;
+    padding: 5px;
+    font-size: 20px;
+}
+
+.footer-social a {
+    color: #000000;
+    text-decoration: none;
+}
+
+.texto-Footer {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.garzasoftFooter {
+    text-decoration: none;
+    color: #009688;
+    font-weight: bolder;
+}
