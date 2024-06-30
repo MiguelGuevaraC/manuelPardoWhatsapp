@@ -22,7 +22,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <?php
-    $vista = 'home';
+    $vista = 'Home';
     $categoriaActual = 'home';
     $OpcionActual = 'vistaInicio';
     
@@ -208,10 +208,11 @@
                     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
                     <div class="pad-all text-center">
                         <h3>Bienvenido a Mensajería por WhatsApp</h3>
-                        <p>Descubre nuestra exclusiva plataforma para enviar mensajes por whatsaApp. Puedes cargar los
+                         <hr class="my-4"><p>Descubre nuestra exclusiva plataforma para enviar mensajes por whatsaApp. Puedes cargar los
                             datos de los estudiantes y enviar notificaciones a los padres sobre los pagos pendientes.
                         </p>
-                        <p>De la mano de MrSoft, solucionando juntos. Agradecemos su elección y confianza. !</p>
+                       
+                        <p>De la mano de <b>MrSoft</b>, solucionando juntos. Agradecemos su elección y confianza. !</p>
                     </div>
                     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
                     <!--End page title-->
@@ -273,12 +274,7 @@
                                         style="display:none">
                                 </a>
 
-                                <a href="#">
-                                    <img alt="Pumpkin" src="plantillaNuevo\img\gallery\thumbs\tile6.jpeg"
-                                        data-image="plantillaNuevo\img/gallery/thumbs/tile6.jpeg"
-                                        data-description="A pumpkin is a cultivar of a squash plant, most commonly of Cucurbita pepo, that is round, with smooth, slightly ribbed skin, and deep yellow to orange coloration."
-                                        style="display:none">
-                                </a>
+                        
 
                                 <a href="#">
                                     <img alt="In the jungle" src="plantillaNuevo\img\gallery\thumbs\tile7.jpeg"
@@ -298,15 +294,11 @@
                                         data-description="This is a motorcycle" style="display:none">
                                 </a>
 
-                                <a href="#">
-                                    <img alt="Adventure" src="plantillaNuevo\img\gallery\thumbs\tile10.jpeg"
-                                        data-image="plantillaNuevo\img/gallery/thumbs/tile10.jpeg"
-                                        data-description="River Adventure Camping" style="display:none">
-                                </a>
+                            
 
                                 <a href="#">
-                                    <img alt="The winding road" src="plantillaNuevo\img\gallery\thumbs\tile1.jpeg"
-                                        data-image="plantillaNuevo\img/gallery/thumbs/tile1.jpeg"
+                                    <img alt="The winding road" src="plantillaNuevo\img\gallery\thumbs\tile6.jpeg"
+                                        data-image="plantillaNuevo\img/gallery/thumbs/tile6.jpeg"
                                         data-description="The winding road description" style="display:none">
                                 </a>
 
@@ -317,12 +309,6 @@
                                         style="display:none">
                                 </a>
 
-                                <a href="#">
-                                    <img alt="Foreshore" src="plantillaNuevo\img\gallery\thumbs\tile3.jpeg"
-                                        data-image="plantillaNuevo\img/gallery/thumbs/tile3.jpeg"
-                                        data-description="The part of a shore between high- and low-water marks, or between the water and cultivated or developed land."
-                                        style="display:none">
-                                </a>
 
                                 <a href="#">
                                     <img alt="Yellow Flowers" src="plantillaNuevo\img\gallery\thumbs\tile4.jpeg"
@@ -330,37 +316,16 @@
                                         data-description="Those are yellow flowers" style="display:none">
                                 </a>
 
-                                <a href="#">
-                                    <img alt="Waterfall" src="plantillaNuevo\img\gallery\thumbs\tile5.jpeg"
-                                        data-image="plantillaNuevo\img/gallery/thumbs/tile5.jpeg"
-                                        data-description="A waterfall is a place where water flows over a vertical drop or a series of steep drops in the course of a stream or river."
-                                        style="display:none">
-                                </a>
+                        
 
+          
                                 <a href="#">
-                                    <img alt="Pumpkin" src="plantillaNuevo\img\gallery\thumbs\tile6.jpeg"
-                                        data-image="plantillaNuevo\img/gallery/thumbs/tile6.jpeg"
-                                        data-description="A pumpkin is a cultivar of a squash plant, most commonly of Cucurbita pepo, that is round, with smooth, slightly ribbed skin, and deep yellow to orange coloration."
-                                        style="display:none">
-                                </a>
-
-                                <a href="#">
-                                    <img alt="In the jungle" src="plantillaNuevo\img\gallery\thumbs\tile7.jpeg"
-                                        data-image="plantillaNuevo\img/gallery/thumbs/tile7.jpeg"
-                                        data-description="This is my car" style="display:none">
-                                </a>
-
-                                <a href="#">
-                                    <img alt="Note" src="plantillaNuevo\img\gallery\thumbs\tile8.jpeg"
-                                        data-image="plantillaNuevo\img/gallery/thumbs/tile8.jpeg"
+                                    <img alt="Note" src="plantillaNuevo\img\gallery\thumbs\tile10.jpeg"
+                                        data-image="plantillaNuevo\img/gallery/thumbs/tile10.jpeg"
                                         data-description="This is a note" style="display:none">
                                 </a>
 
-                                <a href="#">
-                                    <img alt="Off-Road Motorcycle" src="plantillaNuevo\img\gallery\thumbs\tile9.jpeg"
-                                        data-image="plantillaNuevo\img/gallery/thumbs/tile9.jpeg"
-                                        data-description="This is a motorcycle" style="display:none">
-                                </a>
+                   
                             </div>
                         </div>
                     </div>
@@ -441,7 +406,7 @@
                                                 <ul class="<?= $categoria['name'] == $categoriaActual ? 'collapse in' : '' ?>">
                                                     <?php foreach ($categoria['option_menus'] as $item): ?>
                                                         <li class="<?= $item['route'] == $OpcionActual ? 'active-link' : '' ?>">
-                                                            <a href="<?= $item['route'] ?>">
+                                                            <a class="optionsMenu" href="<?= $item['route'] ?>">
                                                                 <i class="<?= $item['icon'] ?>"></i> <?= $item['name'] ?>
                                                             </a>
                                                         </li>
@@ -550,7 +515,13 @@
 
     <!--Custom script [ DEMONSTRATION ]-->
     <!--===================================================-->
-    <script>
+  
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/JqueryInicio/JqueryInicio.js') }}"></script>
+    <script src="/manuelPardoWhatsapp/Cdn-Locales/pkgAwsome/js/all.js"></script>
+ 
+
+  <script>
         $(document).on('nifty.ready', function() {
 
 
@@ -567,11 +538,6 @@
 
         });
     </script>
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/JqueryInicio/JqueryInicio.js') }}"></script>
-    <script src="/manuelPardoWhatsapp/Cdn-Locales/pkgAwsome/js/all.js"></script>
-
-
 </body>
 
 </html>

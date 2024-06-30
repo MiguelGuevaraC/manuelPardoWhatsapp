@@ -237,15 +237,26 @@ table th {
 
 #mainnav {
     background-color: #00181c;
-    color: #fafdff;
+    color: #fff;
 }
+
+
 
 .mainnav-profile .profile-wrap {
     background-color: #00181c;
 }
 
 #mainnav-menu ul a:hover, #mainnav-menu ul ul a:hover, #mainnav-menu ul .active-link a, .menu-popover .sub-menu ul a:hover, .menu-popover .sub-menu ul ul a:hover, .menu-popover .sub-menu ul .active-link a {
-    color: #b2b2b2;
+    color: #ffffff;
+}
+#mainnav .mainnav-profile .list-group-item {
+    color: #fff;
+}
+#mainnav .mainnav-profile .list-group-item:hover {
+   background: #4ac956;
+}
+.optionsMenu:hover{
+    background: #4ac956;
 }
 
 #mainnav-menu>.active {
@@ -257,12 +268,12 @@ table th {
 }
 
 #mainnav .mainnav-profile .list-group{
-    color: #fff;
+    color: #ffffff;
     background-color: #1caa00;
 }
 
 #mainnav .mainnav-profile .list-group-item:hover{
-    color: white;
+    color: #ffffff;
 }
 .nav a {
     font-size: 9px;

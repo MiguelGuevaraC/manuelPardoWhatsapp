@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/login.css" rel="stylesheet">
+    <link type="image/png" href="plantillaNuevo\img\logo.png" rel="icon">
+    <title>Mensajería | Login</title>
     <title>Login</title>
     <!-- CDN para BOOTSTRAP -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
@@ -14,6 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous">
     </script>
+    
 </head>
 
 <body>
@@ -57,8 +60,8 @@
     </div>
 
     <!--jQuery [ REQUIRED ]-->
-    <script src="js/jquery.min.js"></script>
-
+ 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(".input").on('input', function() {
             var valorInput = $(this).val();
