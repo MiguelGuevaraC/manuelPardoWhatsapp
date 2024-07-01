@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
+use App\Models\GroupMenu;
 use App\Models\TypeUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class TypeUserController extends Controller
@@ -39,11 +41,24 @@ class TypeUserController extends Controller
 
     public function index()
     {
-        $typeUsers = TypeUser::simplePaginate(15);
+
+        $user = Auth::user();
+        $groupMenu = GroupMenu::getFilteredGroupMenusSuperior($user->typeofUser_id);
+        $groupMenuLeft = GroupMenu::getFilteredGroupMenus($user->typeofUser_id);
+
+
+        return view('Modulos.Roles.index', compact('user', 'groupMenu', 'groupMenuLeft'));
+    }
+
+    public function all()
+    {
+
+        $typeUsers = TypeUser::whereNotIn('id',[1,2])->simplePaginate(15);
         $typeUsers->getCollection()->transform(function ($typeUser) {
             $typeUser->optionMenuAccess = $typeUser->getAccess($typeUser->id);
             return $typeUser;
         });
+
         return response()->json($typeUsers);
     }
 

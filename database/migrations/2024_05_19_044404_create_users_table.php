@@ -17,11 +17,11 @@ return new class extends Migration
             $table->id();
             $table->string('username', 255)->unique();
             $table->string('password', 255);
- 
+
             $table->foreignId('typeofUser_id')->nullable()->unsigned()->constrained('type_users');
             $table->foreignId('person_id')->nullable()->unsigned()->constrained('people');
 
-           $table->timestamps();
+            $table->timestamps();
             $table->softDeletes();
         });
     }

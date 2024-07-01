@@ -14,15 +14,14 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+
         $credentials = $request->only('username', 'password');
         $validator = Validator::make($credentials, [
             'username' => 'required',
             'password' => 'required',
         ]);
-
-        // Verificar si las credenciales son válidas
         if ($validator->fails()) {
-            return response()->json(['error' => 'Invalid credentials'], 400);
+            return response()->json(['error' => 'Credenciales inválidas'], 400);
         }
 
         $user = User::where("username", $request->username)->first();
@@ -32,18 +31,12 @@ class AuthController extends Controller
         }
 
         if (Hash::check($request->password, $user->password)) {
-            // Autenticar al usuario
-
             Auth::loginUsingId($user->id);
-
-            $token = $user->createToken('auth_token', ['expires' => now()->addHours(2)])->plainTextToken;
+            $token = $user->createToken('auth_token')->plainTextToken;
             $user = User::with(['typeUser'])->find($user->id);
-
             $typeUser = $user->typeUser;
-
             $groupMenu = GroupMenu::getFilteredGroupMenus($typeUser->id);
-
-            return redirect()->route('vistaInicio');
+            return redirect()->route('vistaInicio')->with('token', $token);
         } else {
             return view('auth.login');
         }
@@ -52,9 +45,14 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
+        $currentToken = $request->user()->currentAccessToken();
+
+        if ($currentToken) {
+            $currentToken->delete();
+        }
+
         Auth::logout();
-        return view('auth.login');
+        return redirect()->route('login');
     }
 
 }
