@@ -39,6 +39,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //USER
     Route::get('user', [UserController::class, 'index']);
+    Route::get('userAll', [UserController::class, 'all']);
     Route::get('user/{id}', [UserController::class, 'show']);
     Route::post('user', [UserController::class, 'store']);
     Route::put('user/{id}', [UserController::class, 'update']);
