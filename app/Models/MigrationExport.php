@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class MigrationExport extends Model
@@ -14,7 +13,7 @@ class MigrationExport extends Model
         'comment',
         'routeExcel',
         'state',
-
+        'user_id',
         'created_at',
 
     ];

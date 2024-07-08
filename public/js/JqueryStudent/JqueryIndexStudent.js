@@ -12,9 +12,9 @@ var columns = [
         data: "id",
         render: function (data, type, row, meta) {
             if (row.typeofDocument === "DNI") {
-                return `${row.names} ${row.fatherSurname} ${row.motherSurname}`;
+                return `${row.documentNumber} | ${row.names} ${row.fatherSurname} ${row.motherSurname}`;
             } else if (row.typeofDocument === "RUC") {
-                return row.businessName;
+                return `${row.documentNumber} | ${row.businessName}`;
             }
         },
         orderable: false,
@@ -22,18 +22,30 @@ var columns = [
     { data: "level" },
     { data: "grade" },
     { data: "section" },
-    { data: "representativeDni" },
-    { data: "representativeNames" },
+
+    {
+        data: "representativeDni",
+        render: function (data, type, row, meta) {
+            return `${row.representativeDni} | ${row.representativeNames}`;
+        },
+        orderable: false,
+    },
+
     { data: "telephone" },
 
-//     {
-//         data: null,
-//         render: function (data, type, full, meta) {
-//             return `
-  
-//    `;
-//         },
-//     },
+    {
+        data: null,
+        render: function (data, type, full, meta) {
+            return `
+                <a href="javascript:void(0)" onclick="editStudent(${data.id})" style="background:#ffc107; color:white;" class="btn btn-info"> 
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="javascript:void(0)" onclick="destroyStudent(${data.id})" style="background:#dc3545; color:white;" class="btn btn-danger"> 
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+             `;
+        },
+    },
 ];
 
 var lenguag = {
@@ -50,8 +62,8 @@ var lenguag = {
 };
 
 var lengthmenu = [
-    [20, 50, -1],
-    [20, 50, "Todos"],
+    [5, 50, -1],
+    [5, 50, "Todos"],
 ];
 var butomns = [
     {
@@ -59,7 +71,7 @@ var butomns = [
         text: 'COPY <i class="fa-solid fa-copy"></i>',
         className: "btn-secondary copy",
         exportOptions: {
-            columns: [0, 1, 2,3,4,5,6,7], // las columnas que se exportarán
+            columns: [0, 1, 2, 3, 4, 5, 6], // las columnas que se exportarán
         },
     },
 
@@ -68,7 +80,7 @@ var butomns = [
         text: 'EXCEL <i class="fas fa-file-excel"></i>',
         className: "excel btn-success",
         exportOptions: {
-            columns: [0, 1, 2,3,4,5,6,7], // las columnas que se exportarán
+            columns: [0, 1, 2, 3, 4, 5, 6], // las columnas que se exportarán
         },
     },
     {
@@ -77,7 +89,7 @@ var butomns = [
         text: 'PDF <i class="far fa-file-pdf"></i>',
         className: "btn-danger pdf",
         exportOptions: {
-            columns: [0, 1, 2,3,4,5,6,7], // las columnas que se exportarán
+            columns: [0, 1, 2, 3, 4, 5, 6], // las columnas que se exportarán
         },
     },
     {
@@ -85,7 +97,7 @@ var butomns = [
         text: 'PRINT <i class="fa-solid fa-print"></i>',
         className: "btn-dark print",
         exportOptions: {
-            columns: [0, 1, 2,3,4,5,6,7], // las columnas que se exportarán
+            columns: [0, 1, 2, 3, 4, 5, 6], // las columnas que se exportarán
         },
     },
 ];
@@ -100,12 +112,14 @@ var init = function () {
     api.columns()
         .eq(0)
         .each(function (colIdx) {
-            if (colIdx == 0 || colIdx == 1
-                || colIdx == 2 
-                || colIdx == 3
-                || colIdx == 5
-                || colIdx == 4
-                || colIdx == 6|| colIdx == 7
+            if (
+                colIdx == 0 ||
+                colIdx == 1 ||
+                colIdx == 2 ||
+                colIdx == 3 ||
+                colIdx == 5 ||
+                colIdx == 4 ||
+                colIdx == 6 
             ) {
                 var cell = $(".filters th").eq(
                     $(api.column(colIdx).header()).index()
@@ -162,11 +176,14 @@ $("#tbStudents thead tr")
 
 $(document).ready(function () {
     var table = $("#tbStudents").DataTable({
+        processing: true,
+        serverSide: true,
         ajax: {
             url: "estudianteAll",
+            type: "GET",
             dataSrc: function (json) {
-                console.log(json); // Agrega este console.log para ver la respuesta
-                return json.data; // Asegúrate de retornar los datos correctos para DataTable
+                console.log(json);
+                return json.data;
             },
         },
         orderCellsTop: true,
@@ -174,14 +191,13 @@ $(document).ready(function () {
         columns: columns,
         dom: "Bfrtip",
         buttons: butomns,
-        lengthMenu: lengthmenu,
+
         language: lenguag,
         search: search,
         initComplete: init,
-        
+
         rowId: "id",
         stripeClasses: ["odd-row", "even-row"],
-        rowId: "id",
         scrollY: "300px",
     });
 });

@@ -1,4 +1,4 @@
-function destroyRol(id) {
+function destroyStudent(id) {
     // Mostrar SweetAlert para confirmar la eliminación
     Swal.fire({
         title: "¿Estás seguro?",
@@ -30,7 +30,7 @@ function destroyRol(id) {
                     });
 
                     // Eliminar la fila correspondiente de la tabla DataTables
-                    var table = $("#tbRoles").DataTable();
+                    var table = $("#tbStudents").DataTable();
                     var row = table.row("#" + id);
 
                     if (row.length > 0) {
@@ -41,7 +41,11 @@ function destroyRol(id) {
                     $.niftyNoty({
                         type: "danger",
                         icon: "fa fa-times",
-                        message: "Error al Eliminar: " + textStatus + " - " + errorThrown,
+                        message:
+                            "Error al Eliminar: " +
+                            textStatus +
+                            " - " +
+                            errorThrown,
                         container: "floating",
                         timer: 4000,
                     });

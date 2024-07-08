@@ -11,9 +11,10 @@ use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
 {
@@ -38,10 +39,23 @@ class StudentController extends Controller
         }
     }
 
-    public function all()
+    public function all(Request $request)
     {
-        $list = Person::where('user_id', Auth::user()->id)->simplePaginate(15);
-        return response()->json($list);
+        $query = Person::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->where('state', 1);
+
+        $draw = $request->get('draw');
+        $start = $request->get('start', 0);
+        $length = $request->get('length', 15);
+
+        $totalRecords = $query->count();
+        $persons = $query->skip($start)->take($length)->get();
+
+        return response()->json([
+            'draw' => $draw,
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalRecords,
+            'data' => $persons,
+        ]);
     }
 
     public function store(Request $request)
@@ -122,23 +136,23 @@ class StudentController extends Controller
         try {
 
             $currentTime = now();
-            $filename =  $currentTime->format('YmdHis') . '_' . $excelFile->getClientOriginalName();
+            $filename = $currentTime->format('YmdHis') . '_' . $excelFile->getClientOriginalName();
             $path = $excelFile->storeAs('public/import', $filename);
             $rutaImagen = Storage::url($path);
 
             $tipo = 'DATA';
             $resultado = DB::select('SELECT COALESCE(MAX(CAST(SUBSTRING(number, LOCATE("-", number) + 1) AS SIGNED)), 0) + 1 AS siguienteNum FROM migration_exports a WHERE SUBSTRING(number, 1, 4) = ?', [$tipo])[0]->siguienteNum;
-            $siguienteNum = (int) $resultado;          
-                
+            $siguienteNum = (int) $resultado;
+
             $dataMigration = [
                 'number' => $tipo . "-" . str_pad($siguienteNum, 8, '0', STR_PAD_LEFT),
                 'type' => 'Excel',
                 'comment' => $request->input('comment') ?? '-',
-                'routeExcel' =>$rutaImagen ?? '-',
+                'routeExcel' => $rutaImagen ?? '-',
+                'user_id' => Auth::user()->id,
             ];
-            
+
             MigrationExport::create($dataMigration);
-            
 
             // Cargar el archivo Excel sin almacenarlo temporalmente
             Excel::import(new PersonImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLSX);
@@ -150,4 +164,70 @@ class StudentController extends Controller
             return redirect()->back()->with('error', 'Error al importar el archivo: ' . $e->getMessage());
         }
     }
+
+    public function destroy(int $id)
+    {
+        $object = Person::find($id);
+        if (!$object) {
+            return response()->json(
+                ['message' => 'User not found'], 404
+            );
+        }
+
+        $object->state = 0;
+        $object->save();
+    }
+
+    public function show(int $id)
+    {
+
+        $object = Person::find($id);
+        if ($object) {
+            return response()->json($object, 200);
+        }
+        return response()->json(
+            ['message' => 'Person not found'], 404
+        );
+
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $object = Person::find($id);
+
+        if (!$object) {
+            return response()->json(['message' => 'Person not found'], 404);
+        }
+
+        $validator = validator()->make($request->all(), [
+            'documentNumber' => [
+                'required',
+                Rule::unique('people')->ignore($object->id)->whereNull('deleted_at'),
+            ],
+
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->first()], 422);
+        }
+
+        $object->documentNumber = $request->input('documentNumber');
+
+        $object->names = $request->input('names');
+        $object->fatherSurname = $request->input('fatherSurname');
+        $object->motherSurname = $request->input('motherSurname');
+        $object->businessName = $request->input('businessName');
+        $object->level = $request->input('level');
+        $object->grade = $request->input('grade');
+        $object->section = $request->input('section');
+        $object->representativeDni = $request->input('representativeDni');
+        $object->representativeNames = $request->input('representativeNames');
+        $object->telephone = $request->input('telephone');
+
+        $object->save();
+        $object = Person::find($object->id);
+
+        return response()->json($object, 200);
+    }
+
 }

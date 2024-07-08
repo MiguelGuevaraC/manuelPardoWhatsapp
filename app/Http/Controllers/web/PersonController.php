@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\web;
 
-use App\Exports\PersonExport;
 use App\Http\Controllers\Controller;
-use App\Imports\PersonImport;
 use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Facades\Excel;
 
 class PersonController extends Controller
 {
@@ -141,8 +138,6 @@ class PersonController extends Controller
 
     }
 
-
-
     /**
      * Show the specified Person
      * @OA\Get (
@@ -261,54 +256,40 @@ class PersonController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
         $object = Person::find($id);
 
         if (!$object) {
-            return response()->json(
-                ['message' => 'User not found'], 404
-            );
+            return response()->json(['message' => 'Person not found'], 404);
         }
+
         $validator = validator()->make($request->all(), [
-            'typeofDocument' => 'required',
             'documentNumber' => [
                 'required',
-                Rule::unique('people')->ignore($id)->whereNull('deleted_at'),
+                Rule::unique('people')->ignore($object->id)->whereNull('deleted_at'),
             ],
+            // Agrega aquí las reglas de validación para los demás campos que desees actualizar
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->first()], 422);
         }
 
-        $data = [
-            'typeofDocument' => $request->input('typeofDocument'),
-            'documentNumber' => $request->input('documentNumber'),
-            'address' => $request->input('address') ?? null,
-            'phone' => $request->input('phone') ?? null,
-            'email' => $request->input('email') ?? null,
-            'origin' => $request->input('origin') ?? null,
-            'ocupation' => $request->input('ocupation') ?? null,
-        ];
+        $object->documentNumber = $request->input('documentNumber');
+    
+        $object->names = $request->input('names');
+        $object->fatherSurname = $request->input('fatherSurname');
+        $object->motherSurname = $request->input('motherSurname');
+        $object->businessName = $request->input('businessName');
+        $object->level = $request->input('level');
+        $object->grade = $request->input('grade');
+        $object->section = $request->input('section');
+        $object->representativeDni = $request->input('representativeDni');
+        $object->representativeNames = $request->input('representativeNames');
+        $object->telephone = $request->input('telephone');
 
-        if ($request->input('typeofDocument') == 'DNI') {
-            $data['names'] = $request->input('names') ?? null;
-            $data['fatherSurname'] = $request->input('fatherSurname') ?? null;
-            $data['motherSurname'] = $request->input('motherSurname') ?? null;
-            $data['businessName'] = null;
-            $data['representativeDni'] = null;
-            $data['representativeNames'] = null;
-        } elseif ($request->input('typeofDocument') == 'RUC') {
-            $data['names'] = null;
-            $data['fatherSurname'] = null;
-            $data['motherSurname'] = null;
-            $data['businessName'] = $request->input('businessName') ?? null;
-            $data['representativeDni'] = $request->input('representativeDni') ?? null;
-            $data['representativeNames'] = $request->input('representativeNames') ?? null;
-        }
-
-        $object->update($data);
+        $object->save();
         $object = Person::find($object->id);
+
         return response()->json($object, 200);
     }
 

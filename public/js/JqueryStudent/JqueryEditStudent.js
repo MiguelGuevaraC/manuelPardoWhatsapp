@@ -1,27 +1,36 @@
-//FUNCION EDITAR
-function editRol(id) {
-    $("#registroRolE")[0].reset();
+function editStudent(id) {
+    $("#registroStudentE")[0].reset(); // Reinicia el formulario para evitar datos residuales
 
-   
-    $("#modalEditarRolE").modal("show");
+    // Muestra el modal de edición
+    $("#modalEditarStudentE").modal("show");
 
+    // Petición AJAX para obtener los datos del estudiante por su ID
     $.ajax({
         url: "estudiante/" + id,
         type: "GET",
         dataType: "json",
         success: function (data) {
-            $("#nameE").val(data.name);
+            // Llenar los campos del formulario con los datos recibidos
+            console.log(data.motherSurname);
             $("#idE").val(data.id);
+            $("#dniEstudianteE").val(data.documentNumber);
+            $("#nombreEstudianteE").val(data.names);
+            $("#fatherSurnameE").val(data.fatherSurname);
+            $("#motherSurnameE").val(data.motherSurname);
+            $("#businessNameE").val(data.businessName);
+            $("#levellE").val(data.level);
+            $("#gradooE").val(data.grade);
+            $("#seccionE").val(data.section);
+            $("#nombreApoderadoE").val(data.representativeDni);
+            $("#dniApoderadoE").val(data.representativeNames);
+            $("#telefonoE").val(data.telephone);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            console.log(
-                "Error al cargar datos del tipo de usuario:",
-                errorThrown
-            );
+            console.log("Error al cargar datos del estudiante:", errorThrown);
         },
     });
 }
 
 $(document).on("click", "#cerrarModalE", function () {
-    $("#modalEditarRolE").modal("hide");
+    $("#modalEditarStudentE").modal("hide");
 });

@@ -32,11 +32,32 @@ class MigrationController extends Controller
         }
     }
 
-    public function all()
+    public function all(Request $request)
     {
-        $list = MigrationExport::simplePaginate(15);
-        return response()->json($list);
+     
+        $draw = $request->get('draw');
+        $start = $request->get('start', 0);
+        $length = $request->get('length', 15); 
+    
+        $list = MigrationExport::where('user_id', Auth::user()->id)
+            ->where('state', 1)
+            ->orderBy('id', 'desc')
+            ->skip($start)
+            ->take($length)
+            ->get();
+    
+        $totalRecords = MigrationExport::where('user_id', Auth::user()->id)
+            ->where('state', 1)
+            ->count();
+    
+        return response()->json([
+            'draw' => $draw,
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalRecords,
+            'data' => $list,
+        ]);
     }
+    
 
     // public function store(Request $request)
     // {

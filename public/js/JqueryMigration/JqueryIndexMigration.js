@@ -24,6 +24,16 @@ var columns = [
         },
         orderable: false,
     },
+    {
+        data: "created_at",
+        render: function (data, type, row, meta) {
+            if (type === 'display' || type === 'filter') {
+                var date = new Date(data);
+                return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+            }
+            return data;
+        },
+    },
 
     {
         data: "routeExcel",
@@ -66,7 +76,7 @@ var butomns = [
         text: 'COPY <i class="fa-solid fa-copy"></i>',
         className: "btn-secondary copy",
         exportOptions: {
-            columns: [0, 1, 2], // las columnas que se exportarán
+            columns: [0, 1, 2,3], // las columnas que se exportarán
         },
     },
 
@@ -75,7 +85,7 @@ var butomns = [
         text: 'EXCEL <i class="fas fa-file-excel"></i>',
         className: "excel btn-success",
         exportOptions: {
-            columns: [0, 1, 2], // las columnas que se exportarán
+            columns: [0, 1, 2,3], // las columnas que se exportarán
         },
     },
     {
@@ -84,7 +94,7 @@ var butomns = [
         text: 'PDF <i class="far fa-file-pdf"></i>',
         className: "btn-danger pdf",
         exportOptions: {
-            columns: [0, 1, 2], // las columnas que se exportarán
+            columns: [0, 1, 2,3], // las columnas que se exportarán
         },
     },
     {
@@ -92,7 +102,7 @@ var butomns = [
         text: 'PRINT <i class="fa-solid fa-print"></i>',
         className: "btn-dark print",
         exportOptions: {
-            columns: [0, 1, 2], // las columnas que se exportarán
+            columns: [0, 1, 2,3], // las columnas que se exportarán
         },
     },
 ];
@@ -108,7 +118,7 @@ var init = function () {
         .eq(0)
         .each(function (colIdx) {
             if (colIdx == 0 || colIdx == 1
-                || colIdx == 2
+                || colIdx == 2|| colIdx == 3
             ) {
                 var cell = $(".filters th").eq(
                     $(api.column(colIdx).header()).index()
@@ -163,28 +173,32 @@ $("#tbMigrations thead tr")
     .addClass("filters")
     .appendTo("#tbMigrations thead");
 
-$(document).ready(function () {
-    var table = $("#tbMigrations").DataTable({
-        ajax: {
-            url: "migracionAll",
-            dataSrc: function (json) {
-                console.log(json); // Agrega este console.log para ver la respuesta
-                return json.data; // Asegúrate de retornar los datos correctos para DataTable
+    $(document).ready(function () {
+        var table = $("#tbMigrations").DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "migracionAll",
+                type: "GET",
+                dataSrc: function (json) {
+                    console.log(json); 
+                    return json.data;
+                },
             },
-        },
-        orderCellsTop: true,
-        fixedHeader: true,
-        columns: columns,
-        dom: "Bfrtip",
-        buttons: butomns,
-        lengthMenu: lengthmenu,
-        language: lenguag,
-        search: search,
-        initComplete: init,
-        stripeClasses: ["odd-row", "even-row"],
-        rowId: "id",
-        stripeClasses: ["odd-row", "even-row"],
-        rowId: "id",
-        scrollY: "300px",
+            orderCellsTop: true,
+            fixedHeader: true,
+            columns: columns, 
+            dom: "Bfrtip",
+            buttons: butomns, 
+       
+            language: lenguag, 
+            search: search, 
+            initComplete: init, 
+            
+            rowId: "id",
+            stripeClasses: ["odd-row", "even-row"],
+            scrollY: "300px",
+
+        });
     });
-});
+    

@@ -4,8 +4,10 @@
             <th scope=" col">#</th>
             <th scope="col">Numero</th>
 
-
+            
             <th scope="col">Comentario</th>
+            <th scope="col">Fecha</th>
+            
             <th scope="col">Archivo</th>
             
         </tr>
