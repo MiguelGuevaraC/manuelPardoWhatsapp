@@ -3,7 +3,9 @@
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\web\GroupMenuController;
+use App\Http\Controllers\web\MigrationController;
 use App\Http\Controllers\web\OptionMenuController;
+use App\Http\Controllers\web\StudentController;
 use App\Http\Controllers\web\TypeUserController;
 use App\Http\Controllers\web\UserController;
 use Illuminate\Support\Facades\Route;
@@ -67,5 +69,24 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('access/{id}', [TypeUserController::class, 'update']);
     Route::delete('access/{id}', [TypeUserController::class, 'destroy']);
     Route::post('access/setAccess', [TypeUserController::class, 'setAccess']);
+
+    //MIGRATION
+    Route::get('migracion', [MigrationController::class, 'index']);
+    Route::get('migracionAll', [MigrationController::class, 'all']);
+
+    Route::get('migracion/{id}', [MigrationController::class, 'show']);
+    Route::post('migracion', [MigrationController::class, 'store']);
+    Route::put('migracion/{id}', [MigrationController::class, 'update']);
+    Route::delete('migracion/{id}', [MigrationController::class, 'destroy']);
+
+    //STUDENTS
+    Route::get('estudiante', [StudentController::class, 'index']);
+    Route::get('estudianteAll', [StudentController::class, 'all']);
+    Route::post('importExcel', [StudentController::class, 'importExcel']);
+
+    Route::get('estudiante/{id}', [StudentController::class, 'show']);
+    Route::post('estudiante', [StudentController::class, 'store']);
+    Route::put('estudiante/{id}', [StudentController::class, 'update']);
+    Route::delete('estudiante/{id}', [StudentController::class, 'destroy']);
 
 });

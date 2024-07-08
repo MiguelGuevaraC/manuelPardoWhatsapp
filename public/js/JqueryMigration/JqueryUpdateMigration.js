@@ -1,29 +1,31 @@
 // Evento submit del formulario de edición
-$("#registroUsuarioE").submit(function (event) {
+$("#registroMigrationE").submit(function (event) {
     event.preventDefault(); // Evitar el comportamiento por defecto del formulario
 
     // Obtener los datos del formulario
     var formData = {
-        password: $("#passE").val(),
-        id: $("#idE").val(),
-        username: $("#usernameE").val(),
-        typeofUser_id: $("#typeuserE").val(),
-        _token: token,
+        name: $("#nameE").val(), // Mapear nameE a name
+        id: $("#idE").val(), // Mapear idE a id
+        _method: "PUT", // Agregar _method con valor PUT para simular PUT en Laravel
     };
 
+    // Obtener el token CSRF
     var token = $('meta[name="csrf-token"]').attr("content");
 
+    // Realizar la solicitud AJAX para actualizar el tipo de usuario
     $.ajax({
-        url: "user/" + formData.id,
-        type: "PUT",
-        data: formData,
+        url: "migracion/" + formData.id, // Ruta donde se encuentra el método para actualizar el tipo de usuario
+        type: "POST", // Método HTTP POST con _method: 'PUT' para simular PUT
+        data: formData, // Datos del formulario con los nombres esperados en el servidor
         headers: {
-            "X-CSRF-TOKEN": token,
+            "X-CSRF-TOKEN": token, // Incluir el token CSRF en el encabezado de la solicitud
         },
         success: function (response) {
-            $("#modalNuevoUsuarioE").modal("hide");
-            $("#tbUsuarios").DataTable().ajax.reload();
+            // Cerrar el modal de edición
+            $("#modalEditarMigrationE").modal("hide");
+            $("#tbMigrations").DataTable().ajax.reload();
 
+            // Mostrar notificación de éxito
             $.niftyNoty({
                 type: "purple",
                 icon: "fa fa-check",
@@ -34,6 +36,7 @@ $("#registroUsuarioE").submit(function (event) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Error al actualizar tipo de usuario:", errorThrown);
+            // Mostrar notificación de error
             $.niftyNoty({
                 type: "danger",
                 icon: "fa fa-times",

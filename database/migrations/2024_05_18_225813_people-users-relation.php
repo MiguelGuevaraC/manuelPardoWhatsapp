@@ -13,16 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('username', 255)->unique();
-            $table->string('password', 255);
-
-            $table->foreignId('typeofUser_id')->nullable()->unsigned()->constrained('type_users');
+        Schema::table('users', function (Blueprint $table) {
             $table->foreignId('person_id')->nullable()->unsigned()->constrained('people');
 
-            $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -33,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        //
     }
 };

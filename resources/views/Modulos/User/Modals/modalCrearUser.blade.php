@@ -11,7 +11,7 @@
                     @csrf
                     <div class="row">
                         <div class="cajaUsuario row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <div class="mb-3">
                                         <label for="username" class="form-label labelFormato"><strong>NOMBRE

@@ -39,7 +39,7 @@ class Access extends Model
 
     public function optionMenu()
     {
-        return $this->belongsTo(OptionMenu::class, 'optionmenu_id');
+        return $this->belongsTo(Optionmenu::class, 'optionmenu_id');
     }
 
     public function typeUser()

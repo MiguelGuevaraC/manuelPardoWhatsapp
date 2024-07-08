@@ -34,7 +34,12 @@ return new class extends Migration
             $table->string('telephone')->nullable();
             $table->string('status')->nullable();
             $table->string('state')->nullable();
-         
+
+            $table->foreignId('user_id')->nullable()->unsigned()->constrained('users');
+
+            $table->foreignId('migration_id')->nullable()->unsigned()->constrained('migration_exports');
+
+
             $table->timestamps();
             $table->softDeletes();
         });

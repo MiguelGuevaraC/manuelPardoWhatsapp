@@ -54,6 +54,10 @@ class Person extends Model
         'ocupation',
 
         'telephone',
+
+        'user_id',
+        'migration_id',
+
         'status',
         'state',
         'created_at',

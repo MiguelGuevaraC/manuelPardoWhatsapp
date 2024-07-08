@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\web;
 
+use App\Exports\PersonExport;
 use App\Http\Controllers\Controller;
+use App\Imports\PersonImport;
 use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PersonController extends Controller
 {
@@ -137,6 +140,8 @@ class PersonController extends Controller
         return response()->json($object, 200);
 
     }
+
+
 
     /**
      * Show the specified Person
