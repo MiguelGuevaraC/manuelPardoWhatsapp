@@ -9,7 +9,10 @@ use Illuminate\Validation\Rule;
 
 class GroupMenuController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->middleware('ensureTokenIsValid');
+    }
     public function index()
     {
         $userTypeId = auth()->user()->typeofUser_id;

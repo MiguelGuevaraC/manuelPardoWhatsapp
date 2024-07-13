@@ -9,6 +9,11 @@ use Illuminate\Validation\Rule;
 
 class OptionMenuController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('ensureTokenIsValid');
+    }
+    
     /**
      * Get all Option Menus
      * @OA\Get (

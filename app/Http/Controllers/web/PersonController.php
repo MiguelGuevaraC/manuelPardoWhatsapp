@@ -9,6 +9,11 @@ use Illuminate\Validation\Rule;
 
 class PersonController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('ensureTokenIsValid');
+    }
+    
     /**
      * Get all Persons
      * @OA\Get (

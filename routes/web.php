@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\InicioController;
+use App\Http\Controllers\web\CompromisoController;
 use App\Http\Controllers\web\GroupMenuController;
 use App\Http\Controllers\web\MigrationController;
 use App\Http\Controllers\web\OptionMenuController;
@@ -29,6 +30,12 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::middleware(['ensureTokenIsValid'])->group(function () {
+    return view('auth.login');
+});
+
+
 
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
@@ -88,5 +95,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('estudiante', [StudentController::class, 'store']);
     Route::put('estudiante/{id}', [StudentController::class, 'update']);
     Route::delete('estudiante/{id}', [StudentController::class, 'destroy']);
+
+    //MIGRATION
+    Route::get('compromiso', [CompromisoController::class, 'index']);
+    Route::get('compromisoAll', [CompromisoController::class, 'all']);
+
+    Route::get('compromiso/{id}', [CompromisoController::class, 'show']);
+    Route::post('compromiso', [CompromisoController::class, 'store']);
+    Route::put('compromiso/{id}', [CompromisoController::class, 'update']);
+    Route::delete('compromiso/{id}', [CompromisoController::class, 'destroy']);
 
 });

@@ -11,6 +11,11 @@ use Illuminate\Validation\Rule;
 
 class TypeUserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('ensureTokenIsValid');
+    }
+    
     /**
      * Get all TypeUsers
      * @OA\Get (

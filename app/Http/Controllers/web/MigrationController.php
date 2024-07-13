@@ -10,9 +10,13 @@ use Illuminate\Support\Facades\Auth;
 
 class MigrationController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->middleware('ensureTokenIsValid');
+    }
     public function index(Request $request)
     {
+
         $user = Auth::user();
         $typeUser = $user->typeUser;
 

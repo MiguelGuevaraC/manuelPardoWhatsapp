@@ -25,7 +25,8 @@ class AuthController extends Controller
         }
 
         $user = User::where("username", $request->username)->first();
-
+        $token = $user->createToken('Token Name')->plainTextToken;
+        
         if (!$user) {
             return view('auth.login');
         }

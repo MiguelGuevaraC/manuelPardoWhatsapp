@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('ensureTokenIsValid');
+    }
+
     /**
      * Get all Group menus
      * @OA\Get (
@@ -119,7 +124,7 @@ class UserController extends Controller
         }
 
         $hashedPassword = Hash::make($request->password);
-       
+
         $data = [
             'username' => $request->username,
             'password' => $hashedPassword,

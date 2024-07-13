@@ -4,6 +4,7 @@ namespace App\Http\Controllers\web;
 
 use App\Exports\PersonExport;
 use App\Http\Controllers\Controller;
+use App\Imports\CompromisoImport;
 use App\Imports\PersonImport;
 use App\Models\GroupMenu;
 use App\Models\MigrationExport;
@@ -18,6 +19,11 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('ensureTokenIsValid');
+    }
+    
     public function index(Request $request)
     {
         $user = Auth::user();
@@ -156,6 +162,7 @@ class StudentController extends Controller
 
             // Cargar el archivo Excel sin almacenarlo temporalmente
             Excel::import(new PersonImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLSX);
+            Excel::import(new CompromisoImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLSX);
 
             // Redireccionar con mensaje de éxito
             return redirect()->back()->with('success', 'Datos importados correctamente.');
