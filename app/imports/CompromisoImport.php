@@ -4,8 +4,7 @@ namespace App\Imports;
 
 use App\Models\Compromiso;
 use App\Models\Person;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class CompromisoImport implements ToModel
@@ -18,28 +17,38 @@ class CompromisoImport implements ToModel
     public function model(array $row)
     {
 
-        $person = Person::where('documentNumber', $row[1])->first();
-     
-        $excelDateNumber = $row[13];
-        $excelBaseDate = strtotime('1899-12-30');
-        $fecha = date('Y-m-d', $excelBaseDate + ($excelDateNumber - 1) * 86400);
-        if ($person) {
-            try {
-                $compromiso = Compromiso::updateOrCreate([
-                    'cuotaNumber' => $row[11],
-                    'paymentAmount' => $row[12],
-                    'expirationDate' => $fecha,
-                    'conceptDebt' => $row[14],
-                    'status' => $row[15],
-                    'student_id' => $person->id,
-                ]);
+        
+        $user = Auth::user();
+        $student = Person::where('documentNumber', $row[1])->first();
 
-            } catch (\Exception $e) {
-                Log::error($e->getMessage());
-            }
+        if ($student) {
+            // Desactivar todos los compromisos actuales del estudiante
 
+            // Crear o actualizar el compromiso para este estudiante
+            $compromiso = Compromiso::updateOrCreate([
+                'student_id' => $student->id,
+                'cuotaNumber' => $row[11],
+            ], [
+                'cuotaNumber' => $row[11],
+                'paymentAmount' => $row[12],
+                'expirationDate' => $this->parseExcelDate($row[13]), // Suponiendo que tienes una función para parsear la fecha
+                'conceptDebt' => $row[14],
+                'status' => $row[15],
+                'state' => 1, // Asegurar que siempre se establezca el estado como activo (1)
+            ]);
+        }else{
+            
         }
 
-        return $compromiso;
+        return $compromiso ?? null; // Devolver el compromiso creado o actualizado
     }
+
+    // Función para parsear la fecha de Excel
+    private function parseExcelDate($excelDate)
+    {
+        $excelBaseDate = strtotime('1899-12-30');
+        $fecha = date('Y-m-d', $excelBaseDate + ($excelDate - 1) * 86400);
+        return $fecha;
+    }
+
 }

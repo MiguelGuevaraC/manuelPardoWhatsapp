@@ -27,6 +27,6 @@ class Compromiso extends Model
      */
     public function student()
     {
-        return $this->belongsTo(Person::class, 'student_id');
+        return $this->belongsTo(Person::class);
     }
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Access;
 use App\Models\GroupMenu;
+use App\Models\Optionmenu;
 use App\Models\TypeUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +17,7 @@ class TypeUserController extends Controller
     {
         $this->middleware('ensureTokenIsValid');
     }
-    
+
     /**
      * Get all TypeUsers
      * @OA\Get (
@@ -51,14 +53,13 @@ class TypeUserController extends Controller
         $groupMenu = GroupMenu::getFilteredGroupMenusSuperior($user->typeofUser_id);
         $groupMenuLeft = GroupMenu::getFilteredGroupMenus($user->typeofUser_id);
 
-
         return view('Modulos.Roles.index', compact('user', 'groupMenu', 'groupMenuLeft'));
     }
 
     public function all()
     {
 
-        $typeUsers = TypeUser::whereNotIn('id',[1,2])->simplePaginate(15);
+        $typeUsers = TypeUser::where('state', 1)->whereNotIn('id', [1, 2])->simplePaginate(15);
         $typeUsers->getCollection()->transform(function ($typeUser) {
             $typeUser->optionMenuAccess = $typeUser->getAccess($typeUser->id);
             return $typeUser;
@@ -114,16 +115,39 @@ class TypeUserController extends Controller
 
     public function show(int $id)
     {
+        $typeUser = TypeUser::find($id);
 
-        $object = TypeUser::find($id);
-        if ($object) {
-            $object->optionMenuAccess = $object->getAccess($id);
-            return response()->json($object, 200);
+        if (!$typeUser) {
+            return response()->json(['message' => 'TypeUser not found'], 404);
         }
-        return response()->json(
-            ['message' => 'TypeUser not found'], 404
-        );
 
+        $accesses = Access::with('optionMenu')
+            ->where('typeuser_id', $id)->orderBy('id', 'desc')
+            ->get()
+            ->pluck('optionMenu')
+            ->map(function ($option) {
+                return [
+                    'id' => $option->id,
+                    'name' => $option->name,
+                    'route' => $option->route,
+                    'checked' => true, // Marcar como seleccionado
+                ];
+            });
+
+        $allAccesses = Optionmenu::whereNotIn('id', $accesses->pluck('id')->toArray())->orderBy('id', 'desc')
+            ->get()
+            ->map(function ($option) {
+                return [
+                    'id' => $option->id,
+                    'name' => $option->name,
+                    'route' => $option->route,
+                    'checked' => false, // Marcar como no seleccionado
+                ];
+            });
+
+        $combinedAccesses = $accesses->merge($allAccesses);
+
+        return response()->json(['data' => $combinedAccesses, 'name' => $typeUser->name], 200);
     }
 
     /**
@@ -421,7 +445,7 @@ class TypeUserController extends Controller
                 ['message' => 'TypeUser has Access associated'], 409
             );
         }
-        $object->delete();
-
+        $object->state = 0;
+        $object->save();
     }
 }

@@ -68,5 +68,8 @@ class Person extends Model
         'updated_at',
         'deleted_at',
     ];
-
+    public function cominments()
+    {
+        return $this->hasMany(Compromiso::class, 'student_id');
+    }
 }

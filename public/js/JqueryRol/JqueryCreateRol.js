@@ -49,21 +49,23 @@ function setAccesos(id, nombre) {
     $("#modalConfigurarAccesos").modal("show");
     $("#typeUser_id").val(id);
     $("#nombreRol").val(nombre);
+    $("#nameE").val(nombre);
+
     $("#accesosContainer").empty();
 
     // Realizar la solicitud AJAX para obtener los accesos
     $.ajax({
-        url: "options",
+        url: "access/" + id, // Ajustar la URL para obtener los accesos por tipo de usuario
         type: "GET",
         dataType: "json",
         success: function (response) {
-            // Limpiar el contenedor de accesos
             $("#accesosContainer").empty();
             response.data.forEach(function (acceso) {
+                var checked = acceso.checked ? 'checked' : '';
                 var checkbox = `
                     <div class="col-md-4">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="acceso_${acceso.id}" name="accesses[]" value="${acceso.id}">
+                            <input type="checkbox" class="custom-control-input" id="acceso_${acceso.id}" name="accesses[]" value="${acceso.id}" ${checked}>
                             <label class="custom-control-label" for="acceso_${acceso.id}">
                                 ${acceso.name} (${acceso.route})
                             </label>
@@ -77,6 +79,7 @@ function setAccesos(id, nombre) {
         },
     });
 }
+
 
 $(document).ready(function () {
     $("#formularioAccesos").submit(function (event) {

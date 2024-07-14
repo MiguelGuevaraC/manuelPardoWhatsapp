@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class InicioController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('ensureTokenIsValid');
+    }
+    
     public function index()
     {
         $user = Auth::user();

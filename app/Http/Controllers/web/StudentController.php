@@ -6,6 +6,7 @@ use App\Exports\PersonExport;
 use App\Http\Controllers\Controller;
 use App\Imports\CompromisoImport;
 use App\Imports\PersonImport;
+use App\Models\Compromiso;
 use App\Models\GroupMenu;
 use App\Models\MigrationExport;
 use App\Models\Person;
@@ -162,6 +163,7 @@ class StudentController extends Controller
 
             // Cargar el archivo Excel sin almacenarlo temporalmente
             Excel::import(new PersonImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLSX);
+            Compromiso::where('state', 1)->update(['state' => 0]);
             Excel::import(new CompromisoImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLSX);
 
             // Redireccionar con mensaje de éxito

@@ -1,12 +1,12 @@
 // $(document).ready(function () {
-//     $("#registroCompromiso").submit(function (event) {
+//     $("#registroMensajeria").submit(function (event) {
 //         event.preventDefault(); // Evita que el formulario se envíe por el método tradicional
 
 //         var token = $('meta[name="csrf-token"]').attr("content");
 //         var name = $("#name").val();
 
 //         $.ajax({
-//             url: "compromiso",
+//             url: "Mensajeria",
 //             type: "POST",
 //             data: {
 //                 name: name,
@@ -45,7 +45,7 @@
 // });
 
 $(document).ready(function () {
-    $("#registroCompromiso").on("submit", function (e) {
+    $("#registroMensajeria").on("submit", function (e) {
         e.preventDefault();
 
         let formData = new FormData(this);
@@ -77,8 +77,8 @@ $(document).ready(function () {
                     success: function (response) {
                         console.log(response);
                         // Aquí puedes manejar la respuesta del servidor
-                        $("#modalNuevoCompromiso").modal("hide");
-                        $("#tbCompromisos").DataTable().ajax.reload();
+                        $("#modalNuevoMensajeria").modal("hide");
+                        $("#tbMensajerias").DataTable().ajax.reload();
                     },
                     error: function (xhr, status, error) {},
                     headers: {
@@ -94,12 +94,12 @@ $(document).ready(function () {
 });
 
 $("#btonNuevo").click(function (e) {
-    $("#registroCompromiso")[0].reset();
-    $("#modalNuevoCompromiso").modal("show");
+    $("#registroMensajeria")[0].reset();
+    $("#modalNuevoMensajeria").modal("show");
 });
 
 $(document).on("click", "#cerrarModal", function () {
-    $("#modalNuevoCompromiso").modal("hide");
+    $("#modalNuevoMensajeria").modal("hide");
 });
 
 $(document).ready(function () {
@@ -270,13 +270,13 @@ $("#btonCarrito").click(function () {
     // Limpiar la tabla de carrito antes de agregar nuevos elementos
     $("#tbCarrito").DataTable().clear().draw();
 
-    // Iterar sobre los checkboxes marcados en la tabla de compromisos
-    $("#tbCompromisos input.checkCominments:checked").each(function () {
+    // Iterar sobre los checkboxes marcados en la tabla de Mensajerias
+    $("#tbMensajerias input.checkCominments:checked").each(function () {
         // Obtener la fila padre del checkbox marcado
         var row = $(this).closest("tr");
 
-        // Obtener los datos de la fila de compromisos
-        var rowData = $("#tbCompromisos").DataTable().row(row).data();
+        // Obtener los datos de la fila de Mensajerias
+        var rowData = $("#tbMensajerias").DataTable().row(row).data();
 
         // Agregar los datos a la tabla de carrito
         $("#tbCarrito").DataTable().row.add(rowData).draw();
@@ -296,13 +296,13 @@ $(document).ready(function () {
                 dangerMode: true,
             }).then((willSend) => {
                 if (willSend) {
-                    // Aquí puedes poner la lógica para enviar los compromisos
+                    // Aquí puedes poner la lógica para enviar los Mensajerias
                     // Ejemplo: llamar a una función para enviar los datos por WhatsApp
-                    enviarCompromisos();
+                    enviarMensajerias();
                     $("#modalCarrito").modal("hide");
                     swal(
                         "¡Enviado!",
-                        "Los compromisos han sido enviados.",
+                        "Los Mensajerias han sido enviados.",
                         "success"
                     );
                     // Desmarcar todos los checkboxes
@@ -311,46 +311,19 @@ $(document).ready(function () {
                 } else {
                     swal(
                         "Envío cancelado",
-                        "Los compromisos no fueron enviados.",
+                        "Los Mensajerias no fueron enviados.",
                         "error"
                     );
                 }
             });
         } else {
-            swal("No hay compromisos", "No se encontraron compromisos en la lista.", "warning");
+            swal("No hay Mensajerias", "No se encontraron Mensajerias en la lista.", "warning");
         }
     });
 });
 
 
-function enviarCompromisos() {
+function enviarMensajerias() {
 
-    var arracompormisos = [];
-
-    // Obtener los datos de cada fila seleccionada
-    $('#tbCompromisos tbody input.checkCominments:checked').each(function () {
-        var id = $(this).val(); // ID del compromiso
-        arracompormisos.push({ id: id });
-    });
-
-    // Hacer la solicitud AJAX
-    $.ajax({
-        url: 'mensajeria',
-        type: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        data: {
-            arrayCompromisos: arracompormisos
-        },
-        success: function (response) {
-            console.log(response);
-            alert('Mensajes enviados correctamente.');
-            // Aquí puedes hacer algo adicional después de enviar los mensajes, si es necesario
-        },
-        error: function (xhr, status, error) {
-            console.error(xhr.responseText);
-            alert('Hubo un error al enviar los mensajes.');
-        }
-    });
+    
 }

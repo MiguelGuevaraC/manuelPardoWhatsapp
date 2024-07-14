@@ -1,79 +1,26 @@
 //DATATABLE
 
 var columns = [
-    {
-        data: "id",
-        visible: false, // Oculta esta columna
-    },
-    {
-        data: "id",
-        render: function (data, type, row, meta) {
-            return (
-                '<input type="checkbox" checked="true" class="checkCominments" style="width: 20px; height: 20px;" value="' +
-                data +
-                '">'
-            );
-        },
-        orderable: false,
-    },
 
-    {
-        data: "cuotaNumber",
-        render: function (data, type, row, meta) {
-            return data;
-        },
-        orderable: false,
-    },
 
-    {
-        data: "student.names",
-        render: function (data, type, row, meta) {
-            if (row.student.typeofDocument === "DNI") {
-                return `${row.student.documentNumber} | ${row.student.names} ${row.student.fatherSurname} ${row.student.motherSurname}`;
-            } else if (row.student.typeofDocument === "RUC") {
-                return `${row.student.documentNumber} | ${row.student.businessName}`;
-            }
-        },
-        orderable: false,
-    },
+
+    { data: "student.level" },
+    { data: "student.level" },
+    
+    { data: "student.level" },
+    { data: "student.level" },
+    
+    { data: "student.level" },
+    { data: "student.level" },
+    
+    { data: "student.level" },
+    { data: "student.level" },
+    
     { data: "student.level" },
 
-    {
-        data: "student.grade",
-        render: function (data, type, row, meta) {
-            return row.student.grade + " " + row.student.section;
-        },
-        orderable: false,
-    },
-
-    {
-        data: "paymentAmount",
-        render: function (data, type, row, meta) {
-            return data;
-        },
-        orderable: false,
-    },
-    {
-        data: "expirationDate",
-        render: function (data, type, row, meta) {
-            return data;
-        },
-        orderable: false,
-    },
-    {
-        data: "conceptDebt",
-        render: function (data, type, row, meta) {
-            return data;
-        },
-        orderable: false,
-    },
-    {
-        data: "status",
-        render: function (data, type, row, meta) {
-            return data;
-        },
-        orderable: false,
-    },
+    
+    { data: "student.level" },
+    { data: "student.level" },
 ];
 
 var lenguag = {
@@ -136,8 +83,6 @@ var search = {
     type: "html-case-insensitive",
 };
 var init = function () {
-  
-
     var api = this.api();
 
     // Agregar checkbox en el encabezado de la primera columna
@@ -164,14 +109,18 @@ var init = function () {
 
             // Configurar filtro para columnas específicas
             if (
-                colIdx == 8 ||
+                colIdx == 0 ||
                 colIdx == 1 ||
                 colIdx == 2 ||
                 colIdx == 3 ||
                 colIdx == 5 ||
                 colIdx == 4 ||
                 colIdx == 6 ||
-                colIdx == 7
+                colIdx == 7  ||
+                colIdx == 8||
+                colIdx == 9||
+                colIdx == 10||
+                colIdx == 11
             ) {
                 var cell = $(".filters th").eq(header.index());
                 var title = header.text();
@@ -214,25 +163,25 @@ var init = function () {
         });
 };
 
-$("#tbCompromisos thead tr")
+$("#tbMensajerias thead tr")
     .clone(true)
     .addClass("filters")
-    .appendTo("#tbCompromisos thead");
+    .appendTo("#tbMensajerias thead");
 
-$("#tbCompromisos .filters input").on("keyup change", function () {
+$("#tbMensajerias .filters input").on("keyup change", function () {
     table.ajax.reload();
 });
 
 $(document).ready(function () {
-    var table = $("#tbCompromisos").DataTable({
+    var table = $("#tbMensajerias").DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: "compromisoAll",
+            url: "mensajeriaAll",
             type: "GET",
             data: function (d) {
                 // Aquí configuramos los filtros de búsqueda por columna
-                $('#tbCompromisos .filters input').each(function () {
+                $('#tbMensajerias .filters input').each(function () {
                     var name = $(this).attr('name');
                     d.columns.forEach(function (column) {
                         if (column.data === name) {

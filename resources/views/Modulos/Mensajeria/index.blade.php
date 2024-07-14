@@ -24,7 +24,7 @@
     <?php
     $vista = 'Estudiantes';
     $categoriaActual = 'Movimientos';
-    $OpcionActual = 'Compromiso';
+    $OpcionActual = 'Mensajeria';
     
     ?>
 
@@ -204,23 +204,10 @@
 
                     <div class="panel">
 
-                        <div id="demo-custom-toolbar2" class="table-toolbar-left ">
 
-                            <button id="btonNuevo" style="margin: 12px" class="btn btn-danger"><i
-                                    class="demo-pli-plus"></i>
-                                Añadir</button>
-                          
-                        </div>  
-                        <div id="demo-custom-toolbar2" class="table-toolbar-right ">
-
-                            <button id="btonCarrito" style="margin: 12px" class="btn btn-success"><i
-                                    class="demo-pli-plus"></i>
-                                Enviar Whatapp </button>
-                        </div>
-                    
 
                         <div class="panel-body">
-                            @include('Modulos.Compromiso.Tables.tablaCompromiso')
+                            @include('Modulos.Mensajeria.Tables.tablaMensajeria')
                         </div>
                     </div>
 
@@ -395,11 +382,10 @@
 
 
     <!-- MODALES -->
-    <div>@include('Modulos.Compromiso.Modals.modalEditarCompromiso')</div>
+    <div>@include('Modulos.Mensajeria.Modals.modalEditarMensajeria')</div>
 
-    <div>@include('Modulos.Compromiso.Modals.modalCrearCompromiso')</div>
+    <div>@include('Modulos.Mensajeria.Modals.modalCrearMensajeria')</div>
 
-    <div>@include('Modulos.Compromiso.Modals.modalCarrito')</div>
 
     <!--===================================================-->
     <!-- END OF CONTAINER -->
@@ -460,14 +446,14 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
     <!--Modals [ SAMPLE ]-->
-    <script src="{{ asset('js/JqueryCompromiso/JqueryIndexCompromiso.js') }}"></script>
-    <script src="{{ asset('js/JqueryCompromiso/JqueryDestroyCompromiso.js') }}"></script>
-    <script src="{{ asset('js/JqueryCompromiso/JqueryCreateCompromiso.js') }}"></script>
-    <script src="{{ asset('js/JqueryCompromiso/JqueryEditCompromiso.js') }}"></script>
-    <script src="{{ asset('js/JqueryCompromiso/JqueryUpdateCompromiso.js') }}"></script>
+    <script src="{{ asset('js/JqueryMensajeria/JqueryIndexMensajeria.js') }}"></script>
+    <script src="{{ asset('js/JqueryMensajeria/JqueryDestroyMensajeria.js') }}"></script>
+    <script src="{{ asset('js/JqueryMensajeria/JqueryCreateMensajeria.js') }}"></script>
+    <script src="{{ asset('js/JqueryMensajeria/JqueryEditMensajeria.js') }}"></script>
+    <script src="{{ asset('js/JqueryMensajeria/JqueryUpdateMensajeria.js') }}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-  
+
 
 </body>
 

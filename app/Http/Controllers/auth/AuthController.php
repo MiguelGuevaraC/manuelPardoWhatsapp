@@ -37,6 +37,7 @@ class AuthController extends Controller
             $user = User::with(['typeUser'])->find($user->id);
             $typeUser = $user->typeUser;
             $groupMenu = GroupMenu::getFilteredGroupMenus($typeUser->id);
+            
             return redirect()->route('vistaInicio')->with('token', $token);
         } else {
             return view('auth.login');

@@ -23,6 +23,7 @@ class TypeUser extends Model
 
     protected $fillable = [
         'name',
+        'state',
     ];
 
     protected $hidden = [

@@ -9,6 +9,9 @@
     display: none;
     margin-left: 20px;
 }
+input{
+    color:black
+}
 
 .parent-checkbox:checked + .children-checkboxes {
     display: block;

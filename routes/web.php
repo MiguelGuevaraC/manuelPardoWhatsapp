@@ -9,6 +9,7 @@ use App\Http\Controllers\web\OptionMenuController;
 use App\Http\Controllers\web\StudentController;
 use App\Http\Controllers\web\TypeUserController;
 use App\Http\Controllers\web\UserController;
+use App\Http\Controllers\web\WhatsappSendController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -104,5 +105,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('compromiso', [CompromisoController::class, 'store']);
     Route::put('compromiso/{id}', [CompromisoController::class, 'update']);
     Route::delete('compromiso/{id}', [CompromisoController::class, 'destroy']);
+
+    //MIGRATION
+        Route::get('mensajeria', [WhatsappSendController::class, 'index']);
+        Route::get('mensajeriaAll', [WhatsappSendController::class, 'all']);
+    
+        Route::get('mensajeria/{id}', [WhatsappSendController::class, 'show']);
+        Route::post('mensajeria', [WhatsappSendController::class, 'store']);
+        Route::put('mensajeria/{id}', [WhatsappSendController::class, 'update']);
+        Route::delete('mensajeria/{id}', [WhatsappSendController::class, 'destroy']);
 
 });

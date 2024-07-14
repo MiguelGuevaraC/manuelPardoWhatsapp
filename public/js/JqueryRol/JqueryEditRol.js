@@ -3,7 +3,7 @@ function editRol(id) {
     $("#registroRolE")[0].reset();
 
    
-    $("#modalEditarRolE").modal("show");
+   
 
     $.ajax({
         url: "access/" + id,
@@ -11,7 +11,8 @@ function editRol(id) {
         dataType: "json",
         success: function (data) {
             $("#nameE").val(data.name);
-            $("#idE").val(data.id);
+            $("#idE").val(id);
+            $("#modalEditarRolE").modal("show");
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(
