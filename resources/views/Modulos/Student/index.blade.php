@@ -24,7 +24,7 @@
     <?php
     $vista = 'Estudiantes';
     $categoriaActual = 'Movimientos';
-    $OpcionActual = 'student';
+    $OpcionActual = 'estudiante';
     
     ?>
 

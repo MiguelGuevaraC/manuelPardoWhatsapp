@@ -165,13 +165,14 @@ var init = function () {
             // Configurar filtro para columnas específicas
             if (
                 colIdx == 8 ||
-                colIdx == 1 ||
+    
                 colIdx == 2 ||
                 colIdx == 3 ||
                 colIdx == 5 ||
                 colIdx == 4 ||
                 colIdx == 6 ||
-                colIdx == 7
+                colIdx == 7||
+                colIdx == 9
             ) {
                 var cell = $(".filters th").eq(header.index());
                 var title = header.text();

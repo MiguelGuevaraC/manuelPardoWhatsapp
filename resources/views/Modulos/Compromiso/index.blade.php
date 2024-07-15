@@ -22,9 +22,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <?php
-    $vista = 'Estudiantes';
+    $vista = 'Compromisos';
     $categoriaActual = 'Movimientos';
-    $OpcionActual = 'Compromiso';
+    $OpcionActual = 'compromiso';
     
     ?>
 

@@ -22,9 +22,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <?php
-    $vista = 'Access';
-    $categoriaActual = 'access';
-    $OpcionActual = 'access';
+    $vista = 'Usuarios';
+    $categoriaActual = 'Seguridad';
+    $OpcionActual = 'user';
     
     ?>
 

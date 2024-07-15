@@ -22,8 +22,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <?php
-    $vista = 'Access';
-    $categoriaActual = 'access';
+    $vista = 'Gestionar Acceso';
+    $categoriaActual = 'Seguridad';
     $OpcionActual = 'access';
     
     ?>

@@ -7,6 +7,7 @@ use App\Models\Compromiso;
 use App\Models\GroupMenu;
 use App\Models\Person;
 use App\Models\WhatsappSend;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -46,7 +47,7 @@ class WhatsappSendController extends Controller
         $length = $request->get('length', 15);
         $filters = $request->input('filters', []);
 
-        $query = WhatsappSend::with(['user', 'conminmnet', 'student'])->whereHas('student', function ($query) {
+        $query = WhatsappSend::with(['user', 'user.person', 'conminmnet', 'student'])->whereHas('student', function ($query) {
             $query->where('user_id', Auth::user()->id);
         })
             ->where('state', 1);
@@ -66,36 +67,65 @@ class WhatsappSendController extends Controller
                             });
                         });
                         break;
-                    case 'cuotaNumber':
-                        $query->where('cuotaNumber', $searchValue);
+                    case 'student.representativeDni':
+                        $query->whereHas('student', function ($query) use ($searchValue) {
+                            $query->where(function ($query) use ($searchValue) {
+                                $query->where('representativeDni', 'like', '%' . $searchValue . '%')
+                                    ->orWhere('representativeNames', 'like', '%' . $searchValue . '%');
+                            });
+                        });
+                        break;
+                    case 'student.telephone':
+                        $query->whereHas('student', function ($query) use ($searchValue) {
+                            $query->where(function ($query) use ($searchValue) {
+                                $query->where('telephone', 'like', '%' . $searchValue . '%');
+                            });
+                        });
+                        break;
+                    case 'conminmnet.cuotaNumber':
+                        $query->whereHas('conminmnet', function ($query) use ($searchValue) {
+                            $query->where('cuotaNumber', 'like', '%' . $searchValue . '%');
+                        });
                         break;
                     case 'student.level':
                         $query->whereHas('student', function ($query) use ($searchValue) {
-                            $query->where('level', 'like', '%' . $searchValue . '%');
-                        });
-                        break;
-                    case 'student.grade':
-                        $query->whereHas('student', function ($query) use ($searchValue) {
                             $query->where('grade', 'like', '%' . $searchValue . '%')
-                                ->orWhere('section', 'like', '%' . $searchValue . '%');
+                                ->orWhere('section', 'like', '%' . $searchValue . '%')
+                                ->orWhere('level', 'like', '%' . $searchValue . '%');
                         });
                         break;
-                    case 'paymentAmount':
-                        $searchValue1 = (float) $searchValue;
+                    case 'conminmnet.paymentAmount':
+                        $query->whereHas('conminmnet', function ($query) use ($searchValue) {
+                            $query->where('paymentAmount', 'like', '%' . $searchValue . '%');
+                        });
+                        break;
+                    case 'conminmnet.expirationDate':
+                        $query->whereHas('conminmnet', function ($query) use ($searchValue) {
+                            $query->where('expirationDate', 'like', '%' . $searchValue . '%');
+                        });
+                        break;
+                    case 'conminmnet.conceptDebt':
+                        $query->whereHas('conminmnet', function ($query) use ($searchValue) {
+                            $query->where('conceptDebt', 'like', '%' . $searchValue . '%');
+                        });
+                        break;
+                    case 'conminmnet.created_at':
+                        $query->whereHas('conminmnet', function ($query) use ($searchValue) {
+                            // Convertimos el searchValue a formato de fecha compatible con la base de datos
+                            try {
+                                $date = Carbon::createFromFormat('d-m-Y H:i:s', $searchValue);
+                                $searchValue = $date->format('Y-m-d H:i:s');
+                            } catch (\Exception $e) {
+                                // Si el formato no es válido, no aplicamos ningún filtro
+                                $searchValue = null;
+                            }
 
-                        $query->where('paymentAmount', 'like', '%' . $searchValue . '%');
+                            if ($searchValue) {
+                                $query->where('created_at', 'like', '%' . $searchValue . '%');
+                            }
+                        });
+                        break;
 
-                        break;
-                    case 'expirationDate':
-
-                        $query->where('expirationDate', 'like', '%' . $searchValue . '%');
-                        break;
-                    case 'conceptDebt':
-                        $query->where('conceptDebt', 'like', '%' . $searchValue . '%');
-                        break;
-                    case 'status':
-                        $query->where('status', $searchValue, 'like', '%' . $searchValue . '%');
-                        break;
                 }
             }
         }
@@ -106,6 +136,8 @@ class WhatsappSendController extends Controller
             ->skip($start)
             ->take($length)
             ->get();
+
+        //  dd(json_decode($list));
 
         return response()->json([
             'draw' => $draw,
@@ -154,7 +186,7 @@ class WhatsappSendController extends Controller
 
                 'student_id' => $student->id,
                 'user_id' => $user->id,
-                'comminment_id' => $compromisoBD->comminment_id,
+                'comminment_id' => $compromisoBD->id,
 
             ];
             WhatsappSend::create($data);

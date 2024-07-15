@@ -345,12 +345,12 @@ function enviarCompromisos() {
         },
         success: function (response) {
             console.log(response);
-            alert('Mensajes enviados correctamente.');
+            
             // Aquí puedes hacer algo adicional después de enviar los mensajes, si es necesario
         },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);
-            alert('Hubo un error al enviar los mensajes.');
+            
         }
     });
 }

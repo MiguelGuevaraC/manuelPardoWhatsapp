@@ -1,26 +1,80 @@
 //DATATABLE
 
 var columns = [
+    { data: "conminmnet.cuotaNumber" },
+    // {
+    //     data: "user.person.names",
+    //     render: function (data, type, row, meta) {
+    //         if (row.user.person.typeofDocument === "DNI") {
+    //             return `${row.user.person.documentNumber} | ${row.user.person.names} ${row.user.person.fatherSurname} ${row.user.person.motherSurname}`;
+    //         } else if (row.user.person.typeofDocument === "RUC") {
+    //             return `${row.user.person.documentNumber} | ${row.user.person.businessName}`;
+    //         }
+    //     },
+    //     orderable: false,
+    // },
+    {
+        data: "student.names",
+        render: function (data, type, row, meta) {
+            if (row.student.typeofDocument === "DNI") {
+                return `${row.student.documentNumber} | ${row.student.names} ${row.student.fatherSurname} ${row.student.motherSurname}`;
+            } else if (row.student.typeofDocument === "RUC") {
+                return `${row.student.documentNumber} | ${row.student.businessName}`;
+            }
+        },
+        orderable: true,
+    },
+    {
+        data: "student.representativeDni",
+        render: function (data, type, row, meta) {
+            return `${row.student.representativeDni} | ${row.student.representativeNames}`;
+        },
+        orderable: false,
+    },
 
+    {
+        data: "student.level",
+        render: function (data, type, row, meta) {
+            return `${row.student.level} ${row.student.grade} ${row.student.section}`;
+        },
+        orderable: false,
+    },
+    {
+        data: "student.telephone",
+        render: function (data, type, row, meta) {
+            return data;
+        },
+        orderable: false,
+    },
 
+    {
+        data: "conminmnet.conceptDebt",
+        render: function (data, type, row, meta) {
+            return data;
+        },
+        orderable: false,
+    },
 
-    { data: "student.level" },
-    { data: "student.level" },
-    
-    { data: "student.level" },
-    { data: "student.level" },
-    
-    { data: "student.level" },
-    { data: "student.level" },
-    
-    { data: "student.level" },
-    { data: "student.level" },
-    
-    { data: "student.level" },
+    { data: "conminmnet.paymentAmount" },
 
-    
-    { data: "student.level" },
-    { data: "student.level" },
+    { data: "conminmnet.expirationDate", orderable: true },
+    {
+        data: "created_at",
+        render: function (data, type, row, meta) {
+            if (!data) return "";
+
+            const date = new Date(data);
+            const day = ("0" + date.getDate()).slice(-2);
+            const month = ("0" + (date.getMonth() + 1)).slice(-2);
+            const year = date.getFullYear();
+            const hours = ("0" + date.getHours()).slice(-2);
+            const minutes = ("0" + date.getMinutes()).slice(-2);
+            const seconds = ("0" + date.getSeconds()).slice(-2);
+
+            return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+        },
+        orderable: true,
+    },
 ];
 
 var lenguag = {
@@ -116,10 +170,10 @@ var init = function () {
                 colIdx == 5 ||
                 colIdx == 4 ||
                 colIdx == 6 ||
-                colIdx == 7  ||
-                colIdx == 8||
-                colIdx == 9||
-                colIdx == 10||
+                colIdx == 7 ||
+                colIdx == 8 ||
+                colIdx == 9 ||
+                colIdx == 10 ||
                 colIdx == 11
             ) {
                 var cell = $(".filters th").eq(header.index());
@@ -181,8 +235,8 @@ $(document).ready(function () {
             type: "GET",
             data: function (d) {
                 // Aquí configuramos los filtros de búsqueda por columna
-                $('#tbMensajerias .filters input').each(function () {
-                    var name = $(this).attr('name');
+                $("#tbMensajerias .filters input").each(function () {
+                    var name = $(this).attr("name");
                     d.columns.forEach(function (column) {
                         if (column.data === name) {
                             column.search.value = $(this).val();
@@ -190,9 +244,9 @@ $(document).ready(function () {
                     }, this);
                 });
             },
-            debounce: 500 
+            debounce: 500,
         },
-        
+
         orderCellsTop: true,
         fixedHeader: true,
         columns: columns,
@@ -207,8 +261,5 @@ $(document).ready(function () {
         stripeClasses: ["odd-row", "even-row"],
         scrollY: "300px",
         scrollX: true, // Habilitar desplazamiento horizontal si es necesario
-        autoWidth: false,
-        
     });
- 
 });
