@@ -203,10 +203,22 @@ class StudentController extends Controller
                 'user_id' => Auth::user()->id,
             ];
 
-            MigrationExport::create($dataMigration);
+            if ($excelFile) {
 
-            // Cargar el archivo Excel sin almacenarlo temporalmente
-            Excel::import(new PersonImport(), $excelFile);
+                $extension = $excelFile->getClientOriginalExtension();
+
+                if ($extension === 'xls') {
+                    Excel::import(new PersonImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLS);
+                } elseif ($extension === 'xlsx') {
+                    Excel::import(new PersonImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLSX);
+                } else {
+                    return redirect()->back()->with('error', 'Formato de archivo no soportado.');
+                }
+    
+                return redirect()->back()->with('success', 'Datos importados correctamente.');
+            }
+
+ MigrationExport::create($dataMigration);
 
 
             // Redireccionar con mensaje de éxito

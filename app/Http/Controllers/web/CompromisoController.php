@@ -247,10 +247,24 @@ class CompromisoController extends Controller
                 'user_id' => Auth::user()->id,
             ];
 
-            MigrationExport::create($dataMigration);
+           
 
-            Excel::import(new CompromisoImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLS);
+            if ($excelFile) {
 
+                $extension = $excelFile->getClientOriginalExtension();
+
+                if ($extension === 'xls') {
+                    Excel::import(new CompromisoImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLS);
+                } elseif ($extension === 'xlsx') {
+                    Excel::import(new CompromisoImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLSX);
+                } else {
+                    return redirect()->back()->with('error', 'Formato de archivo no soportado.');
+                }
+    
+                return redirect()->back()->with('success', 'Datos importados correctamente.');
+            }
+
+ MigrationExport::create($dataMigration);
             return redirect()->back()->with('success', 'Datos importados correctamente.');
         } catch (\Exception $e) {
             // Capturar cualquier excepción y redirigir con mensaje de error
