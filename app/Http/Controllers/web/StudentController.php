@@ -206,7 +206,8 @@ class StudentController extends Controller
             MigrationExport::create($dataMigration);
 
             // Cargar el archivo Excel sin almacenarlo temporalmente
-            Excel::import(new PersonImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLS);
+            Excel::import(new PersonImport(), $excelFile);
+
 
             // Redireccionar con mensaje de éxito
             return redirect()->back()->with('success', 'Datos importados correctamente.');

@@ -86,25 +86,7 @@ $(document).on("click", "#cerrarModal", function () {
 $(document).ready(function () {
     // Evento click del botón del carrito
     $("#btonCarrito").click(function () {
-        var markedIds = JSON.parse(localStorage.getItem("markedIds") || "[]");
-
-        console.log(markedIds);
-
-        if (markedIds.length == 0) {
-            Swal.fire({
-                icon: "warning",
-                title: "Carrito vacío",
-                text: "El carrito está vacío. Debe agregar ítems.",
-                confirmButtonText: "Aceptar",
-            }).then(() => {});
-            return;
-        } else {
-            $("#modalCarrito").modal("show");
-
-            // Mostrar modal
-
-            initialCarritoTable();
-        }
+        initialCarritoTable();
     });
 
     // Inicializar DataTable para la tabla de carrito
@@ -178,9 +160,11 @@ function initialCarritoTable() {
             data: "stateSend", // Asegúrate de que este es el nombre correcto del campo
             render: function (data, type, row, meta) {
                 // Comprobar si el campo stateSend es 1 (true)
-                var isChecked = data === 1 ? 'checked="checked"' : '';
+                var isChecked = data === 1 ? 'checked="checked"' : "";
                 return (
-                    '<input type="checkbox" ' + isChecked + ' class="checkCominmentsCarrito" style="width: 20px; height: 20px;" value="' +
+                    '<input type="checkbox" ' +
+                    isChecked +
+                    ' class="checkCominmentsCarrito" style="width: 20px; height: 20px;" value="' +
                     row.id +
                     '">'
                 );

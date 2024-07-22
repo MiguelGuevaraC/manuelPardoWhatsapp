@@ -57,7 +57,6 @@ var columns = [
 
     { data: "conminmnet.paymentAmount" },
 
-
     {
         data: "created_at",
         render: function (data, type, row, meta) {
@@ -100,7 +99,7 @@ var butomns = [
         text: 'COPY <i class="fa-solid fa-copy"></i>',
         className: "btn-secondary copy",
         exportOptions: {
-            columns: [1, 2, 3, 4, 5, 6, 7, 8], // las columnas que se exportarán
+            columns: [1, 2, 3, 4, 5, 6, 7], // las columnas que se exportarán
         },
     },
 
@@ -109,7 +108,7 @@ var butomns = [
         text: 'EXCEL <i class="fas fa-file-excel"></i>',
         className: "excel btn-success",
         exportOptions: {
-            columns: [1, 2, 3, 4, 5, 6, 7, 8], // las columnas que se exportarán
+            columns: [1, 2, 3, 4, 5, 6, 7], // las columnas que se exportarán
         },
     },
     {
@@ -118,7 +117,7 @@ var butomns = [
         text: 'PDF <i class="far fa-file-pdf"></i>',
         className: "btn-danger pdf",
         exportOptions: {
-            columns: [1, 2, 3, 4, 5, 6, 7, 8], // las columnas que se exportarán
+            columns: [1, 2, 3, 4, 5, 6, 7], // las columnas que se exportarán
         },
     },
     {
@@ -126,7 +125,7 @@ var butomns = [
         text: 'PRINT <i class="fa-solid fa-print"></i>',
         className: "btn-dark print",
         exportOptions: {
-            columns: [1, 2, 3, 4, 5, 6, 7, 8], // las columnas que se exportarán
+            columns: [1, 2, 3, 4, 5, 6, 7], // las columnas que se exportarán
         },
     },
 ];
@@ -254,12 +253,20 @@ $(document).ready(function () {
                 // Intentar nuevamente si no se alcanzó el número máximo de reintentos
                 if (retryCount < maxRetries) {
                     retryCount++;
-                    console.log("Reintentando... (Intento " + retryCount + " de " + maxRetries + ")");
+                    console.log(
+                        "Reintentando... (Intento " +
+                            retryCount +
+                            " de " +
+                            maxRetries +
+                            ")"
+                    );
                     fetchTableData(retryCount);
                 } else {
-                    alert("No se pudo recuperar los datos después de varios intentos. Por favor, inténtelo de nuevo más tarde.");
+                    alert(
+                        "No se pudo recuperar los datos después de varios intentos. Por favor, inténtelo de nuevo más tarde."
+                    );
                 }
-            }
+            },
         },
 
         orderCellsTop: true,

@@ -16,7 +16,13 @@ var columns = [
         orderable: false,
     },
    
-
+    {
+        data: "type",
+        render: function (data, type, row, meta) {
+            return data;
+        },
+        orderable: false,
+    },
     {
         data: "comment",
         render: function (data, type, row, meta) {
