@@ -16,6 +16,7 @@ class Compromiso extends Model
         'lastMessageDate',
         'status',
         'state',
+        'stateSend',
         'student_id',
         'created_at',
     ];

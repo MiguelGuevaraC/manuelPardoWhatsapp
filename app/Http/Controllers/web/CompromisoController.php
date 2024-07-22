@@ -62,10 +62,11 @@ class CompromisoController extends Controller
                         $query->whereHas('student', function ($query) use ($searchValue) {
                             $query->where(function ($query) use ($searchValue) {
                                 $query->where('names', 'like', '%' . $searchValue . '%')
-                                    ->orWhere('documentNumber', 'like', '%' . $searchValue . '%')
                                     ->orWhere('identityNumber', 'like', '%' . $searchValue . '%')
                                     ->orWhere('fatherSurname', 'like', '%' . $searchValue . '%')
-                                    ->orWhere('motherSurname', 'like', '%' . $searchValue . '%');
+                                    ->orWhere('motherSurname', 'like', '%' . $searchValue . '%')
+                                    ->orWhere('documentNumber', 'like', '%' . $searchValue . '%')
+                                    ->orWhere('identityNumber', 'like', '%' . $searchValue . '%');;;
                             });
                         });
                         break;
@@ -89,10 +90,12 @@ class CompromisoController extends Controller
                         $query->where('paymentAmount', 'like', '%' . $searchValue . '%');
 
                         break;
-                    case 'expirationDate':
-
-                        $query->where('expirationDate', 'like', '%' . $searchValue . '%');
-                        break;
+                        case 'student.telephone':
+                        
+                            $query->whereHas('student', function ($query) use ($searchValue) {
+                                $query->where('telephone', 'like', '%' . $searchValue . '%');
+                            });
+                            break;
                     case 'conceptDebt':
                         $query->where('conceptDebt', 'like', '%' . $searchValue . '%');
                         break;
@@ -151,6 +154,7 @@ class CompromisoController extends Controller
                 $searchValue = trim($column['search']['value'], '()'); // Quitar paréntesis adicionales
 
                 switch ($column['data']) {
+                    
                     case 'student.names':
                         $query->whereHas('student', function ($query) use ($searchValue) {
                             $query->where(function ($query) use ($searchValue) {
@@ -158,6 +162,8 @@ class CompromisoController extends Controller
                                     ->orWhere('documentNumber', 'like', '%' . $searchValue . '%')
                                     ->orWhere('identityNumber', 'like', '%' . $searchValue . '%')
                                     ->orWhere('fatherSurname', 'like', '%' . $searchValue . '%')
+
+                                    ->orWhere('identityNumber', 'like', '%' . $searchValue . '%')
                                     ->orWhere('motherSurname', 'like', '%' . $searchValue . '%');
                             });
                         });
@@ -179,11 +185,14 @@ class CompromisoController extends Controller
                     case 'paymentAmount':
                         $query->where('paymentAmount', 'like', '%' . $searchValue . '%');
                         break;
-                    case 'expirationDate':
-                        $query->where('expirationDate', 'like', '%' . $searchValue . '%');
-                        break;
                     case 'conceptDebt':
                         $query->where('conceptDebt', 'like', '%' . $searchValue . '%');
+                        break;
+                    case 'student.telephone':
+                        
+                        $query->whereHas('student', function ($query) use ($searchValue) {
+                            $query->where('telephone', 'like', '%' . $searchValue . '%');
+                        });
                         break;
                     case 'status':
                         $query->where('status', 'like', '%' . $searchValue . '%');
@@ -192,10 +201,7 @@ class CompromisoController extends Controller
             }
         }
 
-
-        $query->whereIn('id', $markedIds);
-
-     
+        $query->where('stateSend', 1);
 
         $totalRecords = $query->count();
 
@@ -250,5 +256,33 @@ class CompromisoController extends Controller
             // Capturar cualquier excepción y redirigir con mensaje de error
             return redirect()->back()->with('error', 'Error al importar el archivo: ' . $e->getMessage());
         }
+    }
+
+    public function stateSend($id)
+    {
+        $compromiso = Compromiso::find($id);
+
+        if (!$compromiso) {
+            return response()->json(['error' => 'Compromiso no encontrado'], 404);
+        }
+
+        $compromiso->stateSend = !$compromiso->stateSend;
+        $compromiso->save();
+
+        return response()->json(['success' => 'Estado actualizado'], 200);
+    }
+
+    public function stateSendAll($state)
+    {
+
+        $compromisos = Compromiso::get();
+
+        foreach ($compromisos as $compromiso) {
+            $compromiso = Compromiso::find($compromiso->id);
+            $compromiso->stateSend = $state == "true" ? 1 : 0;
+            $compromiso->save();
+        }
+
+        return response()->json(['success' => 'Estado actualizado'], 200);
     }
 }

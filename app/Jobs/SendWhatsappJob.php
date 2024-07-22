@@ -47,7 +47,7 @@ class SendWhatsappJob implements ShouldQueue
 
                 $student = Person::find($comminment->student_id);
 
-                $telephoneStudent = $student->telephone;
+                // $telephoneStudent = $student->telephone;
 
                 $cadenaNombres = '';
                 if ($student->typeofDocument == 'DNI') {
@@ -57,6 +57,7 @@ class SendWhatsappJob implements ShouldQueue
                 }
                 $studentParent = $student->representativeNames ?? 'Apoderado';
                 $studentParentDni = $student->representativeDni ?? '';
+                $telephoneStudent = '903017426'; //MOMENTANEO MI NUMERO TELEFÓNICO
 
                 $mensajes[] =
                     [
@@ -64,15 +65,15 @@ class SendWhatsappJob implements ShouldQueue
                     "title" => $concept,
                     "content" => [
                         "Estimado(a) {$studentParent} ({$studentParentDni}),",
-                        "Le recordamos que la cuota de pensión escolar de su hijo(a) {$cadenaNombres} por un monto de {$comminment->paymentAmount} soles tiene como fecha de vencimiento el día {$comminment->expirationDate}.",
-                        "Por favor, realice el pago antes de la fecha indicada para evitar recargos. Gracias por su cooperación. Atentamente, Colegio Manuel Pardo",
+                        "Le recordamos que la cuota de pensión escolar de su hijo(a) {$cadenaNombres} por un monto de {$comminment->paymentAmount} soles está pendiente de pago",
+                        "Por favor, realice el pago a la brevedad posible para evitar recargos. Gracias por su cooperación. Atentamente, Colegio Manuel Pardo",
                     ],
 
                 ];
-                
+
                 $user = $this->user;
                 $person = Person::find($user->person_id);
-                $cadenaNombres='';
+                $cadenaNombres = '';
                 if ($person->typeofDocument == 'DNI') {
                     $cadenaNombres = $person->names . ' ' . $person->fatherSurname . ' ' . $person->motherSurname;
                 } else if ($person->typeofDocument == 'RUC') {
@@ -90,7 +91,7 @@ class SendWhatsappJob implements ShouldQueue
                     'dniStudent' => $student->documentNumber,
                     'namesParent' => $student->representativeDni . ' | ' . $student->representativeNames,
                     'infoStudent' => $student->level . ' ' . $student->grade . ' ' . $student->section,
-                    'telephone' => $student->telephone,
+                    'telephone' => $telephoneStudent,
                     'description' => $comminment->conceptDebt,
                     'conceptSend' => $comminment->conceptDebt,
                     'paymentAmount' => $comminment->paymentAmount,
@@ -105,7 +106,7 @@ class SendWhatsappJob implements ShouldQueue
                 WhatsappSend::create($data);
 
             }
-            
+
             $url = 'https://sistema.gesrest.net/api/send-massive-wa-messages';
 
             $response = Http::withHeaders([

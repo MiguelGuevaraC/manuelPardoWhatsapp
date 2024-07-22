@@ -6,13 +6,14 @@ var columns = [
         visible: false, // Oculta esta columna
     },
     {
-        data: "id",
+        data: "stateSend", // Asegúrate de que este es el nombre del campo en tus datos
         render: function (data, type, row, meta) {
-            return (
-                '<input type="checkbox" class="checkCominments" style="width: 20px; height: 20px;" value="' +
-                data +
-                '">'
-            );
+            // Retorna el checkbox con estado según el valor de data
+            return `
+                <input class="checkCompro" type="checkbox" ${
+                    data === 1 ? "checked" : ""
+                } ${data === 0 ? "" : ""} value="${row.id}">
+            `;
         },
         orderable: false,
     },
@@ -130,40 +131,27 @@ var search = {
 };
 var markedIds = []; // Variable global para almacenar los IDs marcados
 
-// Función para actualizar los IDs marcados y guardarlos en localStorage
-function updateMarkedIds() {
-    $("#tbCompromisos input.checkCominments:checked").each(function () {
-        var rowId = $(this).val(); // Obtener el valor del checkbox, que es el ID
-        markedIds.push(rowId);
+$("#tbCompromisos").on("change", "input.checkCompro", function () {
+    var checkbox = $(this);
+    var id = checkbox.val(); // Obtener el ID del registro desde el valor del checkbox
+    var isChecked = checkbox.is(":checked");
+
+    $.ajax({
+        url: "stateSend/" + id,
+        method: "GET",
+        success: function (response) {
+            $("#tbCompromisos").DataTable().ajax.reload();
+        },
+        error: function (xhr) {
+            // Ocultar el modal de espera y mostrar mensaje de error
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Error al actualizar el estado",
+            });
+        },
     });
-    localStorage.setItem("markedIds", JSON.stringify(markedIds)); // Guardar en localStorage
-}
-
-// Llamar a la función cuando se cambia el estado de los checkboxes
-$("#tbCompromisos").on("change", "input.checkCominments", function () {
-    // Obtener el array de IDs actualmente guardado en localStorage
-    var markedIds = JSON.parse(localStorage.getItem("markedIds") || "[]");
-
-    // Obtener el ID de la fila actual
-    var rowId = $(this).val();
-
-    // Comprobar si el checkbox está marcado o desmarcado
-    if ($(this).is(":checked")) {
-        // Agregar el ID al array si no está ya presente
-        if (!markedIds.includes(rowId)) {
-            markedIds.push(rowId);
-        }
-    } else {
-        // Eliminar el ID del array si está presente
-        markedIds = markedIds.filter(function (id) {
-            return id !== rowId;
-        });
-    }
-
-    // Guardar el array actualizado en localStorage
-    localStorage.setItem("markedIds", JSON.stringify(markedIds));
 });
-
 
 var init = function () {
     var api = this.api();
@@ -179,50 +167,49 @@ var init = function () {
 
     // Evento para marcar o desmarcar todos los checkboxes
     toggleAllCheckbox.on("change", function () {
-        alert("change");
-        var checked = $(this).is(":checked");
-        console.log("Checkbox toggleAll is", checked);
+        var isChecked = $(this).is(":checked");
 
-        if (checked) {
-            // Obtener todos los IDs desde la API y actualizar localStorage
-            $.get("compromisoAllId") // Cambia la URL a la de tu API
-                .done(function (response) {
-                    var allIds = response || []; // Asegúrate de que la respuesta tenga una propiedad `ids`
-                    console.log("Response:", response);
-                    localStorage.setItem("markedIds", JSON.stringify(allIds));
-                    console.log(
-                        "Updated markedIds:",
-                        localStorage.getItem("markedIds")
-                    );
+        // Mostrar el modal de espera
+        Swal.fire({
+            title: "Actualizando...",
+            text: "Por favor, espere mientras se actualiza el estado.",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
 
-                    // Marca los checkboxes correspondientes en la tabla
-                    var table = $("#tbCompromisos").DataTable();
-                    table.on("draw", function () {
-                        table.rows().every(function () {
-                            var row = this.node();
-                            var rowId = $(row).attr("id");
-
-                            $(row)
-                                .find("input.checkCominments")
-                                .prop("checked", true);
-                        });
-                    });
-                    table.draw(); // Redibuja la tabla para aplicar los cambios
-                })
-                .fail(function () {
-                    console.error("Error al obtener los IDs desde la API");
+        $.ajax({
+            url: "stateSendAll/" + isChecked,
+            method: "GET",
+            success: function (response) {
+                // Ocultar el modal de espera y mostrar mensaje de éxito
+                Swal.fire({
+                    icon: "success",
+                    title: "Actualización completada",
+                    text: response.success,
+                    timer: 1000, // Desaparecerá en 1 segundo
+                    showConfirmButton: false, // No mostrar el botón de confirmación
+                    didClose: () => {
+                        if (isChecked) {
+                            $("#btonCarrito").click();
+                        }
+                        $("#tbCompromisos").DataTable().ajax.reload();
+                    },
                 });
-        } else {
-            // Desmarcar todos los checkboxes y limpiar localStorage
-            localStorage.setItem("markedIds", JSON.stringify([]));
-            var table = $("#tbCompromisos").DataTable();
-            table.on("draw", function () {
-                table.rows().every(function () {
-                    $("input.checkCominments").prop("checked", false);
+
+                // Actualizar la tabla tbCompromisos
+                $("#tbCompromisos").DataTable().ajax.reload();
+            },
+            error: function (xhr) {
+                // Ocultar el modal de espera y mostrar mensaje de error
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Error al actualizar el estado",
                 });
-            });
-            table.draw();
-        }
+            },
+        });
     });
 
     // Configuración de DataTables
@@ -270,7 +257,6 @@ $("#tbCompromisos thead tr")
 
 $("#tbCompromisos .filters input").on("keyup change", function () {
     table.ajax.reload();
-
 });
 
 function initialTableCompromisos() {
@@ -331,7 +317,7 @@ function initialTableCompromisos() {
 $(document).ready(function () {
     initialTableCompromisos();
     // localStorage.setItem("markedIds", JSON.stringify([]));
-var table =  $("#tbCompromisos").DataTable()
+    var table = $("#tbCompromisos").DataTable();
     var markedIds = JSON.parse(localStorage.getItem("markedIds") || "[]");
     table.on("draw", function () {
         table.rows().every(function () {
@@ -348,28 +334,24 @@ var table =  $("#tbCompromisos").DataTable()
     });
     // Evento para manejar el cambio en los checkboxes del carrito
 
-   
-
-
-
     function removeItemFromCarrito(id) {
         var carritoTable = $("#tbCarrito").DataTable();
-    
+
         // Busca y elimina la fila basada en el ID
         carritoTable.rows().every(function () {
             var rowId = $(this.node()).attr("id"); // Obtén el id de la fila
-        
+
             if (rowId === id.toString()) {
                 carritoTable.row(this).remove(); // Elimina la fila de la tabla
                 return false; // Termina el bucle si se encuentra la fila
             }
         });
-    
+
         carritoTable.draw(); // Actualiza la vista de la tabla
-    
+
         // Verifica si el carrito está vacío
         var isCarritoEmpty = carritoTable.data().count() === 0;
-    
+
         if (isCarritoEmpty) {
             $("#modalCarrito").modal("hide");
             Swal.fire({
@@ -379,13 +361,16 @@ var table =  $("#tbCompromisos").DataTable()
                 confirmButtonText: "Aceptar",
             });
         }
-    
+
         // Recarga la tabla de compromisos solo si hubo un cambio en el carrito
-        if (typeof initialCount !== 'undefined' && typeof markedIds !== 'undefined' && initialCount !== markedIds.length) {
+        if (
+            typeof initialCount !== "undefined" &&
+            typeof markedIds !== "undefined" &&
+            initialCount !== markedIds.length
+        ) {
             $("#modalCarrito").on("hidden.bs.modal", function () {
                 initialTableCompromisos(); // Llama a la función para recargar la tabla
             });
         }
     }
-    
 });

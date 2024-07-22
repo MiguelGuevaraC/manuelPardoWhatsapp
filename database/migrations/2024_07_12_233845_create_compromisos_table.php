@@ -24,6 +24,7 @@ return new class extends Migration
             $table->date('lastMessageDate')->nullable()->nullable();
             $table->string('status')->nullable();
             $table->boolean('state')->nullable()->default(true);
+            $table->boolean('stateSend')->nullable()->default(false);
             $table->timestamps();
             $table->foreignId('student_id')->nullable()->unsigned()->constrained('people');
         });

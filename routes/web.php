@@ -102,6 +102,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('compromisoAll', [CompromisoController::class, 'all']);
     Route::get('compromisoAllId', [CompromisoController::class, 'allId']);
     Route::post('actualizarCarrito', [CompromisoController::class, 'actualizarCarrito']);
+    Route::get('stateSendAll/{state}', [CompromisoController::class, 'stateSendAll']);
+    Route::get('stateSend/{id}', [CompromisoController::class, 'stateSend']);
+
 
     Route::get('compromiso/{id}', [CompromisoController::class, 'show']);
     Route::post('compromiso', [CompromisoController::class, 'store']);

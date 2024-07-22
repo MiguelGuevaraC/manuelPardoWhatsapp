@@ -17,7 +17,7 @@ var columns = [
         data: "student.names",
         render: function (data, type, row, meta) {
             if (row.student.typeofDocument === "DNI") {
-                return `${row.student.documentNumber} | ${row.student.names} ${row.student.fatherSurname} ${row.student.motherSurname}`;
+                return `${row.student.documentNumber} | ${row.student.identityNumber} | ${row.student.names} ${row.student.fatherSurname} ${row.student.motherSurname}`;
             } else if (row.student.typeofDocument === "RUC") {
                 return `${row.student.documentNumber} | ${row.student.businessName}`;
             }
@@ -57,7 +57,7 @@ var columns = [
 
     { data: "conminmnet.paymentAmount" },
 
-    { data: "conminmnet.expirationDate", orderable: true },
+
     {
         data: "created_at",
         render: function (data, type, row, meta) {

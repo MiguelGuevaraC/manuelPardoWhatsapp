@@ -104,7 +104,6 @@ $(document).ready(function () {
             // Mostrar modal
 
             initialCarritoTable();
-            
         }
     });
 
@@ -120,7 +119,7 @@ $("#tbCarrito thead tr")
 
 function initialCarritoTable() {
     $("#tbCarrito").DataTable().destroy();
-    
+
     var carritoLanguage = {
         lengthMenu: "Mostrar _MENU_ Registros por página",
         zeroRecords: "No hay Registros",
@@ -176,11 +175,13 @@ function initialCarritoTable() {
     };
     var carritoColumns = [
         {
-            data: "id",
+            data: "stateSend", // Asegúrate de que este es el nombre correcto del campo
             render: function (data, type, row, meta) {
+                // Comprobar si el campo stateSend es 1 (true)
+                var isChecked = data === 1 ? 'checked="checked"' : '';
                 return (
-                    '<input type="checkbox" checked="true" class="checkCominmentsCarrito" style="width: 20px; height: 20px;" value="' +
-                    data +
+                    '<input type="checkbox" ' + isChecked + ' class="checkCominmentsCarrito" style="width: 20px; height: 20px;" value="' +
+                    row.id +
                     '">'
                 );
             },
@@ -191,7 +192,7 @@ function initialCarritoTable() {
             data: "student.names",
             render: function (data, type, row, meta) {
                 if (row.student.typeofDocument === "DNI") {
-                    return `${row.student.documentNumber} | ${row.student.names} ${row.student.fatherSurname} ${row.student.motherSurname}`;
+                    return `${row.student.documentNumber} | ${row.student.identityNumber} | ${row.student.names} ${row.student.fatherSurname} ${row.student.motherSurname}`;
                 } else if (row.student.typeofDocument === "RUC") {
                     return `${row.student.documentNumber} | ${row.student.businessName}`;
                 }
@@ -336,18 +337,26 @@ function initialCarritoTable() {
 }
 
 $("#tbCarrito").on("change", "input.checkCominmentsCarrito", function () {
-    var markedIds = JSON.parse(localStorage.getItem("markedIds") || "[]");
+    var checkbox = $(this);
+    var id = checkbox.val(); // Obtener el ID del registro desde el valor del checkbox
+    var isChecked = checkbox.is(":checked");
 
-    // Obtener el ID de la fila actual
-    var rowId = $(this).val();
-
-    // Eliminar el ID del array si está presente
-    markedIds = markedIds.filter(function (id) {
-        return id != rowId;
+    $.ajax({
+        url: "stateSend/" + id,
+        method: "GET",
+        success: function (response) {
+            $("#tbCarrito").DataTable().ajax.reload();
+            $("#tbCompromisos").DataTable().ajax.reload();
+        },
+        error: function (xhr) {
+            // Ocultar el modal de espera y mostrar mensaje de error
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Error al actualizar el estado",
+            });
+        },
     });
-    localStorage.setItem("markedIds", JSON.stringify(markedIds));
-
-    initialCarritoTable();
 });
 
 $(document).ready(function () {
@@ -434,7 +443,7 @@ function enviarCompromisos() {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
         data: {
-            arrayCompromisos: arracompormisos,
+            arrayCompromisos: [],
         },
         success: function (response) {
             console.log(response);

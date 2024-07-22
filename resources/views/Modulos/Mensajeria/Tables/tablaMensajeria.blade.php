@@ -14,7 +14,6 @@
             <th scope="col">Teléfono</th>
             <th scope="col">Concepto</th>
             <th scope="col">Monto Pago</th>
-            <th scope="col">F. Vencimiento</th>
             <th scope="col">F. Envio</th>
 
         </tr>

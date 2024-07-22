@@ -63,7 +63,9 @@ class WhatsappSendController extends Controller
                             $query->where(function ($query) use ($searchValue) {
                                 $query->where('names', 'like', '%' . $searchValue . '%')
                                     ->orWhere('fatherSurname', 'like', '%' . $searchValue . '%')
-                                    ->orWhere('motherSurname', 'like', '%' . $searchValue . '%');
+                                    ->orWhere('motherSurname', 'like', '%' . $searchValue . '%')
+                                    ->orWhere('documentNumber', 'like', '%' . $searchValue . '%')
+                                    ->orWhere('identityNumber', 'like', '%' . $searchValue . '%');;
                             });
                         });
                         break;
@@ -150,35 +152,27 @@ class WhatsappSendController extends Controller
     public function store(Request $request)
     {
 
-        $validator = validator()->make($request->all(), [
-            'arrayCompromisos' => 'required|array',
-        ]);
+        $compromissoSendActive = Compromiso::where('state', 1)
+            ->where('stateSend', 1)->get();
+            
 
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()->first()], 422);
-        }
-dd($request->input('arrayCompromisos'));
-        $arrayCompromisos = $request->input('arrayCompromisos');
-        $compromisoPaquete = [];
-
-        foreach ($arrayCompromisos as $compromiso) {
-
-            $compromisoBD = Compromiso::find($compromiso['id']);
+        foreach ($compromissoSendActive as $compromiso) {
+            $compromisoBD = Compromiso::find($compromiso->id);
             $student = Person::find($compromisoBD->student_id);
-
+           
             if ($compromisoBD && $student->telephone) {
                 $compromisoPaquete[] = $compromisoBD;
             }
 
             if (count($compromisoPaquete) >= 100) {
-                // SendWhatsappJob::dispatch($compromisoPaquete, Auth::user());
+                SendWhatsappJob::dispatch($compromisoPaquete, Auth::user());
                 $compromisoPaquete = [];
             }
 
         }
 
         if (count($compromisoPaquete) > 0) {
-            // SendWhatsappJob::dispatch($compromisoPaquete, Auth::user());
+            SendWhatsappJob::dispatch($compromisoPaquete, Auth::user());
         }
 
     }
