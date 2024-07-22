@@ -18,14 +18,15 @@
                     
                     <thead>
                         <tr class="custom-header-bg">
+                            <th scope="col">Accion</th>
                             <th scope="col">N° Cuota</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Level</th>
                             <th scope="col">Grado - Sección</th>
                             <th scope="col">Monto Pago</th>
-                            <th scope="col">Fecha Vencimiento</th>
+                            <th scope="col">Telefono</th>
                             <th scope="col">Concepto</th>
-                            <th scope="col">Estado</th>
+                          
                         </tr>
                     </thead>
                     <tbody>

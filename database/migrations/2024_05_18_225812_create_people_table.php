@@ -16,7 +16,9 @@ return new class extends Migration
         Schema::create('people', function (Blueprint $table) {
             $table->id();
             $table->string('typeofDocument');
-            $table->string('documentNumber')->unique();
+            $table->string('documentNumber')->unique()->nullable();
+            $table->string('identityNumber')->nullable();
+
             $table->string('names')->nullable();
             $table->string('fatherSurname')->nullable();
             $table->string('motherSurname')->nullable();
@@ -38,7 +40,6 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->unsigned()->constrained('users');
 
             $table->foreignId('migration_id')->nullable()->unsigned()->constrained('migration_exports');
-
 
             $table->timestamps();
             $table->softDeletes();

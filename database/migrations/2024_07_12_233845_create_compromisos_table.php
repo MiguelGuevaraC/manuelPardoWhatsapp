@@ -19,6 +19,8 @@ return new class extends Migration
             $table->decimal('paymentAmount', 8, 2)->nullable();
             $table->date('expirationDate')->nullable();
             $table->string('conceptDebt')->nullable();
+            $table->string('telephoneStudent')->nullable();
+
             $table->date('lastMessageDate')->nullable()->nullable();
             $table->string('status')->nullable();
             $table->boolean('state')->nullable()->default(true);

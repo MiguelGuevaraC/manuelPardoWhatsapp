@@ -25,8 +25,7 @@ class AuthController extends Controller
         }
 
         $user = User::where("username", $request->username)->first();
-        $token = $user->createToken('Token Name')->plainTextToken;
-        
+
         if (!$user) {
             return view('auth.login');
         }
@@ -37,7 +36,8 @@ class AuthController extends Controller
             $user = User::with(['typeUser'])->find($user->id);
             $typeUser = $user->typeUser;
             $groupMenu = GroupMenu::getFilteredGroupMenus($typeUser->id);
-            
+            $token = $user->createToken('Token Name')->plainTextToken;
+
             return redirect()->route('vistaInicio')->with('token', $token);
         } else {
             return view('auth.login');

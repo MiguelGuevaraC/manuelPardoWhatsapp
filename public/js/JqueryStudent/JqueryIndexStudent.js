@@ -9,10 +9,10 @@ var columns = [
         orderable: false,
     },
     {
-        data: "id",
+        data: "documentNumber",
         render: function (data, type, row, meta) {
             if (row.typeofDocument === "DNI") {
-                return `${row.documentNumber} | ${row.names} ${row.fatherSurname} ${row.motherSurname}`;
+                return `${row.documentNumber} | ${row.identityNumber} | ${row.names} ${row.fatherSurname} ${row.motherSurname}`;
             } else if (row.typeofDocument === "RUC") {
                 return `${row.documentNumber} | ${row.businessName}`;
             }
@@ -117,7 +117,7 @@ var init = function () {
                 colIdx == 3 ||
                 colIdx == 5 ||
                 colIdx == 4 ||
-                colIdx == 6 
+                colIdx == 6
             ) {
                 var cell = $(".filters th").eq(
                     $(api.column(colIdx).header()).index()
@@ -173,16 +173,37 @@ $("#tbStudents thead tr")
     .appendTo("#tbStudents thead");
 
 $(document).ready(function () {
+    var maxRetries = 3; // Número máximo de reintentos
+    var retryCount = 0; // Contador de reintentos
     var table = $("#tbStudents").DataTable({
         processing: true,
         serverSide: true,
         ajax: {
             url: "estudianteAll",
             type: "GET",
-            dataSrc: function (json) {
-                console.log(json);
-                return json.data;
+            data: function (d) {
+                // Aquí configuramos los filtros de búsqueda por columna
+                $('#tbStudents .filters input').each(function () {
+                    var name = $(this).attr('name');
+                    d.columns.forEach(function (column) {
+                        if (column.data === name) {
+                            column.search.value = $(this).val();
+                        }
+                    }, this);
+                });
             },
+            debounce: 500 ,
+            error: function (xhr, error, thrown) {
+                // Manejo de errores
+                console.error("Error en la solicitud AJAX:", error);
+
+                // Intentar nuevamente si no se alcanzó el número máximo de reintentos
+                if (retryCount < maxRetries) {
+                    retryCount++;
+                    console.log("Reintentando... (Intento " + retryCount + " de " + maxRetries + ")");
+                    fetchTableData(retryCount);
+                } 
+            }
         },
         orderCellsTop: true,
         fixedHeader: true,
@@ -197,5 +218,6 @@ $(document).ready(function () {
         rowId: "id",
         stripeClasses: ["odd-row", "even-row"],
         scrollY: "300px",
+        scrollX: true,
     });
 });

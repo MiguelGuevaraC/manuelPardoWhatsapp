@@ -66,6 +66,18 @@ $(document).ready(function () {
 
                 // Guardar el archivo en el servidor
                 formData.append("excelFile", file);
+                $("#modalNuevoStudent").modal("hide");
+                // Mostrar alerta de espera
+                Swal.fire({
+                    title: 'Por favor espera...',
+                    text: 'Estamos procesando tu solicitud.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        // Ajustar el z-index para que SweetAlert esté por encima del modal
+                        $('.swal2-container').css('z-index', '2000');
+                    }
+                });
 
                 // Realizar la solicitud AJAX
                 $.ajax({
@@ -76,12 +88,22 @@ $(document).ready(function () {
                     contentType: false,
                     success: function (response) {
                         console.log(response);
+                        // Cerrar la alerta de SweetAlert
+                        Swal.close();
                         // Aquí puedes manejar la respuesta del servidor
-                        $("#modalNuevoStudent").modal("hide");
+                        
                         $("#tbStudents").DataTable().ajax.reload();
-
                     },
-                    error: function (xhr, status, error) {},
+                    error: function (xhr, status, error) {
+                        // Cerrar la alerta de SweetAlert
+                        Swal.close();
+                        // Mostrar mensaje de error
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Hubo un problema al procesar la solicitud.',
+                        });
+                    },
                     headers: {
                         "X-CSRF-TOKEN": $('input[name="_token"]').val(),
                     },
@@ -89,10 +111,16 @@ $(document).ready(function () {
             };
             reader.readAsArrayBuffer(file);
         } else {
-            alert("Por favor, selecciona un archivo Excel.");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Archivo no seleccionado',
+                text: 'Por favor, selecciona un archivo Excel.',
+            });
         }
     });
 });
+
+
 
 $("#btonNuevo").click(function (e) {
     $("#registroStudent")[0].reset();

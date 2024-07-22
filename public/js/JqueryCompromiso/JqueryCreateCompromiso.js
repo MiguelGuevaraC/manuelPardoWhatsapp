@@ -1,49 +1,3 @@
-// $(document).ready(function () {
-//     $("#registroCompromiso").submit(function (event) {
-//         event.preventDefault(); // Evita que el formulario se envíe por el método tradicional
-
-//         var token = $('meta[name="csrf-token"]').attr("content");
-//         var name = $("#name").val();
-
-//         $.ajax({
-//             url: "compromiso",
-//             type: "POST",
-//             data: {
-//                 name: name,
-//                 _token: token,
-//             },
-//             success: function (data) {
-//                 console.log("Respuesta del servidor:", data);
-//                 $.niftyNoty({
-//                     type: "purple",
-//                     icon: "fa fa-check",
-//                     message: "Registro exitoso",
-//                     container: "floating",
-//                     timer: 4000,
-//                 });
-//                 var table = $("#tbRoles").DataTable();
-//                 table.row
-//                     .add({
-//                         id: data.id,
-//                         name: name,
-//                     })
-//                     .draw(false);
-//                 $("#cerrarModal").click();
-//             },
-//             error: function (jqXHR, textStatus, errorThrown) {
-//                 console.error("Error al registrar:", errorThrown);
-//                 $.niftyNoty({
-//                     type: "danger",
-//                     icon: "fa fa-times",
-//                     message: "Error al registrar: " + textStatus,
-//                     container: "floating",
-//                     timer: 4000,
-//                 });
-//             },
-//         });
-//     });
-// });
-
 $(document).ready(function () {
     $("#registroCompromiso").on("submit", function (e) {
         e.preventDefault();
@@ -66,21 +20,44 @@ $(document).ready(function () {
 
                 // Guardar el archivo en el servidor
                 formData.append("excelFile", file);
+                $("#modalNuevoCompromiso").modal("hide");
+
+                // Mostrar alerta de espera
+                Swal.fire({
+                    title: "Por favor espera...",
+                    text: "Estamos procesando tu solicitud.",
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        // Ajustar el z-index para que SweetAlert esté por encima del modal
+                        $(".swal2-container").css("z-index", "2000");
+                    },
+                });
 
                 // Realizar la solicitud AJAX
                 $.ajax({
-                    url: "importExcel", // Ajusta la ruta según tu configuración de Laravel
+                    url: "importExcelCominments", // Ajusta la ruta según tu configuración de Laravel
                     type: "POST",
                     data: formData,
                     processData: false,
                     contentType: false,
                     success: function (response) {
                         console.log(response);
+                        // Cerrar la alerta de SweetAlert
+                        Swal.close();
                         // Aquí puedes manejar la respuesta del servidor
-                        $("#modalNuevoCompromiso").modal("hide");
                         $("#tbCompromisos").DataTable().ajax.reload();
                     },
-                    error: function (xhr, status, error) {},
+                    error: function (xhr, status, error) {
+                        // Cerrar la alerta de SweetAlert
+                        Swal.close();
+                        // Mostrar mensaje de error
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Hubo un problema al procesar la solicitud.",
+                        });
+                    },
                     headers: {
                         "X-CSRF-TOKEN": $('input[name="_token"]').val(),
                     },
@@ -88,7 +65,11 @@ $(document).ready(function () {
             };
             reader.readAsArrayBuffer(file);
         } else {
-            alert("Por favor, selecciona un archivo Excel.");
+            Swal.fire({
+                icon: "warning",
+                title: "Archivo no seleccionado",
+                text: "Por favor, selecciona un archivo Excel.",
+            });
         }
     });
 });
@@ -103,31 +84,43 @@ $(document).on("click", "#cerrarModal", function () {
 });
 
 $(document).ready(function () {
-    var carritoColumns = [
-        { data: "cuotaNumber" },
-        {
-            data: "student.names",
-            render: function (data, type, row, meta) {
-                if (row.student.typeofDocument === "DNI") {
-                    return `${row.student.documentNumber} | ${row.student.names} ${row.student.fatherSurname} ${row.student.motherSurname}`;
-                } else if (row.student.typeofDocument === "RUC") {
-                    return `${row.student.documentNumber} | ${row.student.businessName}`;
-                }
-            },
-        },
-        { data: "student.level" },
-        {
-            data: "student.grade",
-            render: function (data, type, row, meta) {
-                return row.student.grade + " " + row.student.section;
-            },
-        },
-        { data: "paymentAmount" },
-        { data: "expirationDate" },
-        { data: "conceptDebt" },
-        { data: "status" },
-    ];
+    // Evento click del botón del carrito
+    $("#btonCarrito").click(function () {
+        var markedIds = JSON.parse(localStorage.getItem("markedIds") || "[]");
 
+        console.log(markedIds);
+
+        if (markedIds.length == 0) {
+            Swal.fire({
+                icon: "warning",
+                title: "Carrito vacío",
+                text: "El carrito está vacío. Debe agregar ítems.",
+                confirmButtonText: "Aceptar",
+            }).then(() => {});
+            return;
+        } else {
+            $("#modalCarrito").modal("show");
+
+            // Mostrar modal
+
+            initialCarritoTable();
+            
+        }
+    });
+
+    // Inicializar DataTable para la tabla de carrito
+
+    // Clonar el encabezado para agregar filtros
+});
+
+$("#tbCarrito thead tr")
+    .clone(true)
+    .addClass("filters1")
+    .appendTo("#tbCarrito thead");
+
+function initialCarritoTable() {
+    $("#tbCarrito").DataTable().destroy();
+    
     var carritoLanguage = {
         lengthMenu: "Mostrar _MENU_ Registros por página",
         zeroRecords: "No hay Registros",
@@ -147,7 +140,7 @@ $(document).ready(function () {
             text: 'COPY <i class="fa-solid fa-copy"></i>',
             className: "btn-secondary copy",
             exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6, 7, 8], // Las columnas que se exportarán
+                columns: [1, 2, 3, 4, 5, 6, 7], // Las columnas que se exportarán
             },
         },
         {
@@ -155,7 +148,7 @@ $(document).ready(function () {
             text: 'EXCEL <i class="fas fa-file-excel"></i>',
             className: "excel btn-success",
             exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6, 7, 8], // Las columnas que se exportarán
+                columns: [1, 2, 3, 4, 5, 6, 7], // Las columnas que se exportarán
             },
         },
         {
@@ -163,7 +156,7 @@ $(document).ready(function () {
             text: 'PDF <i class="far fa-file-pdf"></i>',
             className: "btn-danger pdf",
             exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6, 7, 8], // Las columnas que se exportarán
+                columns: [1, 2, 3, 4, 5, 6, 7], // Las columnas que se exportarán
             },
         },
         {
@@ -171,7 +164,7 @@ $(document).ready(function () {
             text: 'PRINT <i class="fa-solid fa-print"></i>',
             className: "btn-dark print",
             exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6, 7, 8], // Las columnas que se exportarán
+                columns: [1, 2, 3, 4, 5, 6, 7], // Las columnas que se exportarán
             },
         },
     ];
@@ -181,11 +174,44 @@ $(document).ready(function () {
         caseInsensitive: true,
         type: "html-case-insensitive",
     };
+    var carritoColumns = [
+        {
+            data: "id",
+            render: function (data, type, row, meta) {
+                return (
+                    '<input type="checkbox" checked="true" class="checkCominmentsCarrito" style="width: 20px; height: 20px;" value="' +
+                    data +
+                    '">'
+                );
+            },
+            orderable: false,
+        },
+        { data: "cuotaNumber" },
+        {
+            data: "student.names",
+            render: function (data, type, row, meta) {
+                if (row.student.typeofDocument === "DNI") {
+                    return `${row.student.documentNumber} | ${row.student.names} ${row.student.fatherSurname} ${row.student.motherSurname}`;
+                } else if (row.student.typeofDocument === "RUC") {
+                    return `${row.student.documentNumber} | ${row.student.businessName}`;
+                }
+            },
+        },
+        { data: "student.level" },
+        {
+            data: "student.grade",
+            render: function (data, type, row, meta) {
+                return row.student.grade + " " + row.student.section;
+            },
+        },
+        { data: "paymentAmount" },
+        { data: "student.telephone" },
+        { data: "conceptDebt" },
+    ];
 
     var carritoInit = function () {
         var api = this.api();
 
-        // Configurar filtros de búsqueda para las columnas específicas
         api.columns()
             .eq(0)
             .each(function (colIdx) {
@@ -193,14 +219,13 @@ $(document).ready(function () {
                 var header = $(column.header());
 
                 if (
-                    colIdx == 0 ||
                     colIdx == 1 ||
                     colIdx == 2 ||
                     colIdx == 3 ||
-                    colIdx == 5 ||
+                    colIdx == 7 ||
                     colIdx == 4 ||
-                    colIdx == 6 ||
-                    colIdx == 7
+                    colIdx == 5 ||
+                    colIdx == 6
                 ) {
                     var cell = $(".filters1 th").eq(header.index());
                     var title = header.text();
@@ -241,51 +266,92 @@ $(document).ready(function () {
             });
     };
 
-    // Clonar el encabezado para agregar filtros
-    $("#tbCarrito thead tr")
-        .clone(true)
-        .addClass("filters1")
-        .appendTo("#tbCarrito thead");
+    var table = $("#tbCarrito").DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "actualizarCarrito",
+            type: "POST",
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            data: function (d) {
+                // Obtener los IDs marcados desde localStorage
+                var markedIdsString = localStorage.getItem("markedIds");
+                console.log(markedIdsString);
 
-    // Configurar DataTable para la tabla de carrito
-    var carritoTable = $("#tbCarrito").DataTable({
+                // Convertir la cadena JSON a un arreglo de números
+                var markedIds = [];
+                try {
+                    var parsedIds = JSON.parse(markedIdsString);
+
+                    if (Array.isArray(parsedIds)) {
+                        markedIds = parsedIds
+                            .map(function (item) {
+                                var number = Number(item); // Intentar convertir el item a número
+                                return isNaN(number) ? null : number; // Retornar null si no es un número válido
+                            })
+                            .filter(function (item) {
+                                return item !== null; // Filtrar los valores null
+                            });
+                    }
+                } catch (e) {
+                    console.error(
+                        "Error al parsear markedIds desde localStorage:",
+                        e
+                    );
+                }
+
+                // Aquí configuramos los filtros de búsqueda por columna
+                $("#tbCarrito .filters1 input").each(function () {
+                    var name = $(this).attr("name");
+                    d.columns.forEach(function (column) {
+                        if (column.data === name) {
+                            column.search.value = $(this).val();
+                        }
+                    }, this);
+                });
+
+                // Agregar los IDs marcados al objeto de datos
+                d.markedIds = markedIds;
+            },
+            debounce: 500,
+        },
+        orderCellsTop: true,
+        fixedHeader: true,
         columns: carritoColumns,
         dom: "Bfrtip",
         buttons: carritoButtons,
         language: carritoLanguage,
         search: carritoSearch,
         initComplete: carritoInit,
-        orderCellsTop: true,
-        fixedHeader: true,
+        rowId: "id",
         stripeClasses: ["odd-row", "even-row"],
         scrollY: "300px",
         scrollX: true,
+        autoWidth: true,
+        pageLength: 30,
+        lengthChange: false,
     });
-});
+}
 
-$("#btonCarrito").click(function () {
-    // Abrir el modal del carrito al hacer clic en el botón
-    $("#modalCarrito").modal("show");
+$("#tbCarrito").on("change", "input.checkCominmentsCarrito", function () {
+    var markedIds = JSON.parse(localStorage.getItem("markedIds") || "[]");
 
-    // Limpiar la tabla de carrito antes de agregar nuevos elementos
-    $("#tbCarrito").DataTable().clear().draw();
+    // Obtener el ID de la fila actual
+    var rowId = $(this).val();
 
-    // Iterar sobre los checkboxes marcados en la tabla de compromisos
-    $("#tbCompromisos input.checkCominments:checked").each(function () {
-        // Obtener la fila padre del checkbox marcado
-        var row = $(this).closest("tr");
-
-        // Obtener los datos de la fila de compromisos
-        var rowData = $("#tbCompromisos").DataTable().row(row).data();
-
-        // Agregar los datos a la tabla de carrito
-        $("#tbCarrito").DataTable().row.add(rowData).draw();
+    // Eliminar el ID del array si está presente
+    markedIds = markedIds.filter(function (id) {
+        return id != rowId;
     });
+    localStorage.setItem("markedIds", JSON.stringify(markedIds));
+
+    initialCarritoTable();
 });
 
 $(document).ready(function () {
     $("#enviarWhatsapp").click(function () {
-        
         // Verificar si la tabla tiene registros
         if ($("#tbCarrito tbody tr").length > 0) {
             swal({
@@ -317,40 +383,66 @@ $(document).ready(function () {
                 }
             });
         } else {
-            swal("No hay compromisos", "No se encontraron compromisos en la lista.", "warning");
+            swal(
+                "No hay compromisos",
+                "No se encontraron compromisos en la lista.",
+                "warning"
+            );
         }
     });
 });
-
+$(document).ready(function () {
+    // Evento para marcar todos los ítems
+    // $("#toggleAllInput").on("change", function () {
+    //     var isChecked = $(this).is(":checked");
+    //     var markedIds = (localStorage.getItem("markedIds"));
+    //     // Marca o desmarca todos los checkboxes en el DataTable
+    //     var table = $("#tbCompromisos").DataTable();
+    //     table.rows().every(function () {
+    //         var data = this.data();
+    //         var rowId = data.id;
+    //         var checkbox = $(this.node()).find("input.checkCominments");
+    //         // Si el checkbox está marcado o desmarcado, actualiza el localStorage
+    //         if (isChecked) {
+    //             if (!markedIds.includes(rowId)) {
+    //                 markedIds.push(rowId);
+    //             }
+    //             checkbox.prop("checked", true);
+    //         } else {
+    //             markedIds = markedIds.filter(function (itemId) {
+    //                 return itemId !== rowId;
+    //             });
+    //             checkbox.prop("checked", false);
+    //         }
+    //     });
+    //     // Guarda los IDs actualizados en el localStorage
+    //     localStorage.setItem("markedIds", (markedIds));
+    //     // Opcional: Actualiza la tabla de compromisos si es necesario
+    //     updateCompromisosTable();
+    // });
+});
 
 function enviarCompromisos() {
-
     var arracompormisos = [];
-
-    // Obtener los datos de cada fila seleccionada
-    $('#tbCompromisos tbody input.checkCominments:checked').each(function () {
-        var id = $(this).val(); // ID del compromiso
-        arracompormisos.push({ id: id });
-    });
+    var arracompormisos = localStorage.getItem("markedIds");
 
     // Hacer la solicitud AJAX
     $.ajax({
-        url: 'mensajeria',
-        type: 'POST',
+        url: "mensajeria",
+        type: "POST",
         headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
         data: {
-            arrayCompromisos: arracompormisos
+            arrayCompromisos: arracompormisos,
         },
         success: function (response) {
             console.log(response);
-            
+
             // Aquí puedes hacer algo adicional después de enviar los mensajes, si es necesario
         },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);
-            
-        }
+        },
     });
 }

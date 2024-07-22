@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendWhatsappJob;
 use App\Models\Compromiso;
 use App\Models\GroupMenu;
 use App\Models\Person;
@@ -10,7 +11,6 @@ use App\Models\WhatsappSend;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class WhatsappSendController extends Controller
 {
@@ -157,39 +157,28 @@ class WhatsappSendController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->first()], 422);
         }
-
-        $user = Auth::user();
+dd($request->input('arrayCompromisos'));
         $arrayCompromisos = $request->input('arrayCompromisos');
+        $compromisoPaquete = [];
 
         foreach ($arrayCompromisos as $compromiso) {
 
             $compromisoBD = Compromiso::find($compromiso['id']);
             $student = Person::find($compromisoBD->student_id);
 
-            $tipo = 'ENVI';
-            $resultado = DB::select('SELECT COALESCE(MAX(CAST(SUBSTRING(number, LOCATE("-", number) + 1) AS SIGNED)), 0) + 1 AS siguienteNum FROM migration_exports a WHERE SUBSTRING(number, 1, 4) = ?', [$tipo])[0]->siguienteNum;
-            $siguienteNum = (int) $resultado;
+            if ($compromisoBD && $student->telephone) {
+                $compromisoPaquete[] = $compromisoBD;
+            }
 
-            $data = [
-                'number' => $tipo . "-" . str_pad($siguienteNum, 8, '0', STR_PAD_LEFT),
-                'userResponsability' => $user->person->names,
-                'namesStudent' => $student->names . ' ' . $student->fatherSurname,
-                'dniStudent' => $student->documentNumber,
-                'namesParent' => $student->representativeDni . ' | ' . $student->representativeNames,
-                'infoStudent' => $student->level . ' ' . $student->grade . ' ' . $student->section,
-                'telephone' => $student->telephone,
-                'description' => $compromisoBD->conceptDebt,
-                'conceptSend' => $compromisoBD->conceptSend,
-                'paymentAmount' => $compromisoBD->paymentAmount,
-                'expirationDate' => $compromisoBD->expirationDate,
-                'cuota' => $compromisoBD->cuotaNumber,
+            if (count($compromisoPaquete) >= 100) {
+                // SendWhatsappJob::dispatch($compromisoPaquete, Auth::user());
+                $compromisoPaquete = [];
+            }
 
-                'student_id' => $student->id,
-                'user_id' => $user->id,
-                'comminment_id' => $compromisoBD->id,
+        }
 
-            ];
-            WhatsappSend::create($data);
+        if (count($compromisoPaquete) > 0) {
+            // SendWhatsappJob::dispatch($compromisoPaquete, Auth::user());
         }
 
     }

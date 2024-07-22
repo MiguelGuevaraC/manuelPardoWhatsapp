@@ -36,6 +36,7 @@ class Person extends Model
     protected $fillable = [
         'id',
         'typeofDocument',
+        'identityNumber',
         'documentNumber',
 
         'names',

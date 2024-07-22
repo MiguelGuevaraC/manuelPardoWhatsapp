@@ -13,10 +13,10 @@
             <th scope="col">Grado -Sección</th>
 
             <th scope="col">Monto Pago</th>
-            <th scope="col">Fecha Vencimiento</th>
+            <th scope="col">Teléfono</th>
             <th scope="col">Concepto</th>
 
-            <th scope="col">Estado</th>
+
 
         </tr>
     </thead>

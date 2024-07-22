@@ -227,6 +227,8 @@ $("#tbMensajerias .filters input").on("keyup change", function () {
 });
 
 $(document).ready(function () {
+    var maxRetries = 3; // Número máximo de reintentos
+    var retryCount = 0; // Contador de reintentos
     var table = $("#tbMensajerias").DataTable({
         processing: true,
         serverSide: true,
@@ -245,6 +247,19 @@ $(document).ready(function () {
                 });
             },
             debounce: 500,
+            error: function (xhr, error, thrown) {
+                // Manejo de errores
+                console.error("Error en la solicitud AJAX:", error);
+
+                // Intentar nuevamente si no se alcanzó el número máximo de reintentos
+                if (retryCount < maxRetries) {
+                    retryCount++;
+                    console.log("Reintentando... (Intento " + retryCount + " de " + maxRetries + ")");
+                    fetchTableData(retryCount);
+                } else {
+                    alert("No se pudo recuperar los datos después de varios intentos. Por favor, inténtelo de nuevo más tarde.");
+                }
+            }
         },
 
         orderCellsTop: true,

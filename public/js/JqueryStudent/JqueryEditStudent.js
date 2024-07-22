@@ -21,8 +21,8 @@ function editStudent(id) {
             $("#levellE").val(data.level);
             $("#gradooE").val(data.grade);
             $("#seccionE").val(data.section);
-            $("#nombreApoderadoE").val(data.representativeDni);
-            $("#dniApoderadoE").val(data.representativeNames);
+            $("#nombreApoderadoE").val(data.representativeNames);
+            $("#dniApoderadoE").val(data.representativeDni);
             $("#telefonoE").val(data.telephone);
         },
         error: function (jqXHR, textStatus, errorThrown) {

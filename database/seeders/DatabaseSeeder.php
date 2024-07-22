@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => '1',
                 'typeofDocument' => 'DNI',
+        
+
                 'documentNumber' => '11111110',
                 'names' => 'Administrador',
                 'fatherSurname' => '-',
@@ -39,6 +41,8 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => '2',
                 'typeofDocument' => 'DNI',
+             
+
                 'documentNumber' => '00000000',
                 'names' => 'VARIOS',
                 'fatherSurname' => '-',
@@ -57,6 +61,8 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => '3',
                 'typeofDocument' => 'DNI',
+               
+
                 'documentNumber' => '11111111',
                 'names' => 'Administrador',
                 'fatherSurname' => '-',
@@ -76,6 +82,8 @@ class DatabaseSeeder extends Seeder
                 'id' => '4',
                 'typeofDocument' => 'RUC',
                 'documentNumber' => '20103416982',
+                
+
                 'names' => null,
                 'fatherSurname' => null,
                 'motherSurname' => null,
@@ -92,6 +100,8 @@ class DatabaseSeeder extends Seeder
             ], [
                 'id' => '5',
                 'typeofDocument' => 'DNI',
+                
+
                 'documentNumber' => '22222222',
                 'names' => 'Estudiante',
                 'fatherSurname' => 'Padre',

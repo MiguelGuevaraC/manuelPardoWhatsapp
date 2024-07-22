@@ -100,11 +100,14 @@ Route::group(['middleware' => ['auth']], function () {
     //MIGRATION
     Route::get('compromiso', [CompromisoController::class, 'index']);
     Route::get('compromisoAll', [CompromisoController::class, 'all']);
+    Route::get('compromisoAllId', [CompromisoController::class, 'allId']);
+    Route::post('actualizarCarrito', [CompromisoController::class, 'actualizarCarrito']);
 
     Route::get('compromiso/{id}', [CompromisoController::class, 'show']);
     Route::post('compromiso', [CompromisoController::class, 'store']);
     Route::put('compromiso/{id}', [CompromisoController::class, 'update']);
     Route::delete('compromiso/{id}', [CompromisoController::class, 'destroy']);
+    Route::post('importExcelCominments', [CompromisoController::class, 'importExcelCominments']);
 
     //MIGRATION
         Route::get('mensajeria', [WhatsappSendController::class, 'index']);

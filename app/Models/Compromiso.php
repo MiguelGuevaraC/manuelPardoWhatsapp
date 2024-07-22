@@ -12,6 +12,7 @@ class Compromiso extends Model
         'paymentAmount',
         'expirationDate',
         'conceptDebt',
+        'telephoneStudent',
         'lastMessageDate',
         'status',
         'state',
