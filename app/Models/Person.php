@@ -73,4 +73,8 @@ class Person extends Model
     {
         return $this->hasMany(Compromiso::class, 'student_id');
     }
+    public function cominmentsCount()
+    {
+        return $this->cominments()->count();
+    }
 }

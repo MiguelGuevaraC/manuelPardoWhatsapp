@@ -4,6 +4,7 @@ use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\web\CompromisoController;
 use App\Http\Controllers\web\GroupMenuController;
+use App\Http\Controllers\web\MessageController;
 use App\Http\Controllers\web\MigrationController;
 use App\Http\Controllers\web\OptionMenuController;
 use App\Http\Controllers\web\StudentController;
@@ -35,8 +36,6 @@ Route::middleware([
 Route::middleware(['ensureTokenIsValid'])->group(function () {
     return view('auth.login');
 });
-
-
 
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
@@ -102,9 +101,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('compromisoAll', [CompromisoController::class, 'all']);
     Route::get('compromisoAllId', [CompromisoController::class, 'allId']);
     Route::post('actualizarCarrito', [CompromisoController::class, 'actualizarCarrito']);
-    Route::get('stateSendAll/{state}', [CompromisoController::class, 'stateSendAll']);
+    Route::put('stateSendAll/{state}', [CompromisoController::class, 'stateSendAll']);
     Route::get('stateSend/{id}', [CompromisoController::class, 'stateSend']);
-
 
     Route::get('compromiso/{id}', [CompromisoController::class, 'show']);
     Route::post('compromiso', [CompromisoController::class, 'store']);
@@ -113,12 +111,20 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('importExcelCominments', [CompromisoController::class, 'importExcelCominments']);
 
     //MIGRATION
-        Route::get('mensajeria', [WhatsappSendController::class, 'index']);
-        Route::get('mensajeriaAll', [WhatsappSendController::class, 'all']);
-    
-        Route::get('mensajeria/{id}', [WhatsappSendController::class, 'show']);
-        Route::post('mensajeria', [WhatsappSendController::class, 'store']);
-        Route::put('mensajeria/{id}', [WhatsappSendController::class, 'update']);
-        Route::delete('mensajeria/{id}', [WhatsappSendController::class, 'destroy']);
+    Route::get('mensajeria', [WhatsappSendController::class, 'index']);
+    Route::get('mensajeriaAll', [WhatsappSendController::class, 'all']);
+
+    Route::get('mensajeria/{id}', [WhatsappSendController::class, 'show']);
+    Route::post('mensajeria', [WhatsappSendController::class, 'store']);
+    Route::put('mensajeria/{id}', [WhatsappSendController::class, 'update']);
+    Route::delete('mensajeria/{id}', [WhatsappSendController::class, 'destroy']);
+
+    //MIGRATION
+    Route::get('message', [MessageController::class, 'index']);
+    Route::get('message/showExample', [MessageController::class, 'showExample']);
+    Route::get('message/{id}', [MessageController::class, 'show']);
+    Route::post('message', [MessageController::class, 'store']);
+    Route::put('message/{id}', [MessageController::class, 'update']);
+    Route::delete('message/{id}', [MessageController::class, 'destroy']);
 
 });

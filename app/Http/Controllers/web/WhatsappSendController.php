@@ -153,13 +153,16 @@ class WhatsappSendController extends Controller
     {
 
         $compromissoSendActive = Compromiso::where('state', 1)
+            ->whereHas('student', function ($query) {
+                $query->where('user_id', Auth::user()->id);
+                $query->where('state', 1);
+            })
             ->where('stateSend', 1)->get();
-            
 
         foreach ($compromissoSendActive as $compromiso) {
             $compromisoBD = Compromiso::find($compromiso->id);
             $student = Person::find($compromisoBD->student_id);
-           
+
             if ($compromisoBD && $student->telephone) {
                 $compromisoPaquete[] = $compromisoBD;
             }

@@ -285,7 +285,6 @@ $("#btonCarrito").click(function () {
 
 $(document).ready(function () {
     $("#enviarWhatsapp").click(function () {
-        
         // Verificar si la tabla tiene registros
         if ($("#tbCarrito tbody tr").length > 0) {
             swal({
@@ -317,13 +316,13 @@ $(document).ready(function () {
                 }
             });
         } else {
-            swal("No hay Mensajerias", "No se encontraron Mensajerias en la lista.", "warning");
+            swal(
+                "No hay Mensajerias",
+                "No se encontraron Mensajerias en la lista.",
+                "warning"
+            );
         }
     });
 });
 
-
-function enviarMensajerias() {
-
-    
-}
+function enviarMensajerias() {}

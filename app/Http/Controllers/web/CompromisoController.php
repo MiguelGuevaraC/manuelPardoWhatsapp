@@ -29,12 +29,16 @@ class CompromisoController extends Controller
         $currentRoute = $request->path();
         $currentRouteParts = explode('/', $currentRoute);
         $lastPart = end($currentRouteParts);
+        $totalCompromisos = Compromiso::whereHas('student', function ($query) {
+            $query->where('user_id', Auth::user()->id);
+            $query->where('state', 1);
+        })->count();
 
         if (in_array($lastPart, $accesses)) {
             $groupMenu = GroupMenu::getFilteredGroupMenusSuperior($user->typeofUser_id);
             $groupMenuLeft = GroupMenu::getFilteredGroupMenus($user->typeofUser_id);
 
-            return view('Modulos.Compromiso.index', compact('user', 'groupMenu', 'groupMenuLeft'));
+            return view('Modulos.Compromiso.index', compact('user', 'groupMenu', 'groupMenuLeft', 'totalCompromisos'));
         } else {
             abort(403, 'Acceso no autorizado.');
         }
@@ -49,6 +53,7 @@ class CompromisoController extends Controller
 
         $query = Compromiso::with(['student'])->whereHas('student', function ($query) {
             $query->where('user_id', Auth::user()->id);
+            $query->where('state', 1);
         })
             ->where('state', 1);
 
@@ -66,13 +71,20 @@ class CompromisoController extends Controller
                                     ->orWhere('fatherSurname', 'like', '%' . $searchValue . '%')
                                     ->orWhere('motherSurname', 'like', '%' . $searchValue . '%')
                                     ->orWhere('documentNumber', 'like', '%' . $searchValue . '%')
-                                    ->orWhere('identityNumber', 'like', '%' . $searchValue . '%');;;
+                                    ->orWhere('identityNumber', 'like', '%' . $searchValue . '%');
                             });
                         });
                         break;
-                    case 'cuotaNumber':
-                        $query->where('cuotaNumber', $searchValue);
-                        break;
+                    // case 'countCominments':
+                    //     $query->whereHas('student', function ($query) use ($searchValue) {
+                    //         $query->whereHas('cominments', function ($query) use ($searchValue) {
+                    //             $query->havingRaw('COUNT(*) = ?', [$searchValue]);
+                    //         });
+                    //     });
+                    //     break;
+                        case 'cuotaNumber':
+                            $query->where('cuotaNumber', $searchValue );
+                            break;
                     case 'student.level':
                         $query->whereHas('student', function ($query) use ($searchValue) {
                             $query->where('level', 'like', '%' . $searchValue . '%');
@@ -90,18 +102,19 @@ class CompromisoController extends Controller
                         $query->where('paymentAmount', 'like', '%' . $searchValue . '%');
 
                         break;
-                        case 'student.telephone':
-                        
-                            $query->whereHas('student', function ($query) use ($searchValue) {
-                                $query->where('telephone', 'like', '%' . $searchValue . '%');
-                            });
-                            break;
+                    case 'student.telephone':
+
+                        $query->whereHas('student', function ($query) use ($searchValue) {
+                            $query->where('telephone', 'like', '%' . $searchValue . '%');
+                        });
+                        break;
                     case 'conceptDebt':
                         $query->where('conceptDebt', 'like', '%' . $searchValue . '%');
                         break;
                     case 'status':
                         $query->where('status', $searchValue, 'like', '%' . $searchValue . '%');
                         break;
+
                 }
             }
         }
@@ -109,14 +122,54 @@ class CompromisoController extends Controller
         $totalRecords = $query->count();
 
         $list = $query->orderBy('id', 'desc')
+
+            ->get();
+
+        $stateSendFilter = null;
+        foreach ($request->get('columns') as $column) {
+            if ($column['data'] === 'stateSend' && !empty($column['search']['value'])) {
+                $stateSendFilter = $column['search']['value'];
+
+            } else {
+                // Compromiso::where('stateSend', 1)->update(['stateSend' => 0]);
+            }
+        }
+
+        // Actualizar registros si el filtro stateSend es true o false
+        if ($stateSendFilter !== null) {
+
+            if ($stateSendFilter != 'null') {
+
+                $stateSendValue = ($stateSendFilter === 'true') ? 1 : 0;
+
+                $filteredIds = $list->pluck('id')->toArray();
+                Compromiso::whereIn('id', $filteredIds)
+
+                    ->update(['stateSend' => $stateSendValue]);
+
+                Compromiso::whereNotIn('id', $filteredIds)->update(['stateSend' => 0]);
+            }
+
+        }
+        $list = $query->orderBy('id', 'desc')
             ->skip($start)
             ->take($length)
             ->get();
+
+        $list->transform(function ($item) {
+            $item->countCominments = $item->student->cominmentsCount();
+            return $item;
+        });
+
+        $compromisosSelected = Compromiso::whereHas('student', function ($query) {
+            $query->where('user_id', Auth::user()->id);
+        })->where('stateSend', 1)->count();
 
         return response()->json([
             'draw' => $draw,
             'recordsTotal' => $totalRecords,
             'recordsFiltered' => $totalRecords,
+            'recordsSelected' => $compromisosSelected,
             'data' => $list,
         ]);
     }
@@ -145,6 +198,7 @@ class CompromisoController extends Controller
         $query = Compromiso::with(['student'])
             ->whereHas('student', function ($query) {
                 $query->where('user_id', Auth::user()->id);
+                $query->where('state', 1);
             })
             ->where('state', 1);
 
@@ -154,7 +208,7 @@ class CompromisoController extends Controller
                 $searchValue = trim($column['search']['value'], '()'); // Quitar paréntesis adicionales
 
                 switch ($column['data']) {
-                    
+
                     case 'student.names':
                         $query->whereHas('student', function ($query) use ($searchValue) {
                             $query->where(function ($query) use ($searchValue) {
@@ -189,7 +243,7 @@ class CompromisoController extends Controller
                         $query->where('conceptDebt', 'like', '%' . $searchValue . '%');
                         break;
                     case 'student.telephone':
-                        
+
                         $query->whereHas('student', function ($query) use ($searchValue) {
                             $query->where('telephone', 'like', '%' . $searchValue . '%');
                         });
@@ -241,13 +295,11 @@ class CompromisoController extends Controller
 
             $dataMigration = [
                 'number' => $tipo . "-" . str_pad($siguienteNum, 8, '0', STR_PAD_LEFT),
-                'type' => 'Cominment',
+                'type' => 'Compromiso',
                 'comment' => $request->input('comment') ?? '-',
                 'routeExcel' => $rutaImagen ?? '-',
                 'user_id' => Auth::user()->id,
             ];
-
-           
 
             if ($excelFile) {
 
@@ -260,11 +312,11 @@ class CompromisoController extends Controller
                 } else {
                     return redirect()->back()->with('error', 'Formato de archivo no soportado.');
                 }
-    
+
                 return redirect()->back()->with('success', 'Datos importados correctamente.');
             }
 
- MigrationExport::create($dataMigration);
+            MigrationExport::create($dataMigration);
             return redirect()->back()->with('success', 'Datos importados correctamente.');
         } catch (\Exception $e) {
             // Capturar cualquier excepción y redirigir con mensaje de error

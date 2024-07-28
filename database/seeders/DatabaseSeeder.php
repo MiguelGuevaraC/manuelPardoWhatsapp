@@ -134,5 +134,6 @@ class DatabaseSeeder extends Seeder
         $this->call(OptionMenuSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(AccessSeeder::class);
+        $this->call(MessageWhatsappSeeder::class);
     }
 }

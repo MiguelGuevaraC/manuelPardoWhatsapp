@@ -14,10 +14,18 @@ var columns = [
                     data === 1 ? "checked" : ""
                 } ${data === 0 ? "" : ""} value="${row.id}">
             `;
+            return '';
         },
         orderable: false,
     },
 
+    // {
+    //     data: "countCominments",
+    //     render: function (data, type, row, meta) {
+    //         return data;
+    //     },
+    //     orderable: false,
+    // },
     {
         data: "cuotaNumber",
         render: function (data, type, row, meta) {
@@ -140,7 +148,10 @@ $("#tbCompromisos").on("change", "input.checkCompro", function () {
         url: "stateSend/" + id,
         method: "GET",
         success: function (response) {
-            $("#tbCompromisos").DataTable().ajax.reload();
+            var table = $("#tbCompromisos").DataTable();
+           table.column(1)
+                .search(null, true, false)
+                .draw(); 
         },
         error: function (xhr) {
             // Ocultar el modal de espera y mostrar mensaje de error
@@ -153,66 +164,18 @@ $("#tbCompromisos").on("change", "input.checkCompro", function () {
     });
 });
 
-var init = function () {
+var init = function (settings, json) {
     var api = this.api();
     var table = api.table().node(); // Asegúrate de obtener la referencia de la tabla
 
     // Agregar checkbox en el encabezado de la primera columna
     var toggleAllCheckbox = $(
-        '<input type="checkbox" id="toggleAll"   class="form-check-input" style="width: 20px; height: 20px;">'
+        '<input type="checkbox" id="toggleAll" class="form-check-input" style="width: 20px; height: 20px;">'
     );
 
     var headerCell = $(".filters th").eq(0);
     $(headerCell).html(toggleAllCheckbox);
 
-    // Evento para marcar o desmarcar todos los checkboxes
-    toggleAllCheckbox.on("change", function () {
-        var isChecked = $(this).is(":checked");
-
-        // Mostrar el modal de espera
-        Swal.fire({
-            title: "Actualizando...",
-            text: "Por favor, espere mientras se actualiza el estado.",
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            },
-        });
-
-        $.ajax({
-            url: "stateSendAll/" + isChecked,
-            method: "GET",
-            success: function (response) {
-                // Ocultar el modal de espera y mostrar mensaje de éxito
-                Swal.fire({
-                    icon: "success",
-                    title: "Actualización completada",
-                    text: response.success,
-                    timer: 1000, // Desaparecerá en 1 segundo
-                    showConfirmButton: false, // No mostrar el botón de confirmación
-                    didClose: () => {
-                        if (isChecked) {
-                            $("#btonCarrito").click();
-                        }
-                        $("#tbCompromisos").DataTable().ajax.reload();
-                    },
-                });
-
-                // Actualizar la tabla tbCompromisos
-                $("#tbCompromisos").DataTable().ajax.reload();
-            },
-            error: function (xhr) {
-                // Ocultar el modal de espera y mostrar mensaje de error
-                Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: "Error al actualizar el estado",
-                });
-            },
-        });
-    });
-
-    // Configuración de DataTables
     api.columns()
         .eq(0)
         .each(function (colIdx) {
@@ -220,16 +183,21 @@ var init = function () {
             var header = $(column.header());
 
             // Configurar filtro para columnas específicas
-            if ([8, 2, 3, 5, 4, 6, 7, 9].includes(colIdx)) {
+            if ([8, 2, 3, 5, 4, 6, 7, 9, 1].includes(colIdx)) {
                 var cell = $(".filters th").eq(header.index());
                 var title = header.text();
 
-                $(cell).html(
-                    '<input type="text" placeholder="Escribe aquí..." />'
-                );
                 if (colIdx == 0) {
                     $(cell).html(
                         '<input style="width: 30px;" type="text" placeholder="#" />'
+                    );
+                } else if (colIdx == 1) {
+                    $(cell).html(
+                        '<input type="checkbox" id="toggleAlll" class="form-check-input" style="width: 20px; height: 20px;">'
+                    );
+                } else {
+                    $(cell).html(
+                        '<input type="text" placeholder="Escribe aquí..." />'
                     );
                 }
 
@@ -238,17 +206,53 @@ var init = function () {
                     .off("keyup change")
                     .on("keyup change", function (e) {
                         e.stopPropagation();
-                        var cursorPosition = this.selectionStart;
-                        column.search(this.value, true, false).draw();
-                        $(this)
-                            .focus()[0]
-                            .setSelectionRange(cursorPosition, cursorPosition);
+                        var checkedInput = $("#toggleAlll").is(":checked");
+                        if (this.type === "text") {
+                            var cursorPosition = this.selectionStart;
+                            column.search(this.value, true, false).draw();
+
+                            $(this)
+                                .focus()[0]
+                                .setSelectionRange(
+                                    cursorPosition,
+                                    cursorPosition
+                                );
+
+                            // Desmarcar el checkbox del encabezado superior
+                            $("#toggleAlll").prop("checked", false);
+                            checkedInput = "";
+                        
+                      
+                                api.column(1)
+                                    .search("false", true, false)
+                                    .draw();
+                           
+                        }
+
+                        console.log("Checkbox in is checked:", checkedInput);
+
+                        if (this.type === "checkbox") {
+                         
+                                console.log(
+                                    "Checkbox is checked:",
+                                    checkedInput
+                                );
+                            
+                                column.search(checkedInput, true, false).draw();
+                           
+                        } else {
+                        }
+                        console.log("Checkbox in is checked:", checkedInput);
                     });
             } else {
                 $(header).html("");
             }
         });
 };
+
+$("#searchBtn").click(function () {
+    $(".panelBusqueda").toggle(); // Alterna la visibilidad del panel
+});
 
 $("#tbCompromisos thead tr")
     .clone(true)
@@ -267,24 +271,22 @@ function initialTableCompromisos() {
         ajax: {
             url: "compromisoAll",
             type: "GET",
-            data: function (d) {
-                // Aquí configuramos los filtros de búsqueda por columna
-                $("#tbCompromisos .filters input").each(function () {
-                    var name = $(this).attr("name");
-                    d.columns.forEach(function (column) {
-                        if (column.data === name) {
-                            column.search.value = $(this).val();
-                        }
-                    }, this);
-                });
-            },
+            data: function (d) {},
             debounce: 500,
+        },
+        drawCallback: function (settings) {
+            var api = this.api();
+            var json = api.ajax.json();
+
+            console.log(json.recordsFiltered);
+            $("#countCompromiso").text(json.recordsFiltered);
+            $("#countCompromisoSelected").text(json.recordsSelected);
         },
         orderCellsTop: true,
         fixedHeader: true,
         columns: columns,
-        dom: "Bfrtip",
-        buttons: butomns,
+        dom: "Brtip",
+        buttons: [],
         language: lenguag,
         search: search,
         initComplete: init,
@@ -293,25 +295,8 @@ function initialTableCompromisos() {
         scrollY: "300px",
         scrollX: true,
         autoWidth: true,
-        pageLength: 30,
+        pageLength: 50,
         lengthChange: false,
-    });
-
-    // Restaurar el estado de los checkboxes desde localStorage
-
-    var markedIds = JSON.parse(localStorage.getItem("markedIds") || "[]");
-    table.on("draw", function () {
-        table.rows().every(function () {
-            var row = this.node();
-            var rowId = this.id();
-            console.log(markedIds.includes(rowId));
-
-            $(row)
-                .find("input.checkCominments")
-                .each(function () {
-                    $(this).prop("checked", markedIds.includes(rowId));
-                });
-        });
     });
 }
 $(document).ready(function () {

@@ -6,7 +6,7 @@
         <tr class="custom-header-bg">
             <th scope="col">id</th>
             <th scope="col">Marcar</th>
-            <th scope="col">N° Cuota</th>
+            <th scope="col">Cuotas Vencidas</th>
 
             <th scope="col">Nombre</th>
             <th scope="col" name="level">Level</th>

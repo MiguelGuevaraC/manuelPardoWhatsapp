@@ -178,7 +178,7 @@ class StudentController extends Controller
     {
         // Validar el archivo de Excel
         $request->validate([
-            'excelFile' => 'required|mimes:xlsx,xls',
+            'excelFile' => 'required|file',
         ]);
 
         // Obtener el archivo Excel del request

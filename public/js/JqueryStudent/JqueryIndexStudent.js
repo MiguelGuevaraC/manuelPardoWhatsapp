@@ -40,7 +40,9 @@ var columns = [
                 <a href="javascript:void(0)" onclick="editStudent(${data.id})" style="background:#ffc107; color:white;" class="btn btn-info"> 
                     <i class="fas fa-edit"></i>
                 </a>
-               
+                 <a href="javascript:void(0)" onclick="destroyStudent(${data.id})" style="background:red; color:white;" class="btn btn-info"> 
+                    <i class="fas fa-trash"></i>
+                </a>
              `;
         },
     },

@@ -82,7 +82,7 @@ var butomns = [
         text: 'COPY <i class="fa-solid fa-copy"></i>',
         className: "btn-secondary copy",
         exportOptions: {
-            columns: [0, 1, 2,3], // las columnas que se exportarán
+            columns: [0, 1, 2,3,4], // las columnas que se exportarán
         },
     },
 
@@ -91,7 +91,7 @@ var butomns = [
         text: 'EXCEL <i class="fas fa-file-excel"></i>',
         className: "excel btn-success",
         exportOptions: {
-            columns: [0, 1, 2,3], // las columnas que se exportarán
+            columns: [0, 1, 2,3,4], // las columnas que se exportarán
         },
     },
     {
@@ -100,7 +100,7 @@ var butomns = [
         text: 'PDF <i class="far fa-file-pdf"></i>',
         className: "btn-danger pdf",
         exportOptions: {
-            columns: [0, 1, 2,3], // las columnas que se exportarán
+            columns: [0, 1, 2,3,4], // las columnas que se exportarán
         },
     },
     {
@@ -108,7 +108,7 @@ var butomns = [
         text: 'PRINT <i class="fa-solid fa-print"></i>',
         className: "btn-dark print",
         exportOptions: {
-            columns: [0, 1, 2,3], // las columnas que se exportarán
+            columns: [0, 1, 2,3,4], // las columnas que se exportarán
         },
     },
 ];
@@ -124,7 +124,7 @@ var init = function () {
         .eq(0)
         .each(function (colIdx) {
             if (colIdx == 0 || colIdx == 1
-                || colIdx == 2|| colIdx == 3
+                || colIdx == 2|| colIdx == 3|| colIdx == 4
             ) {
                 var cell = $(".filters th").eq(
                     $(api.column(colIdx).header()).index()

@@ -84,6 +84,56 @@
 
     <link rel="stylesheet" href="{{ asset('css/appPlantilla.css') }}">
 
+    <style>
+        .panel-container {
+            display: flex;
+            justify-content: space-between;
+  
+        }
+
+        .panel-half {
+            width: 100%;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #000000;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .panel-half:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .media-left .pad-hor {
+            padding: 10px;
+            background-color: #25476a;
+            border-radius: 50%;
+        }
+
+        .text-2x {
+            font-size: 2em;
+        }
+
+        .text-semibold {
+            font-weight: 600;
+        }
+
+        .mar-no {
+            margin: 0;
+        }
+
+        .pad-all {
+            padding: 20px;
+        }
+
+        .panel-success {
+            border: 1px solid #28a745;
+            background-color: #28a745;
+            color: #fff;
+        }
+    </style>
+
 
 </head>
 
@@ -204,20 +254,54 @@
 
                     <div class="panel">
 
-                        <div id="demo-custom-toolbar2" class="table-toolbar-left ">
+                        <div class="panel-container" >
+
+                            <div class="panel panel-success panel-colorful media middle pad-all panel-half">
+                                <div class="media-left">
+                                    <div class="pad-hor">
+                                        <i class="fa-solid fa-file-excel icon-3x"></i>
+                                        
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <p id="countCompromisoTotal" class="text-2x mar-no text-semibold">{{$totalCompromisos}}</p>
+                                    <p class="mar-no">Compromisos Totales</p>
+                                </div>
+                                <div class="media-left">
+                                    <div class="pad-hor">
+                                        <i class="fa-solid fa-table icon-3x"></i>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <p id="countCompromiso" class="text-2x mar-no text-semibold">{{$totalCompromisos}}</p>
+                                    <p class="mar-no">Compromisos Filtrados</p>
+                                </div>
+                                <div class="media-left">
+                                    <div class="pad-hor">
+                                        <i class="fa-solid fa-square-check icon-3x"></i>
+                                        
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <p id="countCompromisoSelected" class="text-2x mar-no text-semibold">0</p>
+                                    <p class="mar-no">Compromisos Selecionados</p>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div id="demo-custom-toolbar2" class="">
 
                             <button id="btonNuevo" style="margin: 12px" class="btn btn-danger"><i
                                     class="demo-pli-plus"></i>
                                 Añadir</button>
-                          
-                        </div>  
-                        <div id="demo-custom-toolbar2" class="table-toolbar-right ">
 
                             <button id="btonCarrito" style="margin: 12px" class="btn btn-success"><i
                                     class="demo-pli-plus"></i>
                                 Enviar Whatapp </button>
                         </div>
-                    
+
 
                         <div class="panel-body">
                             @include('Modulos.Compromiso.Tables.tablaCompromiso')
@@ -467,7 +551,7 @@
     <script src="{{ asset('js/JqueryCompromiso/JqueryUpdateCompromiso.js') }}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-  
+
 
 </body>
 

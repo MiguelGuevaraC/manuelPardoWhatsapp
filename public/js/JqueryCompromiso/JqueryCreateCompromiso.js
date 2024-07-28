@@ -86,6 +86,7 @@ $(document).on("click", "#cerrarModal", function () {
 $(document).ready(function () {
     // Evento click del botón del carrito
     $("#btonCarrito").click(function () {
+        $("#modalCarrito").modal("show");
         initialCarritoTable();
     });
 
@@ -261,31 +262,7 @@ function initialCarritoTable() {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
             data: function (d) {
-                // Obtener los IDs marcados desde localStorage
-                var markedIdsString = localStorage.getItem("markedIds");
-                console.log(markedIdsString);
 
-                // Convertir la cadena JSON a un arreglo de números
-                var markedIds = [];
-                try {
-                    var parsedIds = JSON.parse(markedIdsString);
-
-                    if (Array.isArray(parsedIds)) {
-                        markedIds = parsedIds
-                            .map(function (item) {
-                                var number = Number(item); // Intentar convertir el item a número
-                                return isNaN(number) ? null : number; // Retornar null si no es un número válido
-                            })
-                            .filter(function (item) {
-                                return item !== null; // Filtrar los valores null
-                            });
-                    }
-                } catch (e) {
-                    console.error(
-                        "Error al parsear markedIds desde localStorage:",
-                        e
-                    );
-                }
 
                 // Aquí configuramos los filtros de búsqueda por columna
                 $("#tbCarrito .filters1 input").each(function () {
@@ -297,15 +274,13 @@ function initialCarritoTable() {
                     }, this);
                 });
 
-                // Agregar los IDs marcados al objeto de datos
-                d.markedIds = markedIds;
             },
             debounce: 500,
         },
         orderCellsTop: true,
         fixedHeader: true,
         columns: carritoColumns,
-        dom: "Bfrtip",
+        dom: "rtip",
         buttons: carritoButtons,
         language: carritoLanguage,
         search: carritoSearch,
@@ -315,7 +290,7 @@ function initialCarritoTable() {
         scrollY: "300px",
         scrollX: true,
         autoWidth: true,
-        pageLength: 30,
+        pageLength: 50,
         lengthChange: false,
     });
 }
@@ -330,7 +305,10 @@ $("#tbCarrito").on("change", "input.checkCominmentsCarrito", function () {
         method: "GET",
         success: function (response) {
             $("#tbCarrito").DataTable().ajax.reload();
-            $("#tbCompromisos").DataTable().ajax.reload();
+            var table = $("#tbCompromisos").DataTable();
+            table.column(1)
+                 .search(null, true, false)
+                 .draw(); 
         },
         error: function (xhr) {
             // Ocultar el modal de espera y mostrar mensaje de error
