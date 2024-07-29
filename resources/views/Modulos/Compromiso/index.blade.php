@@ -254,42 +254,42 @@
 
                     <div class="panel">
 
-                        <div class="panel-container" >
+                   
 
                             <div class="panel panel-success panel-colorful media middle pad-all panel-half">
-                                <div class="media-left">
-                                    <div class="pad-hor">
-                                        <i class="fa-solid fa-file-excel icon-3x"></i>
-                                        
+                                <div class="row">
+                                    <div class="col-12 col-md-4 d-flex align-items-center my-2">
+                                        <div class="pad-hor text-center">
+                                            <i class="fa-solid fa-file-excel icon-2x"></i>
+                                        </div>
+                                        <div class="media-body ml-2 text-center">
+                                            <p id="countCompromisoTotal" class="text-2x mar-no text-semibold">{{$totalCompromisos}}</p>
+                                            <p class="mar-no">Compromisos Totales</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="media-body">
-                                    <p id="countCompromisoTotal" class="text-2x mar-no text-semibold">{{$totalCompromisos}}</p>
-                                    <p class="mar-no">Compromisos Totales</p>
-                                </div>
-                                <div class="media-left">
-                                    <div class="pad-hor">
-                                        <i class="fa-solid fa-table icon-3x"></i>
+                                    <div class="col-12 col-md-4 d-flex align-items-center my-2">
+                                        <div class="pad-hor text-center">
+                                            <i class="fa-solid fa-table icon-2x"></i>
+                                        </div>
+                                        <div class="media-body ml-2 text-center">
+                                            <p id="countCompromiso" class="text-2x mar-no text-semibold">{{$totalCompromisos}}</p>
+                                            <p class="mar-no">Compromisos Filtrados</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="media-body">
-                                    <p id="countCompromiso" class="text-2x mar-no text-semibold">{{$totalCompromisos}}</p>
-                                    <p class="mar-no">Compromisos Filtrados</p>
-                                </div>
-                                <div class="media-left">
-                                    <div class="pad-hor">
-                                        <i class="fa-solid fa-square-check icon-3x"></i>
-                                        
+                                    <div class="col-12 col-md-4 d-flex align-items-center my-2">
+                                        <div class="pad-hor text-center">
+                                            <i class="fa-solid fa-square-check icon-2x"></i>
+                                        </div>
+                                        <div class="media-body ml-2 text-center">
+                                            <p id="countCompromisoSelected" class="text-2x mar-no text-semibold">0</p>
+                                            <p class="mar-no">Compromisos Seleccionados</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="media-body">
-                                    <p id="countCompromisoSelected" class="text-2x mar-no text-semibold">0</p>
-                                    <p class="mar-no">Compromisos Selecionados</p>
                                 </div>
                             </div>
-
-
-                        </div>
+                        
+                     
+                        
 
                         <div id="demo-custom-toolbar2" class="">
 

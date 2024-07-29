@@ -3,10 +3,10 @@
 namespace App\Imports;
 
 use App\Models\Person;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Exception;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PersonImport implements ToModel, WithHeadingRow
@@ -15,7 +15,7 @@ class PersonImport implements ToModel, WithHeadingRow
 
     public function headingRow(): int
     {
-        return 1; // Indica que la primera fila es la fila de encabezado
+        return 0; // Indica que la primera fila es la fila de encabezado
     }
 
     /**

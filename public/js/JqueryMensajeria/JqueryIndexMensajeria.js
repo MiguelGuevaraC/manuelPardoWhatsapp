@@ -273,7 +273,7 @@ $(document).ready(function () {
         fixedHeader: true,
         columns: columns,
         dom: "Bfrtip",
-        buttons: butomns,
+        buttons: [],
 
         language: lenguag,
         search: search,

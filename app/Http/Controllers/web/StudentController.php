@@ -214,12 +214,9 @@ class StudentController extends Controller
                 } else {
                     return redirect()->back()->with('error', 'Formato de archivo no soportado.');
                 }
-    
+                MigrationExport::create($dataMigration);
                 return redirect()->back()->with('success', 'Datos importados correctamente.');
             }
-
- MigrationExport::create($dataMigration);
-
 
             // Redireccionar con mensaje de éxito
             return redirect()->back()->with('success', 'Datos importados correctamente.');

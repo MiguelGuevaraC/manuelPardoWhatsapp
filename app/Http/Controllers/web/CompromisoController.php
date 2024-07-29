@@ -82,9 +82,9 @@ class CompromisoController extends Controller
                     //         });
                     //     });
                     //     break;
-                        case 'cuotaNumber':
-                            $query->where('cuotaNumber', $searchValue );
-                            break;
+                    case 'cuotaNumber':
+                        $query->where('cuotaNumber', $searchValue);
+                        break;
                     case 'student.level':
                         $query->whereHas('student', function ($query) use ($searchValue) {
                             $query->where('level', 'like', '%' . $searchValue . '%');
@@ -312,11 +312,10 @@ class CompromisoController extends Controller
                 } else {
                     return redirect()->back()->with('error', 'Formato de archivo no soportado.');
                 }
-
+                MigrationExport::create($dataMigration);
                 return redirect()->back()->with('success', 'Datos importados correctamente.');
             }
 
-            MigrationExport::create($dataMigration);
             return redirect()->back()->with('success', 'Datos importados correctamente.');
         } catch (\Exception $e) {
             // Capturar cualquier excepción y redirigir con mensaje de error

@@ -2,20 +2,62 @@ $(document).ready(function () {
     $("#btonShowEtiquetas").click(function () {
         Swal.fire({
             title: "Etiquetas",
-            html:
-                '<ul style="text-align:left">' +
-                "<li><strong>{{numCuotas}}</strong>: Número de cuotas vencidas</li>" +
-                "<li><strong>{{nombreApoderado}}</strong>: Nombre del apoderado</li>" +
-                "<li><strong>{{dniApoderado}}</strong>: DNI del apoderado</li>" +
-                "<li><strong>{{nombreAlumno}}</strong>: Nombre del alumno</li>" +
-                "<li><strong>{{codigoAlumno}}</strong>: Código del alumno</li>" +
-                "<li><strong>{{grado}}</strong>: Grado del alumno</li>" +
-                "<li><strong>{{seccion}}</strong>: Sección del alumno</li>" +
-                "<li><strong>{{montoPago}}</strong>: Monto del pago pendiente</li>" +
-                "</ul>",
-            icon: "info",
+            html: `
+                <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left">Etiqueta</th>
+                            <th style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left">Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left"><strong>{{numCuotas}}</strong></td>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left">Número de cuotas vencidas</td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left"><strong>{{nombreApoderado}}</strong></td>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left">Nombre del apoderado</td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left"><strong>{{dniApoderado}}</strong></td>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left">DNI del apoderado</td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left"><strong>{{nombreAlumno}}</strong></td>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left">Nombre del alumno</td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left"><strong>{{codigoAlumno}}</strong></td>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left">Código del alumno</td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left"><strong>{{grado}}</strong></td>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left">Grado del alumno</td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left"><strong>{{seccion}}</strong></td>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left">Sección del alumno</td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left"><strong>{{montoPago}}</strong></td>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left">Monto del pago pendiente</td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left"><strong>{{nivel}}</strong></td>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left">Nivel de estudio del alumno</td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left"><strong>{{meses}}</strong></td>
+                            <td style="border-bottom: 1px solid #ddd; padding: 8px;text-align:left">Meses de deudas</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `,
         });
     });
+    
+    
 
     $("#btonShowView").click(function () {
         $.ajax({
@@ -85,7 +127,7 @@ $(document).ready(function () {
                  
                     Swal.fire({
                         icon: 'error',
-                        title:  'Error Etiqueta',
+                        title:  'Error Validación',
                         text:  errors,
                         confirmButtonText: 'Aceptar'
                     });

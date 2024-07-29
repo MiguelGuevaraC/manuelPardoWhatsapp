@@ -14,7 +14,7 @@
 
             <th scope="col">Monto Pago</th>
             <th scope="col">Teléfono</th>
-            <th scope="col">Concepto</th>
+            <th scope="col">Meses</th>
 
 
 

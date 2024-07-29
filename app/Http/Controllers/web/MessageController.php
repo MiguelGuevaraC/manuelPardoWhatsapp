@@ -49,7 +49,7 @@ class MessageController extends Controller
             'block3' => 'block3',
         ];
 
-        $compromiso = Compromiso::find(5) ?? (object) [
+        $compromiso = Compromiso::find(1000) ?? (object) [
             'cuotaNumber' => '2',
             'paymentAmount' => '1000',
             'conceptDebt' => 'Junio, Julio',
@@ -96,16 +96,30 @@ class MessageController extends Controller
     {
 
         $validator = validator()->make($request->all(), [
-            'title' => 'nullable|string',
-            'block1' => 'nullable|string',
-            'block2' => 'nullable|string',
-            'block3' => 'nullable|string',
+            'title' => 'required|string|max:1024',
+            'block1' => 'required|string|max:1024',
+            'block2' => 'required|string|max:1024',
+            'block3' => 'required|string|max:1024',
+        ], [
+            'title.required' => 'El título es obligatorio.',
+            'title.string' => 'El título debe ser una cadena de texto.',
+            'title.max' => 'El título no debe exceder los 1024 caracteres.',
+            'block1.required' => 'El párrafo 1 es obligatorio.',
+            'block1.string' => 'El párrafo 1 debe ser una cadena de texto.',
+            'block1.max' => 'El párrafo 1 no debe exceder los 1024 caracteres.',
+            'block2.required' => 'El párrafo 2 es obligatorio.',
+            'block2.string' => 'El párrafo 2 debe ser una cadena de texto.',
+            'block2.max' => 'El párrafo 2 no debe exceder los 1024 caracteres.',
+            'block3.required' => 'El párrafo 3 es obligatorio.',
+            'block3.string' => 'El párrafo 3 debe ser una cadena de texto.',
+            'block3.max' => 'El párrafo 3 no debe exceder los 1024 caracteres.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()->first()], 422);
+            return response()->json([
+                'error' => $validator->errors()->first(),
+            ], 422);
         }
-
         $user = Auth::user();
         $message = MessageWhasapp::where('responsable_id', $user->person_id)->first();
 
