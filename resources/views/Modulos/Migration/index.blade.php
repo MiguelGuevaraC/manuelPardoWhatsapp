@@ -101,7 +101,7 @@
                     <a href='vistaInicio' class="navbar-brand">
                         {{-- <img src="plantillaNuevo\img\logo.png" alt="Nifty Logo" class="brand-icon"> --}}
                         <div class="brand-title">
-                            <span class="brand-text">Mensajaría</span>
+                            <span class="brand-text">Mensajería</span>
                         </div>
                     </a>
                 </div>
