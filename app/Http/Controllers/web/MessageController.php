@@ -48,49 +48,37 @@ class MessageController extends Controller
             'block2' => 'block2',
             'block3' => 'block3',
         ];
-
+    
         $compromiso = Compromiso::find(1000) ?? (object) [
             'cuotaNumber' => '2',
             'paymentAmount' => '1000',
             'conceptDebt' => 'Junio, Julio',
             'student_id' => null,
         ];
-
+    
         $student = $compromiso->student_id ? Person::find($compromiso->student_id) : (object) [
             'names' => 'Miguel Guevara',
-            'documentNumber' => '12345678',
+            'documentNumber' => '01234567890',
             'grade' => '5to',
             'section' => 'A',
             'level' => 'Secundaria',
             'representativeDni' => '12345678',
             'representativeNames' => 'Jose Guevara',
         ];
-
+    
+        $tags = ['{{numCuotas}}', '{{nombreApoderado}}', '{{dniApoderado}}', '{{nombreAlumno}}', '{{codigoAlumno}}', '{{grado}}', '{{seccion}}', '{{nivel}}', '{{meses}}', '{{montoPago}}'];
+        $values = [$compromiso->cuotaNumber, $student->representativeNames, $student->representativeDni, $student->names, $student->documentNumber, $student->grade, $student->section, $student->level, $compromiso->conceptDebt, $compromiso->paymentAmount];
+    
         $blocks = [
-            'title' => str_replace(
-                ['{{numCuotas}}'],
-                [$compromiso->cuotaNumber],
-                $message->title
-            ),
-            'block1' => str_replace(
-                ['{{numCuotas}}', '{{nombreApoderado}}', '{{dniApoderado}}', '{{nombreAlumno}}', '{{codigoAlumno}}', '{{grado}}', '{{seccion}}', '{{nivel}}', '{{meses}}', '{{montoPago}}'],
-                [$compromiso->cuotaNumber, $student->representativeNames, $student->representativeDni, $student->names, $student->documentNumber, $student->grade, $student->section, $student->level, $compromiso->conceptDebt, $compromiso->paymentAmount],
-                $message->block1
-            ),
-            'block2' => str_replace(
-                ['{{numCuotas}}', '{{nombreApoderado}}', '{{dniApoderado}}', '{{nombreAlumno}}', '{{codigoAlumno}}', '{{grado}}', '{{seccion}}', '{{nivel}}', '{{meses}}', '{{montoPago}}'],
-                [$compromiso->cuotaNumber, $student->representativeNames, $student->representativeDni, $student->names, $student->documentNumber, $student->grade, $student->section, $student->level, $compromiso->conceptDebt, $compromiso->paymentAmount],
-                $message->block2
-            ),
-            'block3' => str_replace(
-                ['{{numCuotas}}', '{{nombreApoderado}}', '{{dniApoderado}}', '{{nombreAlumno}}', '{{codigoAlumno}}', '{{grado}}', '{{seccion}}', '{{nivel}}', '{{meses}}', '{{montoPago}}'],
-                [$compromiso->cuotaNumber, $student->representativeNames, $student->representativeDni, $student->names, $student->documentNumber, $student->grade, $student->section, $student->level, $compromiso->conceptDebt, $compromiso->paymentAmount],
-                $message->block3
-            ),
+            'title' => str_replace($tags, $values, $message->title),
+            'block1' => str_replace($tags, $values, $message->block1),
+            'block2' => str_replace($tags, $values, $message->block2),
+            'block3' => str_replace($tags, $values, $message->block3),
         ];
-
+    
         return response()->json($blocks);
     }
+    
 
     public function store(Request $request)
     {

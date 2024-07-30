@@ -57,40 +57,22 @@ class SendWhatsappJob implements ShouldQueue
 
                 $student = Person::find($comminment->student_id);
 
-                $cadenaNombres = '';
-                if ($student->typeofDocument == 'DNI') {
-                    $cadenaNombres = $student->names . ' ' . $student->fatherSurname . ' ' . $student->motherSurname;
-                } else if ($student->typeofDocument == 'RUC') {
-                    $cadenaNombres = $student->businessName;
-                }
+                $cadenaNombres = $student->typeofDocument == 'DNI'
+                ? $student->names . ' ' . $student->fatherSurname . ' ' . $student->motherSurname
+                : ($student->typeofDocument == 'RUC' ? $student->businessName : '');
 
                 $studentParent = $student->representativeNames ?? 'Apoderado';
                 $studentParentDni = $student->representativeDni ?? '';
                 $telephoneStudent = '903017426'; // MOMENTANEO MI NUMERO TELEFÓNICO
 
-                $title = str_replace(
-                    ['{{numCuotas}}'],
-                    [$comminment->cuotaNumber],
-                    $messageBase->title
-                );
+                $tags = ['{{numCuotas}}', '{{nombreApoderado}}', '{{dniApoderado}}', '{{nombreAlumno}}', '{{codigoAlumno}}', '{{grado}}', '{{seccion}}', '{{nivel}}', '{{meses}}', '{{montoPago}}'];
+                $values = [$comminment->cuotaNumber, $studentParent, $studentParentDni, $cadenaNombres, $student->documentNumber, $student->grade, $student->section, $student->level, $comminment->conceptDebt, $comminment->paymentAmount];
 
-                $block1 = str_replace(
-                    ['{{numCuotas}}', '{{nombreApoderado}}', '{{dniApoderado}}', '{{nombreAlumno}}', '{{codigoAlumno}}', '{{grado}}', '{{seccion}}', '{{nivel}}', '{{meses}}', '{{montoPago}}'],
-                    [$comminment->cuotaNumber, $studentParent, $studentParentDni, $cadenaNombres, $student->documentNumber, $student->grade, $student->section, $student->level, $comminment->conceptDebt, $comminment->paymentAmount],
-                    $messageBase->block1
-                );
+                $title = str_replace(['{{numCuotas}}'], [$comminment->cuotaNumber], $messageBase->title);
 
-                $block2 = str_replace(
-                    ['{{numCuotas}}', '{{nombreApoderado}}', '{{dniApoderado}}', '{{nombreAlumno}}', '{{codigoAlumno}}', '{{grado}}', '{{seccion}}', '{{nivel}}', '{{meses}}', '{{montoPago}}'],
-                    [$comminment->cuotaNumber, $studentParent, $studentParentDni, $cadenaNombres, $student->documentNumber, $student->grade, $student->section, $student->level, $comminment->conceptDebt, $comminment->paymentAmount],
-                    $messageBase->block2
-                );
-
-                $block3 = str_replace(
-                    ['{{numCuotas}}', '{{nombreApoderado}}', '{{dniApoderado}}', '{{nombreAlumno}}', '{{codigoAlumno}}', '{{grado}}', '{{seccion}}', '{{nivel}}', '{{meses}}', '{{montoPago}}'],
-                    [$comminment->cuotaNumber, $studentParent, $studentParentDni, $cadenaNombres, $student->documentNumber, $student->grade, $student->section, $student->level, $comminment->conceptDebt, $comminment->paymentAmount],
-                    $messageBase->block3
-                );
+                $block1 = str_replace($tags, $values, $messageBase->block1);
+                $block2 = str_replace($tags, $values, $messageBase->block2);
+                $block3 = str_replace($tags, $values, $messageBase->block3);
 
                 $mensajes[] = [
                     "cellphone_number" => $telephoneStudent,
@@ -99,12 +81,9 @@ class SendWhatsappJob implements ShouldQueue
                 ];
 
                 $person = Person::find($user->person_id);
-                $cadenaNombres = '';
-                if ($person->typeofDocument == 'DNI') {
-                    $cadenaNombres = $person->names . ' ' . $person->fatherSurname . ' ' . $person->motherSurname;
-                } else if ($person->typeofDocument == 'RUC') {
-                    $cadenaNombres = $person->businessName;
-                }
+                $cadenaNombres = $person->typeofDocument == 'DNI'
+                ? $person->names . ' ' . $person->fatherSurname . ' ' . $person->motherSurname
+                : ($person->typeofDocument == 'RUC' ? $person->businessName : '');
 
                 $tipo = 'ENVI';
                 $resultado = DB::select('SELECT COALESCE(MAX(CAST(SUBSTRING(number, LOCATE("-", number) + 1) AS SIGNED)), 0) + 1 AS siguienteNum FROM whatsapp_sends a WHERE SUBSTRING(number, 1, 4) = ?', [$tipo])[0]->siguienteNum;
