@@ -68,7 +68,7 @@ class SendWhatsappJob implements ShouldQueue
                 $tags = ['{{numCuotas}}', '{{nombreApoderado}}', '{{dniApoderado}}', '{{nombreAlumno}}', '{{codigoAlumno}}', '{{grado}}', '{{seccion}}', '{{nivel}}', '{{meses}}', '{{montoPago}}'];
                 $values = [$comminment->cuotaNumber, $studentParent, $studentParentDni, $cadenaNombres, $student->documentNumber, $student->grade, $student->section, $student->level, $comminment->conceptDebt, $comminment->paymentAmount];
 
-                $title = str_replace(['{{numCuotas}}'], [$comminment->cuotaNumber], $messageBase->title);
+                $title = str_replace($tags, $values, $messageBase->title);
 
                 $block1 = str_replace($tags, $values, $messageBase->block1);
                 $block2 = str_replace($tags, $values, $messageBase->block2);

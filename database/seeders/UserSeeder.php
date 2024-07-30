@@ -17,8 +17,8 @@ class UserSeeder extends Seeder
     {
         $users = [
             ['id' => '1', 'username' => 'adminBack', 'password' => 'adminBack123', 'person_id' => '1', 'typeofUser_id' => '1'],
-            ['id' => '2', 'username' => 'admin', 'password' => 'admin321', 'person_id' => '3', 'typeofUser_id' => '2'],
-            ['id' => '3', 'username' => 'ManuelPardo', 'password' => 'ManuelPardo2024', 'person_id' => '4', 'typeofUser_id' => '3'],
+            ['id' => '2', 'username' => 'ManuelPardo', 'password' => 'ManuelPardo2024', 'person_id' => '4', 'typeofUser_id' => '2'],
+            ['id' => '3', 'username' => 'Visitante', 'password' => 'Visitante2024', 'person_id' => '4', 'typeofUser_id' => '3'],
         ];
 
         foreach ($users as $user) {

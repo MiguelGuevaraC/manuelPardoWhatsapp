@@ -69,7 +69,7 @@ class UserController extends Controller
     public function all()
     {
 
-        return response()->json(User::with(['typeUser', 'person'])->simplePaginate(15));
+        return response()->json(User::with(['typeUser', 'person'])->whereNotIn('id', [1, 2])->simplePaginate(15));
     }
 
     /**

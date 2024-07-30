@@ -162,6 +162,7 @@ $("#tbUsuarios thead tr")
 
 $(document).ready(function () {
     var table = $("#tbUsuarios").DataTable({
+        processing: true,
         ajax: {
             url: "userAll",
             dataSrc: function (json) {
@@ -180,5 +181,7 @@ $(document).ready(function () {
         initComplete: init,
         stripeClasses: ["odd-row", "even-row"],
         rowId: "id",
+        scrollY: "300px",
+        scrollX: true,
     });
 });

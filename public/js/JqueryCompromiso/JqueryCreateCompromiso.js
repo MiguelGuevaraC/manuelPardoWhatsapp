@@ -47,6 +47,7 @@ $(document).ready(function () {
                         Swal.close();
                         // Aquí puedes manejar la respuesta del servidor
                         $("#tbCompromisos").DataTable().ajax.reload();
+                        location.reload();
                     },
                     error: function (xhr, status, error) {
                         // Cerrar la alerta de SweetAlert

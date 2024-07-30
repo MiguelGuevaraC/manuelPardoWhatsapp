@@ -204,6 +204,7 @@ $("#tbMigrations thead tr")
             rowId: "id",
             stripeClasses: ["odd-row", "even-row"],
             scrollY: "300px",
+            scrollX: true,
 
         });
     });

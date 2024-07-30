@@ -152,6 +152,7 @@ $("#tbRoles thead tr")
 
 $(document).ready(function () {
     var table = $("#tbRoles").DataTable({
+        processing: true,
         ajax: {
             url: "accessAll",
             dataSrc: function (json) {
@@ -161,6 +162,8 @@ $(document).ready(function () {
         },
         orderCellsTop: true,
         fixedHeader: true,
+ 
+ 
         columns: columns,
         dom: "Bfrtip",
         buttons: butomns,
@@ -170,5 +173,7 @@ $(document).ready(function () {
         initComplete: init,
         stripeClasses: ["odd-row", "even-row"],
         rowId: 'id',
+        scrollY: "300px",
+        scrollX: true,
     });
 });
