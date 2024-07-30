@@ -29,16 +29,23 @@ class CompromisoController extends Controller
         $currentRoute = $request->path();
         $currentRouteParts = explode('/', $currentRoute);
         $lastPart = end($currentRouteParts);
-        $totalCompromisos = Compromiso::whereHas('student', function ($query) {
+        $totalCompromisosList = Compromiso::whereHas('student', function ($query) {
             $query->where('user_id', Auth::user()->id);
             $query->where('state', 1);
-        })->count();
+        });
+
+
+        $totalCompromisos =$totalCompromisosList->count();
+        $amount =$totalCompromisosList->sum('paymentAmount');
+
+
+        $AmountotalCompromisos =  'S/ '.number_format($amount, 2, '.', ',');
 
         if (in_array($lastPart, $accesses)) {
             $groupMenu = GroupMenu::getFilteredGroupMenusSuperior($user->typeofUser_id);
             $groupMenuLeft = GroupMenu::getFilteredGroupMenus($user->typeofUser_id);
 
-            return view('Modulos.Compromiso.index', compact('user', 'groupMenu', 'groupMenuLeft', 'totalCompromisos'));
+            return view('Modulos.Compromiso.index', compact('user', 'groupMenu', 'groupMenuLeft', 'AmountotalCompromisos', 'totalCompromisos'));
         } else {
             abort(403, 'Acceso no autorizado.');
         }
@@ -83,7 +90,7 @@ class CompromisoController extends Controller
                     //     });
                     //     break;
                     case 'cuotaNumber':
-                        $query->where('cuotaNumber', $searchValue);
+                        $query->where('cuotaNumber', '>=', $searchValue);
                         break;
                     case 'student.level':
                         $query->whereHas('student', function ($query) use ($searchValue) {
@@ -120,6 +127,7 @@ class CompromisoController extends Controller
         }
 
         $totalRecords = $query->count();
+        $totalAmount = $query->sum('paymentAmount');
 
         $list = $query->orderBy('id', 'desc')
 
@@ -161,15 +169,21 @@ class CompromisoController extends Controller
             return $item;
         });
 
-        $compromisosSelected = Compromiso::whereHas('student', function ($query) {
+        $compromisosSelectedQuery = Compromiso::whereHas('student', function ($query) {
             $query->where('user_id', Auth::user()->id);
-        })->where('stateSend', 1)->count();
+        })->where('stateSend', 1);
+
+        $compromisosSelected = $compromisosSelectedQuery->count();
+        $compromisosAmountSelected = $compromisosSelectedQuery->sum('paymentAmount');
 
         return response()->json([
             'draw' => $draw,
             'recordsTotal' => $totalRecords,
             'recordsFiltered' => $totalRecords,
             'recordsSelected' => $compromisosSelected,
+
+            'amountFiltered' => 'S/ '.number_format($totalAmount, 2, '.', ','),
+            'amountSelected' => 'S/ '.number_format($compromisosAmountSelected, 2, '.', ','),
             'data' => $list,
         ]);
     }

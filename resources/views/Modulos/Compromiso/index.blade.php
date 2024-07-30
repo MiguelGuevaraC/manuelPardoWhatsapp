@@ -264,7 +264,12 @@
                                         </div>
                                         <div class="media-body ml-2 text-center">
                                             <p id="countCompromisoTotal" class="text-2x mar-no text-semibold">{{$totalCompromisos}}</p>
+                                            <p id="amountCompromisoTotal" class="text-2x mar-no text-semibold">{{$AmountotalCompromisos}}</p>
+                                      
+                                            
                                             <p class="mar-no">Compromisos Totales</p>
+                                            
+                                            
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-4 d-flex align-items-center my-2">
@@ -273,6 +278,8 @@
                                         </div>
                                         <div class="media-body ml-2 text-center">
                                             <p id="countCompromiso" class="text-2x mar-no text-semibold">{{$totalCompromisos}}</p>
+                                            <p id="amountCompromiso" class="text-2x mar-no text-semibold">{{$AmountotalCompromisos}}</p>
+                                            
                                             <p class="mar-no">Compromisos Filtrados</p>
                                         </div>
                                     </div>
@@ -282,6 +289,7 @@
                                         </div>
                                         <div class="media-body ml-2 text-center">
                                             <p id="countCompromisoSelected" class="text-2x mar-no text-semibold">0</p>
+                                            <p id="amountCompromisoSelected" class="text-2x mar-no text-semibold">0.00</p>
                                             <p class="mar-no">Compromisos Seleccionados</p>
                                         </div>
                                     </div>

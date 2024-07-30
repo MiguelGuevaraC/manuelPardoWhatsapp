@@ -281,6 +281,9 @@ function initialTableCompromisos() {
             console.log(json.recordsFiltered);
             $("#countCompromiso").text(json.recordsFiltered);
             $("#countCompromisoSelected").text(json.recordsSelected);
+
+            $("#amountCompromiso").text(json.amountFiltered);
+            $("#amountCompromisoSelected").text(json.amountSelected);
         },
         orderCellsTop: true,
         fixedHeader: true,
