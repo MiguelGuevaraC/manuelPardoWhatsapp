@@ -74,7 +74,27 @@ var columns = [
         },
         orderable: true,
     },
+    {
+        data: "description",
+        render: function(data, type, row) {
+       
+        return '  <a style="background:green; color:white;" class="view-description btn btn-info" data-description="' + data + '"><i class="fa-brands fa-whatsapp"></i> </a>';
+        }
+    }
 ];
+
+
+$(document).on('click', '.view-description', function () {
+    var description = $(this).data('description');
+    
+    Swal.fire({
+        title: "VISTA MENSAJE",
+        html:
+            "<div style='text-align:left'><b>Descripción:</b> " +
+            description +
+            "</div>",
+    });
+});
 
 var lenguag = {
     lengthMenu: "Mostrar _MENU_ Registros por paginas",
@@ -169,11 +189,7 @@ var init = function () {
                 colIdx == 5 ||
                 colIdx == 4 ||
                 colIdx == 6 ||
-                colIdx == 7 ||
-                colIdx == 8 ||
-                colIdx == 9 ||
-                colIdx == 10 ||
-                colIdx == 11
+                colIdx == 7 
             ) {
                 var cell = $(".filters th").eq(header.index());
                 var title = header.text();
@@ -230,7 +246,7 @@ $(document).ready(function () {
         // Get today's date and yesterday's date
         let today = new Date();
         let yesterday = new Date(today);
-        yesterday.setDate(today.getDate() - 30);
+        yesterday.setDate(today.getDate() - 7);
 
         // Format dates to YYYY-MM-DD
         function formatDate(date) {

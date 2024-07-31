@@ -53,6 +53,7 @@ class WhatsappSendController extends Controller
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
 
+    
         $query = WhatsappSend::with(['user', 'user.person', 'conminmnet', 'student'])->whereHas('student', function ($query) {
             $query->where('user_id', Auth::user()->id);
         })
@@ -227,7 +228,7 @@ class WhatsappSendController extends Controller
                 'Meses' => $moviment->conceptSend ?? '-',
                 'MontoPago' => $moviment->paymentAmount ?? '-',
              'FechaEnvio' => $moviment->created_at ? $moviment->created_at->format('Y-m-d H:i:s') : '-',
-
+'Mensaje' => $moviment->description ?? '-',
             ];
         }
 

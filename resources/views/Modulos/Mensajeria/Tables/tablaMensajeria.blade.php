@@ -15,7 +15,7 @@
             <th scope="col">Meses</th>
             <th scope="col">Monto Pago</th>
             <th scope="col">F. Envio</th>
-
+            <th scope="col">Mensaje</th>
         </tr>
 
       

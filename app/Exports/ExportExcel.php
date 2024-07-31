@@ -25,7 +25,7 @@ class ExportExcel implements FromCollection, WithStyles
         array_unshift($this->data, [
             'CuotasVencidas', 'Estudiante', 'Padres',
             'InfoEstudiante', 'Telefono',
-            'Meses', 'MontoPago', 'FechaEnvio',
+            'Meses', 'MontoPago', 'FechaEnvio','Mensaje',
         ]);
         return collect($this->data);
     }
@@ -47,7 +47,7 @@ class ExportExcel implements FromCollection, WithStyles
         foreach (range('A', 'H') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(true);
         }
-        $sheet->getStyle('A1:H' . $lastRow)
+        $sheet->getStyle('A1:I' . $lastRow)
             ->getAlignment()
             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
     }
