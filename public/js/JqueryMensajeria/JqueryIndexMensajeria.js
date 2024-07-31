@@ -226,62 +226,169 @@ $("#tbMensajerias .filters input").on("keyup change", function () {
 });
 
 $(document).ready(function () {
-    var maxRetries = 3; // Número máximo de reintentos
-    var retryCount = 0; // Contador de reintentos
-    var table = $("#tbMensajerias").DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: "mensajeriaAll",
-            type: "GET",
-            data: function (d) {
-                // Aquí configuramos los filtros de búsqueda por columna
-                $("#tbMensajerias .filters input").each(function () {
-                    var name = $(this).attr("name");
-                    d.columns.forEach(function (column) {
-                        if (column.data === name) {
-                            column.search.value = $(this).val();
-                        }
-                    }, this);
-                });
-            },
-            debounce: 500,
-            error: function (xhr, error, thrown) {
-                // Manejo de errores
-                console.error("Error en la solicitud AJAX:", error);
+    $(document).ready(function () {
+        // Get today's date and yesterday's date
+        let today = new Date();
+        let yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 30);
 
-                // Intentar nuevamente si no se alcanzó el número máximo de reintentos
-                if (retryCount < maxRetries) {
-                    retryCount++;
-                    console.log(
-                        "Reintentando... (Intento " +
-                            retryCount +
-                            " de " +
-                            maxRetries +
-                            ")"
-                    );
-                    fetchTableData(retryCount);
-                } else {
-                    alert(
-                        "No se pudo recuperar los datos después de varios intentos. Por favor, inténtelo de nuevo más tarde."
-                    );
+        // Format dates to YYYY-MM-DD
+        function formatDate(date) {
+            let year = date.getFullYear();
+            let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+            let day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // Set the default values of the date inputs
+        $('#startDate').val(formatDate(yesterday));
+        $('#endDate').val(formatDate(today));
+
+        var maxRetries = 3; // Número máximo de reintentos
+        var retryCount = 0; // Contador de reintentos
+
+        var table = $("#tbMensajerias").DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "mensajeriaAll",
+                type: "GET",
+                data: function (d) {
+                    // Aquí configuramos los filtros de búsqueda por columna
+                    d.startDate = $('#startDate').val();
+                    d.endDate = $('#endDate').val();
+                    return d;
+                },
+                debounce: 500,
+                error: function (xhr, error, thrown) {
+                    // Manejo de errores
+                    console.error("Error en la solicitud AJAX:", error);
+
+                    // Intentar nuevamente si no se alcanzó el número máximo de reintentos
+                    if (retryCount < maxRetries) {
+                        retryCount++;
+                        console.log(
+                            "Reintentando... (Intento " +
+                                retryCount +
+                                " de " +
+                                maxRetries +
+                                ")"
+                        );
+                        table.ajax.reload();
+                    } else {
+                        alert(
+                            "No se pudo recuperar los datos después de varios intentos. Por favor, inténtelo de nuevo más tarde."
+                        );
+                    }
+                },
+            },
+            orderCellsTop: true,
+            fixedHeader: true,
+            columns: columns,
+            dom: "Bfrtip",
+            buttons: [],
+
+            language: lenguag,
+            search: search,
+            initComplete: init,
+            rowId: "id",
+            stripeClasses: ["odd-row", "even-row"],
+            scrollY: "300px",
+            scrollX: true, // Habilitar desplazamiento horizontal si es necesario
+        });
+
+        // Handle form submission
+        $('#filterForm').on('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            table.ajax.reload(); // Reload table data with new filters
+        });
+
+        // Handle PDF export
+        $('#savePdf').on('click', function() {
+            $.ajax({
+                url: 'pdfExport',
+                type: 'GET',
+                data: {
+                    startDate: $('#startDate').val(),
+                    endDate: $('#endDate').val()
+                },
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function (response, status, xhr) {
+                    // Obtener la fecha actual en formato YYYY-MM-DD
+                    const currentDate = new Date().toISOString().split('T')[0];
+                    
+                    // Obtener las fechas de los parámetros
+                    const startDate = $('#startDate').val();
+                    const endDate = $('#endDate').val();
+                    
+                    // Formatear el nombre del archivo
+                    let filename = `Reporte_${currentDate}_${startDate}_a_${endDate}.pdf`;
+        
+                    // Obtener el nombre del archivo desde la respuesta del servidor si está disponible
+                    const disposition = xhr.getResponseHeader('Content-Disposition');
+                    if (disposition && disposition.indexOf('attachment') !== -1) {
+                        const matches = /"([^"]*)"/.exec(disposition);
+                        if (matches != null && matches[1]) filename = matches[1];
+                    }
+                    
+                    // Crear un enlace para la descarga
+                    const link = document.createElement('a');
+                    const url = window.URL.createObjectURL(response);
+                    link.href = url;
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(url);
                 }
-            },
-        },
+            });
+        });
+        
 
-        orderCellsTop: true,
-        fixedHeader: true,
-        columns: columns,
-        dom: "Bfrtip",
-        buttons: [],
-
-        language: lenguag,
-        search: search,
-        initComplete: init,
-
-        rowId: "id",
-        stripeClasses: ["odd-row", "even-row"],
-        scrollY: "300px",
-        scrollX: true, // Habilitar desplazamiento horizontal si es necesario
+        // Handle Excel export
+        $('#saveExcel').on('click', function() {
+            $.ajax({
+                url: 'excelExport',
+                type: 'GET',
+                data: {
+                    startDate: $('#startDate').val(),
+                    endDate: $('#endDate').val()
+                },
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function (response, status, xhr) {
+                    // Obtener la fecha actual en formato YYYY-MM-DD
+                    const currentDate = new Date().toISOString().split('T')[0];
+                    
+                    // Obtener las fechas de los parámetros
+                    const startDate = $('#startDate').val();
+                    const endDate = $('#endDate').val();
+                    
+                    // Formatear el nombre del archivo
+                    let filename = `Reporte_${currentDate}_${startDate}_a_${endDate}.xlsx`;
+        
+                    // Obtener el nombre del archivo desde la respuesta del servidor si está disponible
+                    const disposition = xhr.getResponseHeader('Content-Disposition');
+                    if (disposition && disposition.indexOf('attachment') !== -1) {
+                        const matches = /"([^"]*)"/.exec(disposition);
+                        if (matches != null && matches[1]) filename = matches[1];
+                    }
+                    
+                    // Crear un enlace para la descarga
+                    const link = document.createElement('a');
+                    const url = window.URL.createObjectURL(response);
+                    link.href = url;
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(url);
+                }
+            });
+        });
+        
     });
 });

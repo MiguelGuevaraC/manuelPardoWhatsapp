@@ -127,4 +127,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('message/{id}', [MessageController::class, 'update']);
     Route::delete('message/{id}', [MessageController::class, 'destroy']);
 
+    Route::get('pdfExport', [WhatsappSendController::class, 'pdfExport'])->name('pdf.export');
+    Route::get('excelExport', [WhatsappSendController::class, 'excelExport'])->name('excel.export');
 });

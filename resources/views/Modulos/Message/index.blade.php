@@ -23,7 +23,7 @@
 
     <?php
     $vista = 'Messages';
-    $categoriaActual = 'Movimientos';
+    $categoriaActual = 'Mantenimiento';
     $OpcionActual = 'message';
     
     ?>

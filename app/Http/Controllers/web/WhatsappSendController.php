@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers\web;
 
+use App\Exports\ExportExcel;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendWhatsappJob;
 use App\Models\Compromiso;
 use App\Models\GroupMenu;
 use App\Models\Person;
 use App\Models\WhatsappSend;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class WhatsappSendController extends Controller
 {
@@ -47,10 +50,17 @@ class WhatsappSendController extends Controller
         $length = $request->get('length', 15);
         $filters = $request->input('filters', []);
 
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+
         $query = WhatsappSend::with(['user', 'user.person', 'conminmnet', 'student'])->whereHas('student', function ($query) {
             $query->where('user_id', Auth::user()->id);
         })
             ->where('state', 1);
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+        }
 
         // Aplicar filtros por columna
         foreach ($request->get('columns') as $column) {
@@ -179,4 +189,75 @@ class WhatsappSendController extends Controller
         }
 
     }
+
+    public function excelExport(Request $request)
+    {
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+
+        $query = WhatsappSend::with(['user', 'user.person', 'conminmnet', 'student'])
+            ->whereHas('student', function ($query) {
+                $query->where('user_id', Auth::user()->id);
+            })
+            ->where('state', 1);
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+        }
+
+        $data = $query->orderBy('id', 'desc')->get();
+
+        $exportData = [];
+
+        foreach ($data as $moviment) {
+            $student = '';
+            if ($moviment->student->typeofDocument == 'DNI') {
+                $student = $moviment->student->names . ' ' . $moviment->student->fatherSurname;
+            } else {
+                $student = $moviment->student->businessName ?? '';
+            }
+            $student = $moviment->student->documentNumber . ' | ' . $student;
+
+            $exportData[] = [
+                'CuotasVencidas' => $moviment->cuota,
+                'Estudiante' => $moviment->dniStudent . ' | ' . $moviment->namesStudent,
+                'Padres' => $moviment->namesParent ?? '-',
+                'InfoEstudiante' => $moviment->infoStudent ?? '',
+                'Telefono' => $moviment->telephone ?? '-',
+                'Meses' => $moviment->conceptSend ?? '-',
+                'MontoPago' => $moviment->paymentAmount ?? '-',
+             'FechaEnvio' => $moviment->created_at ? $moviment->created_at->format('Y-m-d H:i:s') : '-',
+
+            ];
+        }
+
+        return Excel::download(new ExportExcel($exportData, $startDate, $endDate), 'export.xlsx');
+    }
+
+    public function pdfExport(Request $request)
+    {
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+
+        $query = WhatsappSend::with(['user', 'user.person', 'conminmnet', 'student'])
+            ->whereHas('student', function ($query) {
+                $query->where('user_id', Auth::user()->id);
+            })
+            ->where('state', 1);
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+        }
+
+        $data = $query->orderBy('id', 'desc')->get();
+
+        // Generar el PDF usando la vista Blade
+        $pdf = PDF::loadView('pdf.export', ['data' => $data,
+            'dateStart' => $startDate, 'dateEnd' => $endDate])
+            ->setPaper('a4', 'landscape')
+            ->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+
+        return $pdf->download('export.pdf');
+    }
+
 }

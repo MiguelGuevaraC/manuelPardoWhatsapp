@@ -197,22 +197,48 @@
 
                 </div>
 
-
+                <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
                 <!--Page content-->
                 <!--===================================================-->
-                <div id="page-content">
-
-                    <div class="panel">
 
 
+                <div class="container mt-2">
+                    <div class="panel p-2 border rounded bg-light">
+                        <form id="filterForm" class="mb-3">
+                            <div id="demo-custom-toolbar2" class="mb-2">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="startDate">Inicio</label>
+                                            <input type="date" id="startDate" name="startDate" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="endDate">Fin</label>
+                                            <input type="date" id="endDate" name="endDate" class="form-control" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button type="submit" id="search" class="btn btn-primary">
+                                        <i class="fa-solid fa-magnifying-glass"></i> BUSCAR
+                                    </button>
+                                    <button id="savePdf" class="btn btn-danger">
+                                        <i class="fas fa-file-pdf"></i> DESCARGAR PDF
+                                    </button>
+                                    <button id="saveExcel" class="btn btn-success">
+                                        <i class="fas fa-file-excel"></i> DESCARGAR EXCEL
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
 
-                        <div class="panel-body">
+                        <div class="">
                             @include('Modulos.Mensajeria.Tables.tablaMensajeria')
                         </div>
                     </div>
-
-
-
                 </div>
                 <!--===================================================-->
                 <!--End page content-->
@@ -454,7 +480,26 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
+    <script>
+        $(document).ready(function() {
+            // Get today's date and yesterday's date
+            let today = new Date();
+            let yesterday = new Date(today);
+            yesterday.setDate(today.getDate() - 30);
 
+            // Format dates to YYYY-MM-DD
+            function formatDate(date) {
+                let year = date.getFullYear();
+                let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                let day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+
+            // Set the default values of the date inputs
+            $('#startDate').val(formatDate(yesterday));
+            $('#endDate').val(formatDate(today));
+        });
+    </script>
 </body>
 
 </html>
