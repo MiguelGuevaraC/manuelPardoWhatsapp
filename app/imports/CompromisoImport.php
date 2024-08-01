@@ -94,7 +94,8 @@ class CompromisoImport implements ToModel, WithHeadingRow
                 $conceptMonths = [];
 
                 foreach ($months as $month => $fullMonthName) {
-                    if (isset($normalizedRow[$month]) && $normalizedRow[$month] != '') {
+                    if (isset($normalizedRow[$month]) && $normalizedRow[$month] != '' &&
+                        $normalizedRow[$month] != '0.00' && $normalizedRow[$month] != 0) {
                         $totalAmount += $normalizedRow[$month];
                         $cuotaNumber++;
                         $conceptMonths[] = $fullMonthName;

@@ -57,7 +57,7 @@ class SendWhatsappJob implements ShouldQueue
 
                 $student = Person::find($comminment->student_id);
 
-                $cadenaNombres = $student->typeofDocument == 'DNI'
+                $cadenaNombres = $student->typeofDocument != 'RUC'
                 ? $student->names . ' ' . $student->fatherSurname . ' ' . $student->motherSurname
                 : ($student->typeofDocument == 'RUC' ? $student->businessName : '');
 

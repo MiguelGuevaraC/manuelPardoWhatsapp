@@ -37,10 +37,10 @@ var columns = [
     {
         data: "student.names",
         render: function (data, type, row, meta) {
-            if (row.student.typeofDocument === "DNI") {
-                return `${row.student.identityNumber} |${row.student.documentNumber} | ${row.student.names} ${row.student.fatherSurname} ${row.student.motherSurname}`;
-            } else if (row.student.typeofDocument === "RUC") {
+            if (row.student.typeofDocument === "RUC") {
                 return `${row.student.documentNumber} | ${row.student.businessName}`;
+            }else{
+                    return `${row.student.documentNumber} | ${row.student.identityNumber} | ${row.student.names} ${row.student.fatherSurname} ${row.student.motherSurname}`;
             }
         },
         orderable: false,

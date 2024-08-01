@@ -53,7 +53,6 @@ class WhatsappSendController extends Controller
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
 
-    
         $query = WhatsappSend::with(['user', 'user.person', 'conminmnet', 'student'])->whereHas('student', function ($query) {
             $query->where('user_id', Auth::user()->id);
         })
@@ -212,7 +211,7 @@ class WhatsappSendController extends Controller
 
         foreach ($data as $moviment) {
             $student = '';
-            if ($moviment->student->typeofDocument == 'DNI') {
+            if ($moviment->student->typeofDocument != 'RUC') {
                 $student = $moviment->student->names . ' ' . $moviment->student->fatherSurname;
             } else {
                 $student = $moviment->student->businessName ?? '';
@@ -227,8 +226,8 @@ class WhatsappSendController extends Controller
                 'Telefono' => $moviment->telephone ?? '-',
                 'Meses' => $moviment->conceptSend ?? '-',
                 'MontoPago' => $moviment->paymentAmount ?? '-',
-             'FechaEnvio' => $moviment->created_at ? $moviment->created_at->format('Y-m-d H:i:s') : '-',
-'Mensaje' => $moviment->description ?? '-',
+                'FechaEnvio' => $moviment->created_at ? $moviment->created_at->format('Y-m-d H:i:s') : '-',
+                'Mensaje' => $moviment->description ?? '-',
             ];
         }
 

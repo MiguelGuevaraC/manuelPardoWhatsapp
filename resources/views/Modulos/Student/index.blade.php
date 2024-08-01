@@ -2,9 +2,9 @@
     function namesPerson($person)
     {
         $nombre = '';
-        if ($person->typeofDocument == 'DNI') {
+        if ($person->typeofDocument != 'RUC') {
             $nombre = $person->names . ' ' . $person->fatherSurname . ' ' . $person->motherSurname;
-        } elseif ($person->typeofDocument == 'RUC') {
+        } else {
             $nombre = $person->businessName;
         }
         return $nombre;
