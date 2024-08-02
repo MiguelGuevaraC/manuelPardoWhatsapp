@@ -14,6 +14,8 @@ class PersonImport implements ToModel, WithHeadingRow
 {
     private $headerMap = [];
 
+  
+
     public function headingRow(): int
     {
         return 0; // Indica que la primera fila es la fila de encabezado
@@ -26,6 +28,7 @@ class PersonImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
+
         try {
             // Definir los encabezados esperados
             $expectedColumns = [

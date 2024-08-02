@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
-use App\Imports\CompromisoImport;
+use App\imports\CompromisoImport;
 use App\Models\Compromiso;
 use App\Models\GroupMenu;
 use App\Models\MigrationExport;
@@ -34,12 +34,10 @@ class CompromisoController extends Controller
             $query->where('state', 1);
         });
 
+        $totalCompromisos = $totalCompromisosList->count();
+        $amount = $totalCompromisosList->sum('paymentAmount');
 
-        $totalCompromisos =$totalCompromisosList->count();
-        $amount =$totalCompromisosList->sum('paymentAmount');
-
-
-        $AmountotalCompromisos =  'S/ '.number_format($amount, 2, '.', ',');
+        $AmountotalCompromisos = 'S/ ' . number_format($amount, 2, '.', ',');
 
         if (in_array($lastPart, $accesses)) {
             $groupMenu = GroupMenu::getFilteredGroupMenusSuperior($user->typeofUser_id);
@@ -90,7 +88,7 @@ class CompromisoController extends Controller
                     //     });
                     //     break;
                     case 'cuotaNumber':
-                        $query->where('cuotaNumber', '>=', $searchValue);
+                        $query->where('cuotaNumber', '=', $searchValue);
                         break;
                     case 'student.level':
                         $query->whereHas('student', function ($query) use ($searchValue) {
@@ -182,8 +180,8 @@ class CompromisoController extends Controller
             'recordsFiltered' => $totalRecords,
             'recordsSelected' => $compromisosSelected,
 
-            'amountFiltered' => 'S/ '.number_format($totalAmount, 2, '.', ','),
-            'amountSelected' => 'S/ '.number_format($compromisosAmountSelected, 2, '.', ','),
+            'amountFiltered' => 'S/ ' . number_format($totalAmount, 2, '.', ','),
+            'amountSelected' => 'S/ ' . number_format($compromisosAmountSelected, 2, '.', ','),
             'data' => $list,
         ]);
     }
@@ -318,7 +316,12 @@ class CompromisoController extends Controller
             if ($excelFile) {
 
                 $extension = $excelFile->getClientOriginalExtension();
+                Compromiso::whereHas('student', function ($query) {
+                    $query->where('user_id', Auth::user()->id);
+                    $query->where('state', 1);
+                })->update(['state' => 0]);
 
+                
                 if ($extension === 'xls') {
                     Excel::import(new CompromisoImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLS);
                 } elseif ($extension === 'xlsx') {

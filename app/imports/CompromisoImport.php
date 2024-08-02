@@ -103,6 +103,7 @@ class CompromisoImport implements ToModel, WithHeadingRow
                 }
 
                 if ($totalAmount > 0) {
+                   
                     // Crear o actualizar el compromiso asegurando que sea único por estudiante
                     $compromiso = Compromiso::updateOrCreate(
                         [
@@ -115,6 +116,7 @@ class CompromisoImport implements ToModel, WithHeadingRow
                             'expirationDate' => null,
                             'conceptDebt' => '' . implode(', ', $conceptMonths),
                             'status' => 'Pendiente',
+                            'state' => 1,
                             'telephoneStudent' => $student->telephone,
                         ]
                     );
