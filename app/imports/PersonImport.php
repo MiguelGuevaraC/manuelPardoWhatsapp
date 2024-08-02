@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Imports;
+namespace App\imports;
 
 use App\Models\Person;
 use Exception;
