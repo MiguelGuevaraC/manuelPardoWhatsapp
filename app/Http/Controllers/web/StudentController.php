@@ -211,8 +211,6 @@ class StudentController extends Controller
                     Excel::import(new PersonImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLS);
                 } elseif ($extension === 'xlsx') {
                     Excel::import(new PersonImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLSX);
-                } else {
-                    return redirect()->back()->with('error', 'Formato de archivo no soportado.');
                 }
                 MigrationExport::create($dataMigration);
                 return redirect()->back()->with('success', 'Datos importados correctamente.');
