@@ -177,9 +177,9 @@ class StudentController extends Controller
     public function importExcel(Request $request)
     {
         // Validar el archivo de Excel
-        $request->validate([
-            'excelFile' => 'required|file',
-        ]);
+        // $request->validate([
+        //     'excelFile' => 'required',
+        // ]);
 
         // Obtener el archivo Excel del request
         $excelFile = $request->file('excelFile');
