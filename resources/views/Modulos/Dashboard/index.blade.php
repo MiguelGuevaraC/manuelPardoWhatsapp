@@ -76,11 +76,10 @@
     <link href="plantillaNuevo\css\themes\type-c\theme-navy.min.css" rel="stylesheet">
 
     <!--Unite Gallery [ OPTIONAL ]-->
-    <link href="plantillaNuevo\plugins\unitegallery\css\unitegallery.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/appPlantilla.css') }}">
     <style>
-        #page-content {
+        #page-content1 {
             padding: 20px 50px;
         }
 
@@ -111,6 +110,59 @@
         .card-text {
             padding: 4px;
         }
+
+        /* Estilo base para la navbar */
+.navbar-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Asegúrate de que los elementos dentro de .nav se alineen correctamente */
+.navbar-top-links {
+    display: flex;
+    align-items: center;
+}
+
+/* Ajuste para dispositivos móviles */
+@media (max-width: 300px) {
+    .navbar-top-links {
+        flex-direction: column;
+        width: 100%;
+        margin: 0;
+    }
+
+    .navbar-top-links .dropdown {
+        width: 100%;
+    }
+
+    .dropdown-menu {
+        width: 100%;
+    }
+}
+
+/* Estilo para el botón de menú de navegación en dispositivos móviles */
+.tgl-menu-btn {
+    display: block;
+}
+
+.mainnav-toggle {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+/* Estilo para el icono del usuario y perfil */
+.ic-user {
+    display: flex;
+    align-items: center;
+}
+
+/* Ajustes para asegurar que el menú desplegable se alinee correctamente */
+.dropdown-menu-right {
+    right: 0;
+}
+
     </style>
 
 </head>
@@ -144,58 +196,43 @@
                 <!--================================-->
                 <div class="navbar-content">
                     <ul class="nav navbar-top-links">
-
-                        <!--Navigation toogle button-->
-                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <!-- Navigation toggle button -->
                         <li class="tgl-menu-btn">
                             <a class="mainnav-toggle" href="#">
                                 <i class="demo-pli-list-view"></i>
-
                             </a>
                         </li>
-
-
                     </ul>
-                    <ul class="nav navbar-top-links">
+                    <ul class="nav navbar-top-links navbar-right">
                         <?php foreach ($groupMenu as $item): ?>
-
-                        @foreach ($item['option_menus'] as $menu)
-                            <li id="dropdown-<?php echo $item['id']; ?>" class="dropdown">
-                                <a href="{{ $menu['route'] }}" data-tooltip="{{ $menu['name'] }}"
-                                    class="btn-profesional dropdown-toggle text-right">
-                                    <span class="ic-user pull-right">
-                                        <i style="font-size:21px" class="{{ $menu['icon'] }}"></i>
-                                    </span>
-                                </a>
-                            </li>
-                        @endforeach
-
+                            @foreach ($item['option_menus'] as $menu)
+                                <li id="dropdown-<?php echo $item['id']; ?>" class="dropdown">
+                                    <a href="{{ $menu['route'] }}" data-tooltip="{{ $menu['name'] }}" class="btn-profesional dropdown-toggle">
+                                        <span class="ic-user">
+                                            <i style="font-size:21px" class="{{ $menu['icon'] }}"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            @endforeach
                         <?php endforeach; ?>
-
+                
                         <li id="dropdown-user" class="dropdown">
-                            <a href="#" data-tooltip="Perfil" data-toggle="dropdown"
-                                class="btn-profesional dropdown-toggle text-right">
-                                <span class="ic-user pull-right">
+                            <a href="#" data-tooltip="Perfil" data-toggle="dropdown" class="btn-profesional dropdown-toggle">
+                                <span class="ic-user">
                                     <i style="font-size:21px" class="fa-solid fa-user"></i>
                                 </span>
                             </a>
-
+                
                             <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right panel-default">
                                 <ul class="head-list">
-                                    <li>
-                                        <a href="perfilD"><i class="demo-pli-male icon-lg icon-fw"></i> Perfil</a>
-                                    </li>
-                                    <li>
-                                        <a href="logout"><i class="demo-pli-unlock icon-lg icon-fw"></i> Salir</a>
-                                    </li>
+                                    <li><a href="perfilD"><i class="demo-pli-male icon-lg icon-fw"></i> Perfil</a></li>
+                                    <li><a href="logout"><i class="demo-pli-unlock icon-lg icon-fw"></i> Salir</a></li>
                                 </ul>
                             </div>
                         </li>
                     </ul>
-
-
-
                 </div>
+                
                 <!--================================-->
                 <!--End Navbar Dropdown-->
 
@@ -220,7 +257,7 @@
                 </div>
 
                 <!-- Page Content -->
-                <div id="page-content">
+                <div id="page-content1">
 
 
                     <!-- Widgets -->
@@ -347,94 +384,107 @@
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+            {{-- <script src="{{ asset('js/JqueryInicio/JqueryDashboard.js') }}"></script> --}}
+
+
             <script>
                 $(document).ready(function() {
-                    var startDate, endDate;
                     var mensajesEnviadosChart, analisisCostosChart;
             
-                    // Establecer las fechas por defecto al cargar la página
                     function initializeDates() {
-                        var fechaInicio = new Date();
-                        fechaInicio.setDate(1);
-                        var fechaFin = new Date();
-                        startDate = fechaInicio.toISOString().split('T')[0];
-                        endDate = fechaFin.toISOString().split('T')[0];
+                        var currentDate = new Date();
+                        var firstDayOfYear = new Date(currentDate.getFullYear(), 0, 1);
+                        var formattedFirstDayOfYear = firstDayOfYear.toISOString().split("T")[0];
+                        var formattedCurrentDate = currentDate.toISOString().split("T")[0];
             
-                        // Inicializar los gráficos con fechas predeterminadas
-                        fetchDataAndUpdateCharts(startDate, endDate);
+                        $("#fechaInicio").val(formattedFirstDayOfYear);
+                        $("#fechaFin").val(formattedCurrentDate);
+            
+                        fetchDataAndUpdateCharts(formattedFirstDayOfYear, formattedCurrentDate);
                     }
             
                     initializeDates();
             
-                    $('#filtrar').click(function() {
-                        var fechaInicioInput = $('#fechaInicio').val();
-                        var fechaFinInput = $('#fechaFin').val();
+                    $("#filtrar").click(function() {
+                        var fechaInicioInput = $("#fechaInicio").val();
+                        var fechaFinInput = $("#fechaFin").val();
             
-                        if (fechaInicioInput) {
-                            startDate = new Date(fechaInicioInput).toISOString().split('T')[0];
-                        } else {
-                            var defaultStartDate = new Date();
-                            defaultStartDate.setDate(1);
-                            startDate = defaultStartDate.toISOString().split('T')[0];
-                        }
-            
-                        if (fechaFinInput) {
-                            endDate = new Date(fechaFinInput).toISOString().split('T')[0];
-                        } else {
-                            endDate = new Date().toISOString().split('T')[0];
-                        }
+                        var startDate = fechaInicioInput ? new Date(fechaInicioInput).toISOString().split("T")[0] : new Date().toISOString().split("T")[0];
+                        var endDate = fechaFinInput ? new Date(fechaFinInput).toISOString().split("T")[0] : new Date().toISOString().split("T")[0];
             
                         fetchDataAndUpdateCharts(startDate, endDate);
                     });
             
                     function fetchDataAndUpdateCharts(startDate, endDate) {
                         $.ajax({
-                            url: 'dataDashboard',
-                            method: 'GET',
+                            url: "dataDashboard",
+                            method: "GET",
                             data: {
                                 fechaStart: startDate,
-                                fechaEnd: endDate
+                                fechaEnd: endDate,
                             },
                             success: function(response) {
-                                updateCharts(response);
-                            }
+                                updateCharts(response, startDate, endDate);
+                            },
                         });
                     }
             
-                    function updateCharts(data) {
-                        var labels = [];
+                    function updateCharts(data, startDate, endDate) {
                         var mensajesData = {};
                         var costosData = {};
             
-                        // Agrupar los datos por mes
                         function getMonthLabel(date) {
-                            var monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+                            var monthNames = [
+                                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                                "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+                            ];
                             var month = new Date(date).getMonth();
                             var year = new Date(date).getFullYear();
-                            return monthNames[month] + ' ' + year;
+                            return monthNames[month] + " " + year;
+                        }
+            
+                        function getMonthYearKey(date) {
+                            var month = new Date(date).getMonth() + 1;
+                            var year = new Date(date).getFullYear();
+                            return year + '-' + (month < 10 ? '0' : '') + month; // Formato YYYY-MM
                         }
             
                         function addToMonthData(date, value, dataMap) {
+                            var monthYearKey = getMonthYearKey(date);
                             var monthLabel = getMonthLabel(date);
-                            if (!dataMap[monthLabel]) {
-                                dataMap[monthLabel] = 0;
+                            if (!dataMap[monthYearKey]) {
+                                dataMap[monthYearKey] = {
+                                    label: monthLabel,
+                                    value: 0
+                                };
                             }
-                            dataMap[monthLabel] += value;
+                            dataMap[monthYearKey].value += value;
                         }
             
-                        // Parsear las fechas y agregar a las colecciones de datos
-                        Object.keys(data.mensajesPorFecha).forEach(date => {
-                            addToMonthData(date, data.mensajesPorFecha[date], mensajesData);
+                        // Filtrar y agregar datos al mes correspondiente
+                        Object.keys(data.mensajesPorFecha).forEach((date) => {
+                            if (date >= startDate && date <= endDate) {
+                                addToMonthData(date, data.mensajesPorFecha[date], mensajesData);
+                            }
                         });
             
-                        Object.keys(data.costosPorFecha).forEach(date => {
-                            addToMonthData(date, data.costosPorFecha[date], costosData);
+                        Object.keys(data.costosPorFecha).forEach((date) => {
+                            if (date >= startDate && date <= endDate) {
+                                addToMonthData(date, data.costosPorFecha[date], costosData);
+                            }
                         });
             
-                        // Convertir los datos a arrays ordenados por fecha
-                        var sortedLabels = Object.keys(mensajesData).sort();
-                        var sortedMensajesData = sortedLabels.map(label => mensajesData[label]);
-                        var sortedCostosData = sortedLabels.map(label => costosData[label]);
+                        // Ordenar las etiquetas por fecha real para mantener el orden cronológico
+                        var sortedLabels = Object.keys(mensajesData).sort(function(a, b) {
+                            return new Date(a + '-01') - new Date(b + '-01');
+                        });
+            
+                        var sortedMensajesData = sortedLabels.map((key) => mensajesData[key].value);
+                        var sortedCostosData = sortedLabels.map((key) => costosData[key].value);
+                        var sortedLabelTexts = sortedLabels.map((key) => mensajesData[key].label);
             
                         // Destruir gráficos anteriores si existen
                         if (mensajesEnviadosChart) {
@@ -446,19 +496,19 @@
                         }
             
                         // Crear gráfico de mensajes enviados
-                        var ctx1 = document.getElementById('mensajesEnviadosChart').getContext('2d');
+                        var ctx1 = document.getElementById("mensajesEnviadosChart").getContext("2d");
                         mensajesEnviadosChart = new Chart(ctx1, {
-                            type: 'line',
+                            type: "line",
                             data: {
-                                labels: sortedLabels,
+                                labels: sortedLabelTexts,
                                 datasets: [{
-                                    label: 'Mensajes Enviados',
+                                    label: "Mensajes Enviados",
                                     data: sortedMensajesData,
-                                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: "rgba(54, 162, 235, 0.6)",
+                                    borderColor: "rgba(75, 192, 192, 1)",
                                     borderWidth: 2,
-                                    fill: true
-                                }]
+                                    fill: true,
+                                }],
                             },
                             options: {
                                 maintainAspectRatio: false,
@@ -466,38 +516,38 @@
                                     y: {
                                         beginAtZero: true,
                                         grid: {
-                                            color: 'rgba(200, 200, 200, 0.3)' 
-                                        }
+                                            color: "rgba(200, 200, 200, 0.3)",
+                                        },
                                     },
                                     x: {
                                         grid: {
-                                            color: 'rgba(200, 200, 200, 0.3)' 
-                                        }
-                                    }
+                                            color: "rgba(200, 200, 200, 0.3)",
+                                        },
+                                    },
                                 },
                                 plugins: {
                                     legend: {
                                         labels: {
-                                            color: 'black' 
-                                        }
-                                    }
-                                }
-                            }
+                                            color: "black",
+                                        },
+                                    },
+                                },
+                            },
                         });
             
                         // Crear gráfico de costos
-                        var ctx2 = document.getElementById('analisisCostosChart').getContext('2d');
+                        var ctx2 = document.getElementById("analisisCostosChart").getContext("2d");
                         analisisCostosChart = new Chart(ctx2, {
-                            type: 'bar',
+                            type: "bar",
                             data: {
-                                labels: sortedLabels,
+                                labels: sortedLabelTexts,
                                 datasets: [{
-                                    label: 'Costo ($)',
+                                    label: "Costo (S/)",
                                     data: sortedCostosData,
-                                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                                    borderColor: 'rgba(75, 192, 192, 1)',
-                                    borderWidth: 1
-                                }]
+                                    backgroundColor: "rgba(75, 192, 192, 0.6)",
+                                    borderColor: "rgba(75, 192, 192, 1)",
+                                    borderWidth: 1,
+                                }],
                             },
                             options: {
                                 maintainAspectRatio: false,
@@ -505,37 +555,34 @@
                                     y: {
                                         beginAtZero: true,
                                         grid: {
-                                            color: 'rgba(200, 200, 200, 0.3)' 
-                                        }
+                                            color: "rgba(200, 200, 200, 0.3)",
+                                        },
                                     },
                                     x: {
                                         grid: {
-                                            color: 'rgba(200, 200, 200, 0.3)' 
-                                        }
-                                    }
+                                            color: "rgba(200, 200, 200, 0.3)",
+                                        },
+                                    },
                                 },
                                 plugins: {
                                     legend: {
                                         labels: {
-                                            color: 'black' 
-                                        }
-                                    }
-                                }
-                            }
+                                            color: "black",
+                                        },
+                                    },
+                                },
+                            },
                         });
             
                         // Actualizar valores de total de mensajes y costo total
-                        $('#costoUnitario').text(data.costoUnitario);
-                        $('#totalEnviados').text(data.totalMensajes);
-                        $('#costoTotal').text('S/.' + data.costoTotal.toFixed(2));
+                        $("#costoUnitario").text("S/ " + data.costoUnitario);
+                        $("#totalEnviados").text(data.totalMensajes);
+                        $("#costoTotal").text("S/ " + data.costoTotal.toFixed(2));
                     }
                 });
             </script>
             
             
-            
-            
-
 
 
             <!--===================================================-->
@@ -718,7 +765,7 @@
     <!--===================================================-->
 
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/JqueryInicio/JqueryInicio.js') }}"></script>
+
     <script src="/manuelPardoWhatsapp/Cdn-Locales/pkgAwsome/js/all.js"></script>
 
 
