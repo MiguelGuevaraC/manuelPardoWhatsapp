@@ -3,6 +3,7 @@
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\web\CompromisoController;
+use App\Http\Controllers\web\DashboardController;
 use App\Http\Controllers\web\GroupMenuController;
 use App\Http\Controllers\web\MessageController;
 use App\Http\Controllers\web\MigrationController;
@@ -129,4 +130,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('pdfExport', [WhatsappSendController::class, 'pdfExport'])->name('pdf.export');
     Route::get('excelExport', [WhatsappSendController::class, 'excelExport'])->name('excel.export');
+
+    //DASHBOARD
+    Route::get('dashboard', [DashboardController::class, 'index']);
+    Route::get('dataDashboard', [DashboardController::class, 'dataDashboard']);
 });

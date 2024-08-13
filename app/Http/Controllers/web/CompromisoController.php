@@ -32,7 +32,7 @@ class CompromisoController extends Controller
         $totalCompromisosList = Compromiso::whereHas('student', function ($query) {
             $query->where('user_id', Auth::user()->id);
             $query->where('state', 1);
-        });
+        })->where('state', 1);
 
         $totalCompromisos = $totalCompromisosList->count();
         $amount = $totalCompromisosList->sum('paymentAmount');
@@ -321,7 +321,7 @@ class CompromisoController extends Controller
                     $query->where('state', 1);
                 })->update(['state' => 0]);
 
-                
+
                 if ($extension === 'xls') {
                     Excel::import(new CompromisoImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLS);
                 } elseif ($extension === 'xlsx') {

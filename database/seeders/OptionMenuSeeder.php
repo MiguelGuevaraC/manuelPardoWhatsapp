@@ -25,7 +25,7 @@ class OptionMenuSeeder extends Seeder
             ['id' => '7', 'name' => 'Compromisos', 'route' => 'compromiso', 'groupmenu_id' => 2, 'icon' => 'fa-solid fa-receipt'],
             
             ['id' => '8', 'name' => 'Mensaje', 'route' => 'message', 'groupmenu_id' => 1, 'icon' => 'fa-solid fa-message'],
-            
+            ['id' => '9', 'name' => 'Dashboard', 'route' => 'dashboard', 'groupmenu_id' => 3, 'icon' => 'fa-solid fa-chart-line'],
         ];
 
         foreach ($array as $object) {
