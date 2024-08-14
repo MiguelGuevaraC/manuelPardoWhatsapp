@@ -1,5 +1,5 @@
 <?php
-namespace App\imports;
+namespace App\Imports;
 
 use App\Models\Compromiso;
 use App\Models\Person; // Asegúrate de importar el modelo Person

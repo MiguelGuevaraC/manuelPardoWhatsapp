@@ -4,7 +4,7 @@ namespace App\Http\Controllers\web;
 
 use App\Exports\PersonExport;
 use App\Http\Controllers\Controller;
-use App\imports\PersonImport;
+use App\Imports\PersonImport;
 use App\Models\GroupMenu;
 use App\Models\MigrationExport;
 use App\Models\Person;

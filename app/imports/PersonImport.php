@@ -1,6 +1,6 @@
 <?php
 
-namespace App\imports;
+namespace App\Imports;
 
 use App\Models\Person;
 use Exception;
@@ -13,8 +13,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class PersonImport implements ToModel, WithHeadingRow
 {
     private $headerMap = [];
-
-  
 
     public function headingRow(): int
     {
