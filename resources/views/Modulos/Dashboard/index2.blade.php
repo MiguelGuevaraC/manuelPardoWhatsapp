@@ -22,9 +22,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <?php
-    $vista = 'Home';
-    $categoriaActual = 'home';
-    $OpcionActual = 'vistaInicio';
+    $vista = 'Dashboard';
+    $categoriaActual = 'Reporte';
+    $OpcionActual = 'dashboard';
     
     ?>
 
@@ -38,7 +38,6 @@
     <!--Open Sans Font [ OPTIONAL ]-->
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
 
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <!--Bootstrap Stylesheet [ REQUIRED ]-->
     <link href="plantillaNuevo\css\bootstrap.min.css" rel="stylesheet">
@@ -71,38 +70,27 @@
     <link rel="stylesheet" href="/manuelPardoWhatsapp/Cdn-Locales/pkgAwsome/css/all.css" />
 
     <!--Demo [ DEMONSTRATION ]-->
-    <link href="plantillaNuevo\css\demo\nifty-demo.min.css" rel="stylesheet">
 
 
 
     <link href="plantillaNuevo\css\themes\type-c\theme-navy.min.css" rel="stylesheet">
+
     <!--Unite Gallery [ OPTIONAL ]-->
-    <link href="plantillaNuevo\plugins\unitegallery\css\unitegallery.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/appPlantilla.css') }}">
     <style>
         #page-content1 {
-            padding: 2px 50px;
+            padding: 20px 50px;
         }
 
-        .card-body-label,
         .card-body {
             background: #f9f9f9;
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 4px 8px rgba(0, 128, 0, 0.2);
             border: 1px solid #c1e2c1;
-            transition: all 0.3s ease;
-            transform: perspective(1000px);
-        }
 
-        /* Efecto de hover con 3D */
-        .card-body-label:hover {
-            background: #f8fbf8;
-            box-shadow: 0 8px 16px rgba(0, 128, 0, 0.3);
-            transform: scale(1.02);
         }
-
 
         .card-body h4,
         .card-body p {
@@ -115,15 +103,64 @@
         }
 
         .card {
-            background: #ffffff0d;
+            background: #1caa000d;
             border-radius: 20px
         }
 
         .card-text {
             padding: 4px;
         }
-    </style>
 
+        /* Estilo base para la navbar */
+        .navbar-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        /* Asegúrate de que los elementos dentro de .nav se alineen correctamente */
+        .navbar-top-links {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Ajuste para dispositivos móviles */
+        @media (max-width: 300px) {
+            .navbar-top-links {
+                flex-direction: column;
+                width: 100%;
+                margin: 0;
+            }
+
+            .navbar-top-links .dropdown {
+                width: 100%;
+            }
+
+
+        }
+
+        /* Estilo para el botón de menú de navegación en dispositivos móviles */
+        .tgl-menu-btn {
+            display: block;
+        }
+
+        .mainnav-toggle {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        /* Estilo para el icono del usuario y perfil */
+        .ic-user {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Ajustes para asegurar que el menú desplegable se alinee correctamente */
+        .dropdown-menu-right {
+            right: 0;
+        }
+    </style>
 
 </head>
 
@@ -208,6 +245,7 @@
 
 
                 </div>
+
                 <!--================================-->
                 <!--End Navbar Dropdown-->
 
@@ -221,26 +259,17 @@
             <!--CONTENT CONTAINER-->
             <!--===================================================-->
             <div id="content-container">
-                <div id="page-head">
+                <!-- Page Head -->
+                <div id="page-head" class="mb-4">
 
 
-                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-                    <!--End page title-->
-
-
-                    <!--Breadcrumb-->
-                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
                     <ol class="breadcrumb">
-                        <li><a href='vistaInicio'><i class="demo-pli-home"></i></a></li>
+                        <li><a href="vistaInicio"><i class="demo-pli-home"></i></a></li>
                         <li><a href="{{ $OpcionActual }}">{{ $categoriaActual }}</a></li>
-
                     </ol>
-                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-                    <!--End breadcrumb-->
-
                 </div>
 
-
+                <!-- Page Content -->
                 <div id="page-content1">
 
 
@@ -251,33 +280,23 @@
                         <!-- Mensajes Pendientes -->
                         <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
                             <div class="card shadow-sm border-0">
-                                <div class="card-body-label">
+                                <div class="card-body">
                                     <p style="text-align: left" class="card-title"><b>Filtro Fechas</b></p>
 
-                                    <!-- Contenedor de la fila para las fechas -->
-                                    <div class="row mt-3">
-                                        <div class="col-6 mb-3">
-                                            <input type="date" id="fechaInicio" class="form-control"
-                                                placeholder="Fecha de Inicio">
-                                        </div>
-                                        <div class="col-6 mb-3">
-                                            <input type="date" id="fechaFin" class="form-control"
-                                                placeholder="Fecha de Fin">
-                                        </div>
-                                    </div>
+                                    <input type="date" id="fechaInicio" class="form-control mb-3">
 
+                                    <input type="date" id="fechaFin" class="form-control mb-3">
                                     <button id="filtrar" style="color:white;background: #7dc671"
-                                        class="btn w-100 mt-3">Filtrar</button>
+                                        class="btn w-100">Filtrar</button>
                                 </div>
                             </div>
                         </div>
 
-
                         <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
                             <div class="card shadow-sm border-0">
-                                <div class="card-body-label">
+                                <div class="card-body">
                                     <div class="icon text-primary mb-3">
-                                        <i class="fa fa-envelope fa-2x" style="color:#28a745"></i>
+                                        <i class="fa fa-envelope fa-3x" style="color:#28a745"></i>
                                     </div>
                                     <h4 class="card-title">Mensajes Enviados</h4>
                                     <p class="card-text display-4" id="totalEnviados">0</p>
@@ -288,9 +307,9 @@
                         <!-- Mensajes Fallidos -->
                         <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
                             <div class="card shadow-sm border-0">
-                                <div class="card-body-label">
+                                <div class="card-body">
                                     <div class="icon mb-3">
-                                        <i class="fa fa-dollar fa-2x" style="color: #28a745"></i>
+                                        <i class="fa fa-dollar fa-3x" style="color: #28a745"></i>
                                     </div>
                                     <h4 class="card-title">Costo Unitario</h4>
                                     <p class="card-text display-4" id="costoUnitario">0</p>
@@ -301,10 +320,10 @@
                         <!-- Costo Total -->
                         <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
                             <div class="card shadow-sm border-0">
-                                <div class="card-body-label">
+                                <div class="card-body">
                                     <div class="icon text-success mb-3">
 
-                                        <i class="fa-solid fa-hand-holding-dollar fa-2x"></i>
+                                        <i class="fa-solid fa-hand-holding-dollar fa-3x"></i>
                                     </div>
                                     <h4 class="card-title">Costo Total</h4>
                                     <p class="card-text display-4" id="costoTotal">$0.00</p>
@@ -365,8 +384,24 @@
                         </div>
                     </div> --}}
                 </div>
-
             </div>
+
+            <!-- Include Bootstrap CSS -->
+            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+            <!-- Include Chart.js -->
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+            {{-- <script src="{{ asset('js/JqueryInicio/JqueryDashboard.js') }}"></script> --}}
+
+
+       
+
+
+
             <!--===================================================-->
             <!--END CONTENT CONTAINER-->
 
@@ -547,57 +582,40 @@
     <!--===================================================-->
 
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/JqueryInicio/JqueryInicio.js') }}"></script>
+
     <script src="/manuelPardoWhatsapp/Cdn-Locales/pkgAwsome/js/all.js"></script>
-    <!-- Include Bootstrap CSS -->
-
-    <!-- Include Chart.js -->
-    <!-- Include Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 
 
     <script>
         $(document).ready(function() {
             var mensajesEnviadosChart, analisisCostosChart;
-    
+
             function initializeDates() {
                 var currentDate = new Date();
                 var firstDayOfYear = new Date(currentDate.getFullYear(), 0, 1);
                 var formattedFirstDayOfYear = firstDayOfYear.toISOString().split("T")[0];
                 var formattedCurrentDate = currentDate.toISOString().split("T")[0];
-    
+
                 $("#fechaInicio").val(formattedFirstDayOfYear);
                 $("#fechaFin").val(formattedCurrentDate);
-    
+
                 fetchDataAndUpdateCharts(formattedFirstDayOfYear, formattedCurrentDate);
             }
-    
+
             initializeDates();
-    
+
             $("#filtrar").click(function() {
                 var fechaInicioInput = $("#fechaInicio").val();
                 var fechaFinInput = $("#fechaFin").val();
-    
-                // Validar fechas
-                if (!fechaInicioInput || !fechaFinInput) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Fechas incompletas',
-                        text: 'Por favor, ingresa ambas fechas para filtrar los datos.',
-                    });
-                    return;
-                }
-    
+
                 var startDate = fechaInicioInput ? new Date(fechaInicioInput).toISOString().split("T")[0] :
                     new Date().toISOString().split("T")[0];
                 var endDate = fechaFinInput ? new Date(fechaFinInput).toISOString().split("T")[0] :
                     new Date().toISOString().split("T")[0];
-    
+
                 fetchDataAndUpdateCharts(startDate, endDate);
             });
-    
+
             function fetchDataAndUpdateCharts(startDate, endDate) {
                 $.ajax({
                     url: "dataDashboard",
@@ -607,31 +625,15 @@
                         fechaEnd: endDate,
                     },
                     success: function(response) {
-                        if (Object.keys(response.mensajesPorFecha).length === 0 || 
-                            Object.keys(response.costosPorFecha).length === 0) {
-                            Swal.fire({
-                                icon: 'info',
-                                title: 'Datos vacíos',
-                                text: 'No se encontraron datos para las fechas seleccionadas. Por favor, verifica los datos cargados.',
-                            });
-                        } else {
-                            updateCharts(response, startDate, endDate);
-                        }
+                        updateCharts(response, startDate, endDate);
                     },
-                    error: function() {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Ocurrió un error al recuperar los datos. Inténtalo de nuevo.',
-                        });
-                    }
                 });
             }
-    
+
             function updateCharts(data, startDate, endDate) {
                 var mensajesData = {};
                 var costosData = {};
-    
+
                 function getMonthLabel(date) {
                     var monthNames = [
                         "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
@@ -641,13 +643,13 @@
                     var year = new Date(date).getFullYear();
                     return monthNames[month] + " " + year;
                 }
-    
+
                 function getMonthYearKey(date) {
                     var month = new Date(date).getMonth() + 1;
                     var year = new Date(date).getFullYear();
                     return year + '-' + (month < 10 ? '0' : '') + month; // Formato YYYY-MM
                 }
-    
+
                 function addToMonthData(date, value, dataMap) {
                     var monthYearKey = getMonthYearKey(date);
                     var monthLabel = getMonthLabel(date);
@@ -659,38 +661,38 @@
                     }
                     dataMap[monthYearKey].value += value;
                 }
-    
+
                 // Filtrar y agregar datos al mes correspondiente
                 Object.keys(data.mensajesPorFecha).forEach((date) => {
                     if (date >= startDate && date <= endDate) {
                         addToMonthData(date, data.mensajesPorFecha[date], mensajesData);
                     }
                 });
-    
+
                 Object.keys(data.costosPorFecha).forEach((date) => {
                     if (date >= startDate && date <= endDate) {
                         addToMonthData(date, data.costosPorFecha[date], costosData);
                     }
                 });
-    
+
                 // Ordenar las etiquetas por fecha real para mantener el orden cronológico
                 var sortedLabels = Object.keys(mensajesData).sort(function(a, b) {
                     return new Date(a + '-01') - new Date(b + '-01');
                 });
-    
+
                 var sortedMensajesData = sortedLabels.map((key) => mensajesData[key].value);
                 var sortedCostosData = sortedLabels.map((key) => costosData[key].value);
                 var sortedLabelTexts = sortedLabels.map((key) => mensajesData[key].label);
-    
+
                 // Destruir gráficos anteriores si existen
                 if (mensajesEnviadosChart) {
                     mensajesEnviadosChart.destroy();
                 }
-    
+
                 if (analisisCostosChart) {
                     analisisCostosChart.destroy();
                 }
-    
+
                 // Crear gráfico de mensajes enviados
                 var ctx1 = document.getElementById("mensajesEnviadosChart").getContext("2d");
                 mensajesEnviadosChart = new Chart(ctx1, {
@@ -704,11 +706,9 @@
                             borderColor: "rgba(75, 192, 192, 1)",
                             borderWidth: 2,
                             fill: true,
-                            tension: 0.4, // Suaviza las líneas del gráfico
                         }],
                     },
                     options: {
-                        responsive: true,
                         maintainAspectRatio: false,
                         scales: {
                             y: {
@@ -729,18 +729,10 @@
                                     color: "black",
                                 },
                             },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(tooltipItem) {
-                                        return tooltipItem.dataset.label + ': ' + tooltipItem.raw
-                                            .toLocaleString();
-                                    }
-                                }
-                            },
                         },
                     },
                 });
-    
+
                 // Crear gráfico de costos
                 var ctx2 = document.getElementById("analisisCostosChart").getContext("2d");
                 analisisCostosChart = new Chart(ctx2, {
@@ -753,11 +745,9 @@
                             backgroundColor: "rgba(75, 192, 192, 0.6)",
                             borderColor: "rgba(75, 192, 192, 1)",
                             borderWidth: 1,
-                            borderRadius: 5, // Bordes redondeados en las barras
                         }],
                     },
                     options: {
-                        responsive: true,
                         maintainAspectRatio: false,
                         scales: {
                             y: {
@@ -778,18 +768,10 @@
                                     color: "black",
                                 },
                             },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(tooltipItem) {
-                                        return tooltipItem.dataset.label + ': S/ ' + tooltipItem.raw
-                                            .toLocaleString();
-                                    }
-                                }
-                            },
                         },
                     },
                 });
-    
+
                 // Actualizar valores de total de mensajes y costo total
                 $("#costoUnitario").text("S/ " + data.costoUnitario);
                 $("#totalEnviados").text(data.totalMensajes);
@@ -797,7 +779,6 @@
             }
         });
     </script>
-    
 
 </body>
 
