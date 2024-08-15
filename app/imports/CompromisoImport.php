@@ -26,22 +26,39 @@ class CompromisoImport implements ToModel, WithHeadingRow
     {
         try {
             // Definir los encabezados esperados
+            // $expectedColumns = [
+            //     'código' => 'codigo',
+            //     'ngs' => 'ngs',
+            //     'concepto' => 'concepto',
+            //     'ene' => 'ene',
+            //     'feb' => 'feb',
+            //     'mar' => 'mar',
+            //     'abr' => 'abr',
+            //     'may' => 'may',
+            //     'jun' => 'jun',
+            //     'jul' => 'jul',
+            //     'ago' => 'ago',
+            //     'set' => 'set',
+            //     'oct' => 'oct',
+            //     'nov' => 'nov',
+            //     'dic' => 'dic',
+            // ];
             $expectedColumns = [
                 'código' => 'codigo',
                 'ngs' => 'ngs',
                 'concepto' => 'concepto',
-                'ene' => 'ene',
-                'feb' => 'feb',
-                'mar' => 'mar',
-                'abr' => 'abr',
-                'may' => 'may',
-                'jun' => 'jun',
-                'jul' => 'jul',
-                'ago' => 'ago',
-                'set' => 'set',
-                'oct' => 'oct',
-                'nov' => 'nov',
-                'dic' => 'dic',
+                'enero' => 'ene',
+                'febrero' => 'feb',
+                'marzo' => 'mar',
+                'abril' => 'abr',
+                'mayo' => 'may',
+                'junio' => 'jun',
+                'julio' => 'jul',
+                'agosto' => 'ago',
+                'septiembre' => 'se',
+                'octubre' => 'oct',
+                'noviembre' => 'nov',
+                'diciembre' => 'dic',
             ];
 
             // Si el mapeo de encabezados está vacío, significa que estamos en la fila de encabezado
