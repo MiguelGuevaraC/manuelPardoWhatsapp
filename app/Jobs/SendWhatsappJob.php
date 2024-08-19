@@ -63,21 +63,22 @@ class SendWhatsappJob implements ShouldQueue
 
                 $studentParent = $student->representativeNames ?? 'Apoderado';
                 $studentParentDni = $student->representativeDni ?? '';
-                $telephoneStudent = '903017426'; // MOMENTANEO MI NUMERO TELEFÓNICO
+                $telephoneStudent = '903017426'; 
 
                 $tags = ['{{numCuotas}}', '{{nombreApoderado}}', '{{dniApoderado}}', '{{nombreAlumno}}', '{{codigoAlumno}}', '{{grado}}', '{{seccion}}', '{{nivel}}', '{{meses}}', '{{montoPago}}'];
                 $values = [$comminment->cuotaNumber, $studentParent, $studentParentDni, $cadenaNombres, $student->documentNumber, $student->grade, $student->section, $student->level, $comminment->conceptDebt, $comminment->paymentAmount];
 
                 $title = str_replace($tags, $values, $messageBase->title);
-
+                
                 $block1 = str_replace($tags, $values, $messageBase->block1);
                 $block2 = str_replace($tags, $values, $messageBase->block2);
                 $block3 = str_replace($tags, $values, $messageBase->block3);
+                $block4 = str_replace($tags, $values, $messageBase->block4);
 
                 $mensajes[] = [
                     "cellphone_number" => $telephoneStudent,
                     "title" => $title,
-                    "content" => [$block1, $block2, $block3],
+                    "content" => [$block1, $block2, $block3, $block4],
                 ];
 
                 $person = Person::find($user->person_id);
@@ -121,6 +122,7 @@ class SendWhatsappJob implements ShouldQueue
             if ($response->successful()) {
                 Log::info('WhatsApp message sent successfully to ' . $student->telephone);
             } else {
+                Log::info('Mensajes ' . json_encode($mensajes));
                 Log::error('Failed to send WhatsApp message to ' . $student->telephone . '. Status: ' . $response->status() . '. Response: ' . $response->body());
             }
             return response()->json(['message' => 'El mensaje de WhatsApp se ha enviado correctamente'], 200);

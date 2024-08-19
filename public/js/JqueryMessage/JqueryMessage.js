@@ -103,6 +103,7 @@ $(document).ready(function () {
         formData.append('block1', $('#block1').val());
         formData.append('block2', $('#block2').val());
         formData.append('block3', $('#block3').val());
+        formData.append('block4', $('#block4').val());
         formData.append('_token', $('input[name="_token"]').val());
     
         // Enviar los datos mediante AJAX

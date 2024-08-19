@@ -332,6 +332,10 @@
                             <label for="block3">PARRAFO 3</label>
                             <textarea id="block3" class="large">{{$message->block3 ?? ''}}</textarea>
                         </div>
+                        <div class="textarea-container">
+                            <label for="block4">PARRAFO 4</label>
+                            <textarea id="block4" class="large">{{$message->block4 ?? ''}}</textarea>
+                        </div>
                     </div>
                     <div id="demo-custom-toolbar2" class="" style="text-align: center">
                         <button id="btonSaveMessage" style="margin: 12px" class="btn btn-success"><i class="demo-pli-plus"></i> Guardar </button>

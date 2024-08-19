@@ -61,7 +61,7 @@ function setAccesos(id, nombre) {
         success: function (response) {
             $("#accesosContainer").empty();
             response.data.forEach(function (acceso) {
-                var checked = acceso.checked ? 'checked' : '';
+                var checked = acceso.checked ? "checked" : "";
                 var checkbox = `
                     <div class="col-md-4">
                         <div class="custom-control custom-checkbox">
@@ -80,13 +80,12 @@ function setAccesos(id, nombre) {
     });
 }
 
-
 $(document).ready(function () {
     $("#formularioAccesos").submit(function (event) {
         event.preventDefault(); // Evitar el comportamiento por defecto del formulario
 
         // Obtener el token CSRF
-        var token = $('meta[name="csrf-token"]').attr('content');
+        var token = $('meta[name="csrf-token"]').attr("content");
 
         // Realizar la solicitud AJAX para actualizar los accesos
         $.ajax({
@@ -94,7 +93,7 @@ $(document).ready(function () {
             type: "POST", // Método HTTP POST para enviar los datos
             data: $(this).serialize(), // Datos del formulario serializados
             headers: {
-                'X-CSRF-TOKEN': token // Incluir el token CSRF en el encabezado de la solicitud
+                "X-CSRF-TOKEN": token, // Incluir el token CSRF en el encabezado de la solicitud
             },
             success: function (response) {
                 // Cerrar el modal de configuración de accesos
@@ -122,11 +121,10 @@ $(document).ready(function () {
                     container: "floating",
                     timer: 4000,
                 });
-            }
+            },
         });
     });
 });
-
 
 $("#btonNuevo").click(function (e) {
     $("#registroRol")[0].reset();

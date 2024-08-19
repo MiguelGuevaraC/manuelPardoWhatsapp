@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('block1')->nullable();
             $table->text('block2')->nullable();
             $table->text('block3')->nullable();
+            $table->text('block4')->nullable();
 
             $table->boolean('state')->default(true);
             $table->timestamps();
