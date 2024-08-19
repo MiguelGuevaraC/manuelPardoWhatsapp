@@ -561,25 +561,31 @@
     <script>
         $(document).ready(function() {
             var mensajesEnviadosChart, analisisCostosChart;
-    
+
             function initializeDates() {
                 var currentDate = new Date();
                 var firstDayOfYear = new Date(currentDate.getFullYear(), 0, 1);
                 var formattedFirstDayOfYear = firstDayOfYear.toISOString().split("T")[0];
+
+                var fechaFin = new Date(currentDate);
+                fechaFin.setDate(fechaFin.getDate() + 1);
+
                 var formattedCurrentDate = currentDate.toISOString().split("T")[0];
-    
+                var formattedFechaFin = fechaFin.toISOString().split("T")[0];
+
                 $("#fechaInicio").val(formattedFirstDayOfYear);
-                $("#fechaFin").val(formattedCurrentDate);
-    
-                fetchDataAndUpdateCharts(formattedFirstDayOfYear, formattedCurrentDate);
+                $("#fechaFin").val(formattedFechaFin);
+
+                fetchDataAndUpdateCharts(formattedFirstDayOfYear, formattedFechaFin);
             }
-    
+
+
             initializeDates();
-    
+
             $("#filtrar").click(function() {
                 var fechaInicioInput = $("#fechaInicio").val();
                 var fechaFinInput = $("#fechaFin").val();
-    
+
                 // Validar fechas
                 if (!fechaInicioInput || !fechaFinInput) {
                     Swal.fire({
@@ -589,15 +595,15 @@
                     });
                     return;
                 }
-    
+
                 var startDate = fechaInicioInput ? new Date(fechaInicioInput).toISOString().split("T")[0] :
                     new Date().toISOString().split("T")[0];
                 var endDate = fechaFinInput ? new Date(fechaFinInput).toISOString().split("T")[0] :
                     new Date().toISOString().split("T")[0];
-    
+
                 fetchDataAndUpdateCharts(startDate, endDate);
             });
-    
+
             function fetchDataAndUpdateCharts(startDate, endDate) {
                 $.ajax({
                     url: "dataDashboard",
@@ -607,7 +613,7 @@
                         fechaEnd: endDate,
                     },
                     success: function(response) {
-                        if (Object.keys(response.mensajesPorFecha).length === 0 || 
+                        if (Object.keys(response.mensajesPorFecha).length === 0 ||
                             Object.keys(response.costosPorFecha).length === 0) {
                             Swal.fire({
                                 icon: 'info',
@@ -627,11 +633,11 @@
                     }
                 });
             }
-    
+
             function updateCharts(data, startDate, endDate) {
                 var mensajesData = {};
                 var costosData = {};
-    
+
                 function getMonthLabel(date) {
                     var monthNames = [
                         "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
@@ -641,13 +647,13 @@
                     var year = new Date(date).getFullYear();
                     return monthNames[month] + " " + year;
                 }
-    
+
                 function getMonthYearKey(date) {
                     var month = new Date(date).getMonth() + 1;
                     var year = new Date(date).getFullYear();
                     return year + '-' + (month < 10 ? '0' : '') + month; // Formato YYYY-MM
                 }
-    
+
                 function addToMonthData(date, value, dataMap) {
                     var monthYearKey = getMonthYearKey(date);
                     var monthLabel = getMonthLabel(date);
@@ -659,38 +665,38 @@
                     }
                     dataMap[monthYearKey].value += value;
                 }
-    
+
                 // Filtrar y agregar datos al mes correspondiente
                 Object.keys(data.mensajesPorFecha).forEach((date) => {
                     if (date >= startDate && date <= endDate) {
                         addToMonthData(date, data.mensajesPorFecha[date], mensajesData);
                     }
                 });
-    
+
                 Object.keys(data.costosPorFecha).forEach((date) => {
                     if (date >= startDate && date <= endDate) {
                         addToMonthData(date, data.costosPorFecha[date], costosData);
                     }
                 });
-    
+
                 // Ordenar las etiquetas por fecha real para mantener el orden cronológico
                 var sortedLabels = Object.keys(mensajesData).sort(function(a, b) {
                     return new Date(a + '-01') - new Date(b + '-01');
                 });
-    
+
                 var sortedMensajesData = sortedLabels.map((key) => mensajesData[key].value);
                 var sortedCostosData = sortedLabels.map((key) => costosData[key].value);
                 var sortedLabelTexts = sortedLabels.map((key) => mensajesData[key].label);
-    
+
                 // Destruir gráficos anteriores si existen
                 if (mensajesEnviadosChart) {
                     mensajesEnviadosChart.destroy();
                 }
-    
+
                 if (analisisCostosChart) {
                     analisisCostosChart.destroy();
                 }
-    
+
                 // Crear gráfico de mensajes enviados
                 var ctx1 = document.getElementById("mensajesEnviadosChart").getContext("2d");
                 mensajesEnviadosChart = new Chart(ctx1, {
@@ -740,7 +746,7 @@
                         },
                     },
                 });
-    
+
                 // Crear gráfico de costos
                 var ctx2 = document.getElementById("analisisCostosChart").getContext("2d");
                 analisisCostosChart = new Chart(ctx2, {
@@ -789,7 +795,7 @@
                         },
                     },
                 });
-    
+
                 // Actualizar valores de total de mensajes y costo total
                 $("#costoUnitario").text("S/ " + data.costoUnitario);
                 $("#totalEnviados").text(data.totalMensajes);
@@ -797,7 +803,7 @@
             }
         });
     </script>
-    
+
 
 </body>
 

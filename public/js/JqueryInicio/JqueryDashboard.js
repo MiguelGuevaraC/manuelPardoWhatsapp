@@ -8,17 +8,17 @@ $(document).ready(function () {
     // Establecer las fechas por defecto al cargar la página
     function initializeDates() {
         var fechaInicio = new Date();
-        fechaInicio.setDate(1);
-        var fechaFin = new Date();
-        var currentDate = new Date();
-        var firstDayOfYear = new Date(currentDate.getFullYear(), 0, 1);
-        
+        fechaInicio.setDate(1); // Establece la fecha de inicio al primer día del mes
+    
+        var fechaFin = new Date(); 
+        fechaFin.setDate(fechaFin.getDate() + 1); // Establece la fecha de fin al día siguiente
+    
         startDate = fechaInicio.toISOString().split("T")[0];
         endDate = fechaFin.toISOString().split("T")[0];
-
+    
         $("#fechaInicio").val(startDate);
         $("#fechaFin").val(endDate);
-
+    
         // Inicializar los gráficos con fechas predeterminadas
         fetchDataAndUpdateCharts(startDate, endDate);
     }
