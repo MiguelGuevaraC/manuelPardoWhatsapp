@@ -35,12 +35,14 @@ class DashboardController extends Controller
             return response()->json(['error' => 'La fecha de fin no puede ser anterior a la fecha de inicio.'], 400);
         }
 
-        $costoUnitario = 0.20;
+        $costSend = 0.20;
 
         // Filtrar datos por el rango de fechas
-        $mensajes = WhatsappSend::whereBetween('created_at', [$fechaInicio, $fechaFin])
-            ->orderBy('created_at', 'asc')
-            ->get();
+        $mensajes = WhatsappSend::where('created_at', '>=', $fechaInicio)
+        ->where('created_at', '<=', $fechaFin)
+        ->orderBy('created_at', 'asc')
+        ->get();
+    
 
         // Agrupar los mensajes por mes y año
         $mensajesPorMes = $mensajes->groupBy(fn($item) => $item->created_at->format('Y-m-d'));
@@ -48,10 +50,10 @@ class DashboardController extends Controller
         // Calcular los datos agrupados por mes y año
         $data = [
             'totalMensajes' => $mensajes->count(),
-            'costoUnitario' => $costoUnitario,
-            'costoTotal' => $mensajes->count() * $costoUnitario,
+            'costoUnitario' => $costSend,
+            'costoTotal' => $mensajes->count() * $costSend,
             'mensajesPorFecha' => $mensajesPorMes->map->count(),
-            'costosPorFecha' => $mensajesPorMes->map(fn($group) => $group->count() * $costoUnitario),
+            'costosPorFecha' => $mensajesPorMes->map(fn($group) => $group->count() * $costSend),
         ];
 
         return response()->json($data);

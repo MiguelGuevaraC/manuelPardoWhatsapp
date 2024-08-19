@@ -43,6 +43,7 @@ class SendWhatsappJob implements ShouldQueue
         try {
             $mensajes = [];
             $user = $this->user;
+            $costSend = 0.20;
 
             $messageBase = MessageWhasapp::where('responsable_id', $user->person_id)->first() ?? (object) [
                 'title' => 'titulo',
@@ -63,13 +64,13 @@ class SendWhatsappJob implements ShouldQueue
 
                 $studentParent = $student->representativeNames ?? 'Apoderado';
                 $studentParentDni = $student->representativeDni ?? '';
-                $telephoneStudent = '903017426'; 
+                $telephoneStudent = '903017426';
 
                 $tags = ['{{numCuotas}}', '{{nombreApoderado}}', '{{dniApoderado}}', '{{nombreAlumno}}', '{{codigoAlumno}}', '{{grado}}', '{{seccion}}', '{{nivel}}', '{{meses}}', '{{montoPago}}'];
                 $values = [$comminment->cuotaNumber, $studentParent, $studentParentDni, $cadenaNombres, $student->documentNumber, $student->grade, $student->section, $student->level, $comminment->conceptDebt, $comminment->paymentAmount];
 
                 $title = str_replace($tags, $values, $messageBase->title);
-                
+
                 $block1 = str_replace($tags, $values, $messageBase->block1);
                 $block2 = str_replace($tags, $values, $messageBase->block2);
                 $block3 = str_replace($tags, $values, $messageBase->block3);
@@ -103,6 +104,8 @@ class SendWhatsappJob implements ShouldQueue
                     'paymentAmount' => $comminment->paymentAmount,
                     'expirationDate' => $comminment->expirationDate,
                     'cuota' => $comminment->cuotaNumber,
+                    'costSend' => $costSend,
+
                     'student_id' => $student->id,
                     'user_id' => $user->id,
                     'comminment_id' => $comminment->id,

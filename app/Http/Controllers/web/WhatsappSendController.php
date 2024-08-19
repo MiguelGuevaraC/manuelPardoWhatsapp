@@ -251,7 +251,6 @@ class WhatsappSendController extends Controller
 
         $data = $query->orderBy('id', 'desc')->get();
 
-        // Generar el PDF usando la vista Blade
         $pdf = PDF::loadView('pdf.export', ['data' => $data,
             'dateStart' => $startDate, 'dateEnd' => $endDate])
             ->setPaper('a4', 'landscape')

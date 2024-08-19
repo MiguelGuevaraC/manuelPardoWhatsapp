@@ -24,6 +24,8 @@ class WhatsappSend extends Model
         'conceptSend',
         'paymentAmount',
         'expirationDate',
+        'costSend',
+
         'cuota',
         'status',
         'created_at',

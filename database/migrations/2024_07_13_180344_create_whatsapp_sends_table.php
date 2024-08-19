@@ -27,6 +27,9 @@ return new class extends Migration
             $table->string('conceptSend')->nullable();
             $table->decimal('paymentAmount', 10, 2)->nullable();
             $table->date('expirationDate')->nullable()->nullable();
+
+            $table->decimal('costSend', 10, 2)->nullable();
+
             $table->string('cuota')->nullable();
             $table->string('status')->nullable();
             $table->boolean('state')->default(true);
