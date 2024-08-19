@@ -29,20 +29,21 @@ class DashboardController extends Controller
     {
         $fechaInicio = $request->input('fechaStart', now()->startOfYear()->format('Y-m-d'));
         $fechaFin = $request->input('fechaEnd', now()->format('Y-m-d'));
-
+        
         // Verificar que la fecha de fin no sea anterior a la fecha de inicio
         if ($fechaFin < $fechaInicio) {
             return response()->json(['error' => 'La fecha de fin no puede ser anterior a la fecha de inicio.'], 400);
         }
-
+        
         $costSend = 0.20;
-
-        // Filtrar datos por el rango de fechas
+        
+        // Filtrar datos por el rango de fechas utilizando mayor o igual y menor o igual
         $mensajes = WhatsappSend::where('created_at', '>=', $fechaInicio)
-        ->where('created_at', '<=', $fechaFin)
-        ->orderBy('created_at', 'asc')
-        ->get();
-    
+            ->where('created_at', '<=', $fechaFin)
+            ->orderBy('created_at', 'asc')
+            ->get();
+        
+        
 
         // Agrupar los mensajes por mes y año
         $mensajesPorMes = $mensajes->groupBy(fn($item) => $item->created_at->format('Y-m-d'));
