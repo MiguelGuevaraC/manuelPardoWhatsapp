@@ -56,7 +56,7 @@ class WhatsappSendController extends Controller
         $query = WhatsappSend::with(['user', 'user.person', 'conminmnet', 'student'])->whereHas('student', function ($query) {
             $query->where('user_id', Auth::user()->id);
         })
-            ->where('state', 1);
+            ->where('state', 1)->where('status', 'Envio Exitoso');
 
         if ($startDate && $endDate) {
             $query->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);

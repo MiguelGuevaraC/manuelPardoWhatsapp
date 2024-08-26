@@ -106,28 +106,70 @@ class MessageController extends Controller
 
     public function store(Request $request)
     {
+        // Función para contar caracteres teniendo en cuenta caracteres especiales
+        function countSpecialChars($text)
+        {
+            // Mapa de caracteres especiales y su peso en caracteres ASCII
+            $specialChars = [
+                'á' => 5, 'é' => 5, 'í' => 5, 'ó' => 5, 'ú' => 5,
+                'ü' => 5, 'ñ' => 5,
+                'Á' => 5, 'É' => 5, 'Í' => 5, 'Ó' => 5, 'Ú' => 5,
+                'Ü' => 5, 'Ñ' => 5,
+                '/' => 5, '\\' => 5,
+                // Puedes agregar más caracteres especiales aquí
+            ];
+
+            $length = mb_strlen($text); // Largo total del texto
+            $specialCount = 0;
+
+            // Iterar sobre cada carácter del texto
+            foreach (preg_split('//u', $text, -1, PREG_SPLIT_NO_EMPTY) as $char) {
+                if (isset($specialChars[$char])) {
+                    $specialCount += $specialChars[$char] - 1; // Restar 1 porque ya cuenta como 1
+                }
+            }
+
+            return $length + $specialCount;
+        }
+
+        // Validar la longitud considerando caracteres especiales
         $validator = validator()->make($request->all(), [
-            'title' => 'required|string|max:300',
-            'block1' => 'required|string|max:300',
-            'block2' => 'required|string|max:300',
-            'block3' => 'required|string|max:300',
-            'block4' => 'required|string|max:300',
+            'title' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (countSpecialChars($value) > 300) {
+                    $fail('El título no debe exceder los 300 caracteres.');
+                }
+            }],
+            'block1' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (countSpecialChars($value) > 300) {
+                    $fail('El párrafo 1 no debe exceder los 300 caracteres.');
+                }
+            }],
+            'block2' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (countSpecialChars($value) > 300) {
+                    $fail('El párrafo 2 no debe exceder los 300 caracteres.');
+                }
+            }],
+            'block3' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (countSpecialChars($value) > 300) {
+                    $fail('El párrafo 3 no debe exceder los 300 caracteres.');
+                }
+            }],
+            'block4' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (countSpecialChars($value) > 300) {
+                    $fail('El párrafo 4 no debe exceder los 300 caracteres.');
+                }
+            }],
         ], [
             'title.required' => 'El título es obligatorio.',
             'title.string' => 'El título debe ser una cadena de texto.',
-            'title.max' => 'El título no debe exceder los 300 caracteres.',
             'block1.required' => 'El párrafo 1 es obligatorio.',
             'block1.string' => 'El párrafo 1 debe ser una cadena de texto.',
-            'block1.max' => 'El párrafo 1 no debe exceder los 300 caracteres.',
             'block2.required' => 'El párrafo 2 es obligatorio.',
             'block2.string' => 'El párrafo 2 debe ser una cadena de texto.',
-            'block2.max' => 'El párrafo 2 no debe exceder los 300 caracteres.',
             'block3.required' => 'El párrafo 3 es obligatorio.',
             'block3.string' => 'El párrafo 3 debe ser una cadena de texto.',
-            'block3.max' => 'El párrafo 3 no debe exceder los 300 caracteres.',
             'block4.required' => 'El párrafo 4 es obligatorio.',
             'block4.string' => 'El párrafo 4 debe ser una cadena de texto.',
-            'block4.max' => 'El párrafo 4 no debe exceder los 300 caracteres.',
         ]);
 
         if ($validator->fails()) {

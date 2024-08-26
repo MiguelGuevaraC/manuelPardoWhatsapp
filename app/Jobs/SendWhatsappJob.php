@@ -71,10 +71,14 @@ class SendWhatsappJob implements ShouldQueue
 
                 $title = str_replace($tags, $values, $messageBase->title);
 
-                $block1 = str_replace($tags, $values, $messageBase->block1);
-                $block2 = str_replace($tags, $values, $messageBase->block2);
-                $block3 = str_replace($tags, $values, $messageBase->block3);
-                $block4 = str_replace($tags, $values, $messageBase->block4);
+                // Define una lista de caracteres especiales a eliminar
+                $specialChars = ["\n", "\r", "\t", "\\"];
+
+// Reemplaza los caracteres especiales en cada bloque
+                $block1 = str_replace($specialChars, '', str_replace($tags, $values, $messageBase->block1));
+                $block2 = str_replace($specialChars, '', str_replace($tags, $values, $messageBase->block2));
+                $block3 = str_replace($specialChars, '', str_replace($tags, $values, $messageBase->block3));
+                $block4 = str_replace($specialChars, '', str_replace($tags, $values, $messageBase->block4));
 
                 $mensajes[] = [
                     "cellphone_number" => $telephoneStudent,
