@@ -97,10 +97,14 @@ class CompromisoController extends Controller
                         break;
                     case 'student.grade':
                         $query->whereHas('student', function ($query) use ($searchValue) {
-                            $query->where('grade', 'like', '%' . $searchValue . '%')
-                                ->orWhere('section', 'like', '%' . $searchValue . '%');
+                            // Eliminar todos los espacios del valor de búsqueda
+                            $searchValueClean = str_replace(' ', '', strtolower(trim($searchValue)));
+
+                            // Concatenar los campos `grade` y `section`, eliminar los espacios y comparar con el valor limpio
+                            $query->whereRaw('REPLACE(CONCAT(LOWER(grade), LOWER(section)), " ", "") = ?', [$searchValueClean]);
                         });
                         break;
+
                     case 'paymentAmount':
                         $searchValue1 = (float) $searchValue;
 
@@ -244,8 +248,11 @@ class CompromisoController extends Controller
                         break;
                     case 'student.grade':
                         $query->whereHas('student', function ($query) use ($searchValue) {
-                            $query->where('grade', 'like', '%' . $searchValue . '%')
-                                ->orWhere('section', 'like', '%' . $searchValue . '%');
+                            // Eliminar todos los espacios del valor de búsqueda
+                            $searchValueClean = str_replace(' ', '', strtolower(trim($searchValue)));
+
+                            // Concatenar los campos `grade` y `section`, eliminar los espacios y usar LIKE para comparar con el valor limpio
+                            $query->whereRaw('REPLACE(CONCAT(LOWER(grade), LOWER(section)), " ", "") LIKE ?', ["%$searchValueClean%"]);
                         });
                         break;
                     case 'paymentAmount':
@@ -320,7 +327,6 @@ class CompromisoController extends Controller
                     $query->where('user_id', Auth::user()->id);
                     $query->where('state', 1);
                 })->update(['state' => 0]);
-
 
                 if ($extension === 'xls') {
                     Excel::import(new CompromisoImport(), $excelFile, null, \Maatwebsite\Excel\Excel::XLS);

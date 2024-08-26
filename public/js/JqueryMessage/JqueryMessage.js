@@ -68,21 +68,25 @@ $(document).ready(function () {
                 let data = response;
                 Swal.fire({
                     title: "VISTA MENSAJE",
-                    html:
-                        "<div style='text-align:left;'><b>" +
-                        data.title +
-                        "</b></div><br>" +
-                        "<div style='text-align:left'>" +
-                        "<div>" +
-                        data.block1 +
-                        "</div><br>" +
-                        "<div>" +
-                        data.block2 +
-                        "</div><br>" +
-                        "<div>" +
-                        data.block3 +
+                    html: 
+                        "<div style='text-align:left;'><b>" + 
+                        data.title + 
+                        "</b></div><br>" + 
+                        "<div style='text-align:left'>" + 
+                        "<div>" + 
+                        data.block1 + 
+                        "</div><br>" + 
+                        "<div>" + 
+                        data.block2 + 
+                        "</div><br>" + 
+                        "<div>" + 
+                        data.block3 + 
+                        "</div><br>" + 
+                        "<div>" + 
+                        data.block4 + 
                         "</div></div>",
                 });
+                
             },
             error: function () {
                 Swal.fire({

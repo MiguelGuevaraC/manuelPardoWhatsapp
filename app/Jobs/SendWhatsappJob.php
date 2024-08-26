@@ -99,7 +99,7 @@ class SendWhatsappJob implements ShouldQueue
                     'namesParent' => $student->representativeDni . ' | ' . $student->representativeNames,
                     'infoStudent' => $student->level . ' ' . $student->grade . ' ' . $student->section,
                     'telephone' => $telephoneStudent,
-                    'description' => $title . "\n\n" . $block1 . "\n\n" . $block2 . "\n\n" . $block3,
+                    'description' => $title . "\n\n" . $block1 . "\n\n" . $block2 . "\n\n" . $block3. "\n\n" . $block4,
                     'conceptSend' => $comminment->conceptDebt,
                     'paymentAmount' => $comminment->paymentAmount,
                     'expirationDate' => $comminment->expirationDate,
