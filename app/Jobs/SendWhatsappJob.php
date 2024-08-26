@@ -99,7 +99,7 @@ class SendWhatsappJob implements ShouldQueue
                     'namesParent' => $student->representativeDni . ' | ' . $student->representativeNames,
                     'infoStudent' => $student->level . ' ' . $student->grade . ' ' . $student->section,
                     'telephone' => $telephoneStudent,
-                    'description' => $title . "\n\n" . $block1 . "\n\n" . $block2 . "\n\n" . $block3. "\n\n" . $block4,
+                    'description' => $title . "\n\n" . $block1 . "\n\n" . $block2 . "\n\n" . $block3 . "\n\n" . $block4,
                     'conceptSend' => $comminment->conceptDebt,
                     'paymentAmount' => $comminment->paymentAmount,
                     'expirationDate' => $comminment->expirationDate,
@@ -111,7 +111,7 @@ class SendWhatsappJob implements ShouldQueue
                     'comminment_id' => $comminment->id,
                 ];
 
-                WhatsappSend::create($data);
+                $messageSend = WhatsappSend::create($data);
             }
 
             $url = 'https://sistema.gesrest.net/api/send-massive-wa-messages';
@@ -123,11 +123,14 @@ class SendWhatsappJob implements ShouldQueue
             ]);
 
             if ($response->successful()) {
+                $messageSend->status = 'Envio Exitoso';
                 Log::info('WhatsApp message sent successfully to ' . $student->telephone);
             } else {
+                $messageSend->status = 'Envio Fallido';
                 Log::info('Mensajes ' . json_encode($mensajes));
                 Log::error('Failed to send WhatsApp message to ' . $student->telephone . '. Status: ' . $response->status() . '. Response: ' . $response->body());
             }
+            $messageSend->save();
             return response()->json(['message' => 'El mensaje de WhatsApp se ha enviado correctamente'], 200);
         } catch (Exception $e) {
             Log::error('Error to send Whatsapp, Student: ' . $comminment->telephoneStudent

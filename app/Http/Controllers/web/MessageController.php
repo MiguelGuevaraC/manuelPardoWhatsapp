@@ -107,27 +107,27 @@ class MessageController extends Controller
     public function store(Request $request)
     {
         $validator = validator()->make($request->all(), [
-            'title' => 'required|string|max:430',
-            'block1' => 'required|string|max:430',
-            'block2' => 'required|string|max:430',
-            'block3' => 'required|string|max:430',
-            'block4' => 'required|string|max:430',
+            'title' => 'required|string|max:300',
+            'block1' => 'required|string|max:300',
+            'block2' => 'required|string|max:300',
+            'block3' => 'required|string|max:300',
+            'block4' => 'required|string|max:300',
         ], [
             'title.required' => 'El título es obligatorio.',
             'title.string' => 'El título debe ser una cadena de texto.',
-            'title.max' => 'El título no debe exceder los 430 caracteres.',
+            'title.max' => 'El título no debe exceder los 300 caracteres.',
             'block1.required' => 'El párrafo 1 es obligatorio.',
             'block1.string' => 'El párrafo 1 debe ser una cadena de texto.',
-            'block1.max' => 'El párrafo 1 no debe exceder los 430 caracteres.',
+            'block1.max' => 'El párrafo 1 no debe exceder los 300 caracteres.',
             'block2.required' => 'El párrafo 2 es obligatorio.',
             'block2.string' => 'El párrafo 2 debe ser una cadena de texto.',
-            'block2.max' => 'El párrafo 2 no debe exceder los 430 caracteres.',
+            'block2.max' => 'El párrafo 2 no debe exceder los 300 caracteres.',
             'block3.required' => 'El párrafo 3 es obligatorio.',
             'block3.string' => 'El párrafo 3 debe ser una cadena de texto.',
-            'block3.max' => 'El párrafo 3 no debe exceder los 430 caracteres.',
+            'block3.max' => 'El párrafo 3 no debe exceder los 300 caracteres.',
             'block4.required' => 'El párrafo 4 es obligatorio.',
             'block4.string' => 'El párrafo 4 debe ser una cadena de texto.',
-            'block4.max' => 'El párrafo 4 no debe exceder los 430 caracteres.',
+            'block4.max' => 'El párrafo 4 no debe exceder los 300 caracteres.',
         ]);
 
         if ($validator->fails()) {
