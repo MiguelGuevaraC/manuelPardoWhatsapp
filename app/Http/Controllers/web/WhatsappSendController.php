@@ -199,6 +199,7 @@ class WhatsappSendController extends Controller
             ->whereHas('student', function ($query) {
                 $query->where('user_id', Auth::user()->id);
             })
+            ->where('status', 'Envio Exitoso')
             ->where('state', 1);
 
         if ($startDate && $endDate) {
@@ -243,6 +244,7 @@ class WhatsappSendController extends Controller
             ->whereHas('student', function ($query) {
                 $query->where('user_id', Auth::user()->id);
             })
+            ->where('status', 'Envio Exitoso')
             ->where('state', 1);
 
         if ($startDate && $endDate) {

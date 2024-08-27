@@ -106,7 +106,7 @@ class MessageController extends Controller
 
     public function store(Request $request)
     {
-        // Función para contar caracteres teniendo en cuenta caracteres especiales
+        // Función para contar caracteres teniendo en cuenta caracteres especiales y etiquetas
         function countSpecialChars($text)
         {
             // Mapa de caracteres especiales y su peso en caracteres ASCII
@@ -115,73 +115,79 @@ class MessageController extends Controller
                 'ü' => 5, 'ñ' => 5,
                 'Á' => 5, 'É' => 5, 'Í' => 5, 'Ó' => 5, 'Ú' => 5,
                 'Ü' => 5, 'Ñ' => 5,
-                '/' => 5, '\\' => 5,
-                // Puedes agregar más caracteres especiales aquí
+                '/' => 3, '\\' => 3,
             ];
-
+    
+            // Mapa de etiquetas y su peso en caracteres
+            $tagsCount = [
+                '{{numCuotas}}' => 2,
+                '{{dniApoderado}}' => 8,
+                '{{codigoAlumno}}' => 8,
+                '{{grado}}' => 13,
+                '{{seccion}}' => 1,
+                '{{nivel}}' => 10,
+                '{{montoPago}}' => 5,
+                '{{meses}}' => 40,
+                '{{nombreApoderado}}' => 40,
+                '{{nombreAlumno}}' => 40,
+            ];
+    
             $length = mb_strlen($text); // Largo total del texto
             $specialCount = 0;
-
-            // Iterar sobre cada carácter del texto
+    
+            // Contar caracteres especiales
             foreach (preg_split('//u', $text, -1, PREG_SPLIT_NO_EMPTY) as $char) {
                 if (isset($specialChars[$char])) {
                     $specialCount += $specialChars[$char] - 1; // Restar 1 porque ya cuenta como 1
                 }
             }
-
+    
+            // Contar etiquetas y sumar caracteres según corresponda
+            foreach ($tagsCount as $tag => $count) {
+                $occurrences = substr_count($text, $tag);
+                $specialCount += $occurrences * ($count - mb_strlen($tag)); // Restar longitud real de la etiqueta
+            }
+    
             return $length + $specialCount;
         }
-
-        // Validar la longitud considerando caracteres especiales
-        $validator = validator()->make($request->all(), [
-            'title' => ['required', 'string', function ($attribute, $value, $fail) {
-                if (countSpecialChars($value) > 300) {
-                    $fail('El título no debe exceder los 300 caracteres.');
-                }
-            }],
-            'block1' => ['required', 'string', function ($attribute, $value, $fail) {
-                if (countSpecialChars($value) > 300) {
-                    $fail('El párrafo 1 no debe exceder los 300 caracteres.');
-                }
-            }],
-            'block2' => ['required', 'string', function ($attribute, $value, $fail) {
-                if (countSpecialChars($value) > 300) {
-                    $fail('El párrafo 2 no debe exceder los 300 caracteres.');
-                }
-            }],
-            'block3' => ['required', 'string', function ($attribute, $value, $fail) {
-                if (countSpecialChars($value) > 300) {
-                    $fail('El párrafo 3 no debe exceder los 300 caracteres.');
-                }
-            }],
-            'block4' => ['required', 'string', function ($attribute, $value, $fail) {
-                if (countSpecialChars($value) > 300) {
-                    $fail('El párrafo 4 no debe exceder los 300 caracteres.');
-                }
-            }],
-        ], [
-            'title.required' => 'El título es obligatorio.',
-            'title.string' => 'El título debe ser una cadena de texto.',
-            'block1.required' => 'El párrafo 1 es obligatorio.',
-            'block1.string' => 'El párrafo 1 debe ser una cadena de texto.',
-            'block2.required' => 'El párrafo 2 es obligatorio.',
-            'block2.string' => 'El párrafo 2 debe ser una cadena de texto.',
-            'block3.required' => 'El párrafo 3 es obligatorio.',
-            'block3.string' => 'El párrafo 3 debe ser una cadena de texto.',
-            'block4.required' => 'El párrafo 4 es obligatorio.',
-            'block4.string' => 'El párrafo 4 debe ser una cadena de texto.',
-        ]);
-
-        if ($validator->fails()) {
+    
+        // Longitudes de cada párrafo
+        $lengthParagraph1 = countSpecialChars($request->input('block1', ''));
+        $lengthParagraph2 = countSpecialChars($request->input('block2', ''));
+        $lengthParagraph3 = countSpecialChars($request->input('block3', ''));
+        $lengthParagraph4 = countSpecialChars($request->input('block4', ''));
+    
+        // Sumar las longitudes de los cuatro párrafos
+        $totalLength = $lengthParagraph1 + $lengthParagraph2 + $lengthParagraph3 + $lengthParagraph4;
+    
+        if ($totalLength > 900) {
+            $excess = $totalLength - 900;
+    
+            // Identificar cuál párrafo reducir
+            $longestParagraph = max($lengthParagraph1, $lengthParagraph2, $lengthParagraph3, $lengthParagraph4);
+            $longestParagraphName = '';
+            if ($longestParagraph == $lengthParagraph1) $longestParagraphName = 'párrafo 1';
+            if ($longestParagraph == $lengthParagraph2) $longestParagraphName = 'párrafo 2';
+            if ($longestParagraph == $lengthParagraph3) $longestParagraphName = 'párrafo 3';
+            if ($longestParagraph == $lengthParagraph4) $longestParagraphName = 'párrafo 4';
+    
             return response()->json([
-                'error' => $validator->errors()->first(),
+                'error' => 'La suma de los 4 párrafos es: '.$totalLength.' caracteres, excede los 900 caracteres por ' . $excess . ' caracteres. Considera reducir el ' . $longestParagraphName . '.',
+                'totalLength' => $totalLength,
+                'excess' => $excess,
+                'lengthParagraph1' => $lengthParagraph1,
+                'lengthParagraph2' => $lengthParagraph2,
+                'lengthParagraph3' => $lengthParagraph3,
+                'lengthParagraph4' => $lengthParagraph4,
+                'longestParagraph' => $longestParagraphName,
             ], 422);
         }
-
+    
+        // Validaciones adicionales y lógica de negocio aquí...
+        
+        // Preparar los datos para actualizar o crear
         $user = Auth::user();
         $message = MessageWhasapp::where('responsable_id', $user->person_id)->first();
-
-        // Preparar los datos para actualizar o crear
         $messageData = [
             'title' => $request->input('title', $message->title ?? 'titulo'),
             'block1' => $request->input('block1', $message->block1 ?? 'block1'),
@@ -189,7 +195,7 @@ class MessageController extends Controller
             'block3' => $request->input('block3', $message->block3 ?? 'block3'),
             'block4' => $request->input('block4', $message->block4 ?? 'block4'),
         ];
-
+    
         // Validar etiquetas permitidas
         $allowedTags = [
             '{{numCuotas}}',
@@ -203,7 +209,7 @@ class MessageController extends Controller
             '{{montoPago}}',
             '{{meses}}',
         ];
-
+    
         foreach ($messageData as $key => $value) {
             if (preg_match_all('/{{(.*?)}}/', $value, $matches)) {
                 foreach ($matches[1] as $tag) {
@@ -213,7 +219,7 @@ class MessageController extends Controller
                 }
             }
         }
-
+    
         // Actualizar o crear el mensaje
         $compromiso = MessageWhasapp::updateOrCreate(
             [
@@ -221,8 +227,10 @@ class MessageController extends Controller
             ],
             $messageData
         );
-
+    
         return response()->json($compromiso, 200);
     }
+    
+    
 
 }

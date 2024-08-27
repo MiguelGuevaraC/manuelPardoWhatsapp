@@ -66,8 +66,11 @@ class SendWhatsappJob implements ShouldQueue
                 $studentParentDni = $student->representativeDni ?? '';
                 // $telephoneStudent = '903017426';
                 $telephoneStudent = $student->telephone ?? '903017426';
+                $formattedPaymentAmount = floor($comminment->paymentAmount);
+
+
                 $tags = ['{{numCuotas}}', '{{nombreApoderado}}', '{{dniApoderado}}', '{{nombreAlumno}}', '{{codigoAlumno}}', '{{grado}}', '{{seccion}}', '{{nivel}}', '{{meses}}', '{{montoPago}}'];
-                $values = [$comminment->cuotaNumber, $studentParent, $studentParentDni, $cadenaNombres, $student->documentNumber, $student->grade, $student->section, $student->level, $comminment->conceptDebt, $comminment->paymentAmount];
+                $values = [$comminment->cuotaNumber, $studentParent, $studentParentDni, $cadenaNombres, $student->documentNumber, $student->grade, $student->section, $student->level, $comminment->conceptDebt, $formattedPaymentAmount];
 
                 $title = str_replace($tags, $values, $messageBase->title);
 
@@ -109,7 +112,7 @@ class SendWhatsappJob implements ShouldQueue
                     'expirationDate' => $comminment->expirationDate,
                     'cuota' => $comminment->cuotaNumber,
                     'costSend' => $costSend,
-
+                    'status' => 'Envio Exitoso',
                     'student_id' => $student->id,
                     'user_id' => $user->id,
                     'comminment_id' => $comminment->id,
@@ -131,11 +134,13 @@ class SendWhatsappJob implements ShouldQueue
                 Log::info('WhatsApp message sent successfully to ' . $student->telephone);
             } else {
                 $messageSend->status = 'Envio Fallido';
-                Log::info('Mensajes ' . json_encode($mensajes));
-                Log::error('Failed to send WhatsApp message to ' . $student->telephone . '. Status: ' . $response->status() . '. Response: ' . $response->body());
+                Log::info('Mensajes ' . 
+                json_encode($mensajes) . '. Length: ' . strlen(json_encode($mensajes)));
+                Log::error('Failed to send WhatsApp message to ' . $student->telephone . '. Status: ' . $response->status() . '. Response: ' . $response->body() . '. Length: ' . strlen('Failed to send WhatsApp message to ' . $student->telephone . '. Status: ' . $response->status() . '. Response: ' . $response->body()));
             }
             $messageSend->save();
-            return response()->json(['message' => 'El mensaje de WhatsApp se ha enviado correctamente'], 200);
+            return response()
+            ->json(['message' => 'El mensaje de WhatsApp se ha enviado correctamente'], 200);
         } catch (Exception $e) {
             Log::error('Error to send Whatsapp, Student: ' . $comminment->telephoneStudent
                 . 'Compromiso : id=>' . $comminment->id . ' | cuota=>' . $comminment->cuotaNumber .
