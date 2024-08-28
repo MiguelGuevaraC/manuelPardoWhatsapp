@@ -409,6 +409,7 @@ function enviarCompromisos() {
             arrayCompromisos: [],
         },
         success: function (response) {
+            console.log('Enviando mensajes');
             console.log(response);
 
             // Aquí puedes hacer algo adicional después de enviar los mensajes, si es necesario

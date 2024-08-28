@@ -262,25 +262,34 @@ class PersonController extends Controller
     public function update(Request $request, string $id)
     {
         $object = Person::find($id);
-
+    
         if (!$object) {
             return response()->json(['message' => 'Person not found'], 404);
         }
-
+    
         $validator = validator()->make($request->all(), [
             'documentNumber' => [
                 'required',
+                'max:10', // Validar que no tenga más de 30 caracteres
                 Rule::unique('people')->ignore($object->id)->whereNull('deleted_at'),
             ],
-            // Agrega aquí las reglas de validación para los demás campos que desees actualizar
+            'names' => 'nullable|max:20',
+            'fatherSurname' => 'nullable|max:20',
+            'motherSurname' => 'nullable|max:20',
+            'businessName' => 'nullable|max:20',
+            'level' => 'nullable|max:20',
+            'grade' => 'nullable|max:20',
+            'section' => 'nullable|max:5',
+            'representativeDni' => 'nullable|max:10',
+            'representativeNames' => 'nullable|max:30',
+            'telephone' => 'nullable|max:9',
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->first()], 422);
         }
-
-        $object->documentNumber = $request->input('documentNumber');
     
+        $object->documentNumber = $request->input('documentNumber');
         $object->names = $request->input('names');
         $object->fatherSurname = $request->input('fatherSurname');
         $object->motherSurname = $request->input('motherSurname');
@@ -291,12 +300,13 @@ class PersonController extends Controller
         $object->representativeDni = $request->input('representativeDni');
         $object->representativeNames = $request->input('representativeNames');
         $object->telephone = $request->input('telephone');
-
+    
         $object->save();
         $object = Person::find($object->id);
-
+    
         return response()->json($object, 200);
     }
+    
 
     /**
      * Remove the specified Person

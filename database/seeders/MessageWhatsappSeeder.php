@@ -17,10 +17,10 @@ class MessageWhatsappSeeder extends Seeder
         DB::table('message_whasapps')->insert([
             
             'title' => 'YA TIENES {{numCuotas}} PENSIONES VENCIDAS',
-            'block1' => 'Estimado(a) {{nombreApoderado}} ({{dniApoderado}}), responsable de la cuota de pago del alumno {{nombreAlumno}} ({{codigoAlumno}}) de {{grado}} {{seccion}} del nivel de {{nivel}}.',
-            'block2' => 'Actualmente tiene {{numCuotas}} pensiones vencidas de {{meses}}, por lo tanto le informamos que en el REGISTRO DE PAGOS SU INCUMPLIMIENTO ASCIENDE A {{montoPago}} SOLES, por ello le invitamos a regularizar dicho periodo a la brevedad posible, para no afectar de esa manera nuestros costos internos.',
+            'block1' => 'Estimado(a) {{nombreApoderado}} ({{dniApoderado}}), responsable del pago de {{nombreAlumno}} ({{codigoAlumno}}), de {{grado}} {{seccion}}.',
+            'block2' => 'Puede visitar las oficinas de administración de tesorería del Colegio en AV. Luis Gonzales 1415, de lunes a viernes, de 07:40 a.m. a 03:45 p.m. También puede pagar a través de Niubiz: https://www.cmpardo.edu.pe/web/pagar-con-niubiz/',
             'block3' => 'Puede acercarse de manera presencial a las oficinas de administración de tesorería del Colegio de lunes a viernes de 07:40 a.m. a 03:45 p.m., ubicadas en la AV. Luis Gonzales 1415.',
-            'block4' => 'Otras formas de pago: a través de la Plataforma Niubiz en el siguiente enlace: https://www.cmpardo.edu.pe/portal/index.php/pagar-con-niubiz/ También puede ver un video tutorial aquí: https://www.youtube.com/watch?v=un_nMn27EJo',
+            'block4' => 'Tutorial Niubiz : https://www.youtube.com/watch?v=un_nMn27EJo PAGO EFECTIVO: Otra forma de pago, se encuentra en la Intranet del SIE WEB en la opción del menú Pagar.Tutorial Pago Efectivo : https://www.youtube.com/watch?v=p4U7qGlfJiU',
             'state' => true,
             'responsable_id' => 4,
             'created_at' => now(),
