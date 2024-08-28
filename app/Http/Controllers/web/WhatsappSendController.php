@@ -180,7 +180,7 @@ class WhatsappSendController extends Controller
                 $compromisoPaquete[] = $compromisoBD;
             }
 
-            if (count($compromisoPaquete) >= 80) {
+            if (count($compromisoPaquete) >= 50) {
                 SendWhatsappJob::dispatch($compromisoPaquete, Auth::user());
                 $compromisoPaquete = [];
             }
