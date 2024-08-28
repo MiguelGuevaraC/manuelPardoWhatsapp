@@ -18,8 +18,8 @@ var columns = [
         render: function (data, type, row, meta) {
             if (row.student.typeofDocument === "RUC") {
                 return `${row.student.documentNumber} | ${row.student.businessName}`;
-            }else{
-                    return `${row.student.documentNumber} | ${row.student.identityNumber} | ${row.student.names} ${row.student.fatherSurname} ${row.student.motherSurname}`;
+            } else {
+                return `${row.student.documentNumber} | ${row.student.identityNumber} | ${row.student.names} ${row.student.fatherSurname} ${row.student.motherSurname}`;
             }
         },
         orderable: true,
@@ -75,18 +75,27 @@ var columns = [
         orderable: true,
     },
     {
+        data: "status",
+        render: function (data, type, row, meta) {
+            return data;
+        },
+        orderable: false,
+    },
+    {
         data: "description",
-        render: function(data, type, row) {
-       
-        return '  <a style="background:green; color:white;" class="view-description btn btn-info" data-description="' + data + '"><i class="fa-brands fa-whatsapp"></i> </a>';
-        }
-    }
+        render: function (data, type, row) {
+            return (
+                '  <a style="background:green; color:white;" class="view-description btn btn-info" data-description="' +
+                data +
+                '"><i class="fa-brands fa-whatsapp"></i> </a>'
+            );
+        },
+    },
 ];
 
+$(document).on("click", ".view-description", function () {
+    var description = $(this).data("description");
 
-$(document).on('click', '.view-description', function () {
-    var description = $(this).data('description');
-    
     Swal.fire({
         title: "VISTA MENSAJE",
         html:
@@ -189,7 +198,8 @@ var init = function () {
                 colIdx == 5 ||
                 colIdx == 4 ||
                 colIdx == 6 ||
-                colIdx == 7 
+                colIdx == 7 ||
+                colIdx == 8
             ) {
                 var cell = $(".filters th").eq(header.index());
                 var title = header.text();
@@ -251,14 +261,14 @@ $(document).ready(function () {
         // Format dates to YYYY-MM-DD
         function formatDate(date) {
             let year = date.getFullYear();
-            let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-            let day = String(date.getDate()).padStart(2, '0');
+            let month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+            let day = String(date.getDate()).padStart(2, "0");
             return `${year}-${month}-${day}`;
         }
 
         // Set the default values of the date inputs
-        $('#startDate').val(formatDate(yesterday));
-        $('#endDate').val(formatDate(today));
+        $("#startDate").val(formatDate(yesterday));
+        $("#endDate").val(formatDate(today));
 
         var maxRetries = 3; // Número máximo de reintentos
         var retryCount = 0; // Contador de reintentos
@@ -271,8 +281,8 @@ $(document).ready(function () {
                 type: "GET",
                 data: function (d) {
                     // Aquí configuramos los filtros de búsqueda por columna
-                    d.startDate = $('#startDate').val();
-                    d.endDate = $('#endDate').val();
+                    d.startDate = $("#startDate").val();
+                    d.endDate = $("#endDate").val();
                     return d;
                 },
                 debounce: 500,
@@ -311,46 +321,59 @@ $(document).ready(function () {
             stripeClasses: ["odd-row", "even-row"],
             scrollY: "300px",
             scrollX: true, // Habilitar desplazamiento horizontal si es necesario
+            rowCallback: function (row, data, index) {
+                if (data.status === "Envio Exitoso") {
+                    $(row).css("background-color", "#d4edda"); // Verde claro
+                } else if (data.status === "Envio Fallido") {
+                    $(row).css("background-color", "#f8d7da"); // Rojo claro
+                }
+            },
         });
 
         // Handle form submission
-        $('#filterForm').on('submit', function(event) {
+        $("#filterForm").on("submit", function (event) {
             event.preventDefault(); // Prevent the default form submission
             table.ajax.reload(); // Reload table data with new filters
         });
 
         // Handle PDF export
-        $('#savePdf').on('click', function() {
+        $("#savePdf").on("click", function () {
             $.ajax({
-                url: 'pdfExport',
-                type: 'GET',
+                url: "pdfExport",
+                type: "GET",
                 data: {
-                    startDate: $('#startDate').val(),
-                    endDate: $('#endDate').val()
+                    startDate: $("#startDate").val(),
+                    endDate: $("#endDate").val(),
                 },
                 xhrFields: {
-                    responseType: 'blob'
+                    responseType: "blob",
                 },
                 success: function (response, status, xhr) {
                     // Obtener la fecha actual en formato YYYY-MM-DD
-                    const currentDate = new Date().toISOString().split('T')[0];
-                    
+                    const currentDate = new Date().toISOString().split("T")[0];
+
                     // Obtener las fechas de los parámetros
-                    const startDate = $('#startDate').val();
-                    const endDate = $('#endDate').val();
-                    
+                    const startDate = $("#startDate").val();
+                    const endDate = $("#endDate").val();
+
                     // Formatear el nombre del archivo
                     let filename = `Reporte_${currentDate}_${startDate}_a_${endDate}.pdf`;
-        
+
                     // Obtener el nombre del archivo desde la respuesta del servidor si está disponible
-                    const disposition = xhr.getResponseHeader('Content-Disposition');
-                    if (disposition && disposition.indexOf('attachment') !== -1) {
+                    const disposition = xhr.getResponseHeader(
+                        "Content-Disposition"
+                    );
+                    if (
+                        disposition &&
+                        disposition.indexOf("attachment") !== -1
+                    ) {
                         const matches = /"([^"]*)"/.exec(disposition);
-                        if (matches != null && matches[1]) filename = matches[1];
+                        if (matches != null && matches[1])
+                            filename = matches[1];
                     }
-                    
+
                     // Crear un enlace para la descarga
-                    const link = document.createElement('a');
+                    const link = document.createElement("a");
                     const url = window.URL.createObjectURL(response);
                     link.href = url;
                     link.download = filename;
@@ -358,43 +381,48 @@ $(document).ready(function () {
                     link.click();
                     document.body.removeChild(link);
                     window.URL.revokeObjectURL(url);
-                }
+                },
             });
         });
-        
 
         // Handle Excel export
-        $('#saveExcel').on('click', function() {
+        $("#saveExcel").on("click", function () {
             $.ajax({
-                url: 'excelExport',
-                type: 'GET',
+                url: "excelExport",
+                type: "GET",
                 data: {
-                    startDate: $('#startDate').val(),
-                    endDate: $('#endDate').val()
+                    startDate: $("#startDate").val(),
+                    endDate: $("#endDate").val(),
                 },
                 xhrFields: {
-                    responseType: 'blob'
+                    responseType: "blob",
                 },
                 success: function (response, status, xhr) {
                     // Obtener la fecha actual en formato YYYY-MM-DD
-                    const currentDate = new Date().toISOString().split('T')[0];
-                    
+                    const currentDate = new Date().toISOString().split("T")[0];
+
                     // Obtener las fechas de los parámetros
-                    const startDate = $('#startDate').val();
-                    const endDate = $('#endDate').val();
-                    
+                    const startDate = $("#startDate").val();
+                    const endDate = $("#endDate").val();
+
                     // Formatear el nombre del archivo
                     let filename = `Reporte_${currentDate}_${startDate}_a_${endDate}.xlsx`;
-        
+
                     // Obtener el nombre del archivo desde la respuesta del servidor si está disponible
-                    const disposition = xhr.getResponseHeader('Content-Disposition');
-                    if (disposition && disposition.indexOf('attachment') !== -1) {
+                    const disposition = xhr.getResponseHeader(
+                        "Content-Disposition"
+                    );
+                    if (
+                        disposition &&
+                        disposition.indexOf("attachment") !== -1
+                    ) {
                         const matches = /"([^"]*)"/.exec(disposition);
-                        if (matches != null && matches[1]) filename = matches[1];
+                        if (matches != null && matches[1])
+                            filename = matches[1];
                     }
-                    
+
                     // Crear un enlace para la descarga
-                    const link = document.createElement('a');
+                    const link = document.createElement("a");
                     const url = window.URL.createObjectURL(response);
                     link.href = url;
                     link.download = filename;
@@ -402,9 +430,8 @@ $(document).ready(function () {
                     link.click();
                     document.body.removeChild(link);
                     window.URL.revokeObjectURL(url);
-                }
+                },
             });
         });
-        
     });
 });
