@@ -126,7 +126,7 @@ class SendWhatsappJob implements ShouldQueue
 
             $response = Http::withHeaders([
                 'Authorization' => '}*rA3>#pyM<dITk]]DFP2,/wc)1md_Y/',
-            ])->post($url, [
+            ])->timeout(120)->post($url, [
                 "messages" => $mensajes,
             ]);
 

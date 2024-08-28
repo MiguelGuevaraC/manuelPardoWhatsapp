@@ -55,7 +55,7 @@ class WhatsappSendController extends Controller
 
         $query = WhatsappSend::with(['user', 'user.person', 'conminmnet', 'student'])->whereHas('student', function ($query) {
             $query->where('user_id', Auth::user()->id);
-        })
+        })->whereNot('status', 'Pendiente')
             ->where('state', 1);
 
         if ($startDate && $endDate) {
@@ -180,7 +180,7 @@ class WhatsappSendController extends Controller
                 $compromisoPaquete[] = $compromisoBD;
             }
 
-            if (count($compromisoPaquete) >= 100) {
+            if (count($compromisoPaquete) >= 80) {
                 SendWhatsappJob::dispatch($compromisoPaquete, Auth::user());
                 $compromisoPaquete = [];
             }
