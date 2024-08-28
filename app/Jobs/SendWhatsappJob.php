@@ -43,7 +43,7 @@ class SendWhatsappJob implements ShouldQueue
         try {
             $mensajes = [];
             $user = $this->user;
-            $costSend = 0.20;
+            $costSend = 0.60;
 
             $messageBase = MessageWhasapp::where('responsable_id', $user->person_id)->first() ?? (object) [
                 'title' => 'titulo',

@@ -35,7 +35,7 @@ class DashboardController extends Controller
             return response()->json(['error' => 'La fecha de fin no puede ser anterior a la fecha de inicio.'], 400);
         }
 
-        $costSend = 0.20;
+        $costSend = 0.60;
 
         // Filtrar datos por el rango de fechas utilizando mayor o igual y menor o igual
         $mensajes = WhatsappSend::where('created_at', '>=', $fechaInicio)
