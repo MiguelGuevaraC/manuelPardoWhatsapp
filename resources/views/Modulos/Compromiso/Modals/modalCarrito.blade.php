@@ -4,7 +4,14 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="nuevoModalLabel"><strong>COMPROMISOS MARCADOS PARA ENVIO</strong></h5>
+                <h5 class="modal-title" style="text-align: center; font-size: 24px; color: ##0075ff;" id="nuevoModalLabel">
+                    <strong>  
+                        <span id="nroCompromisos" style="font-size: 28px; color: ##0075ff;">0</span> 
+                        COMPROMISOS MARCADOS PARA ENVÍO
+                    </strong>
+                </h5>
+                
+                
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -13,6 +20,8 @@
 
             </style>
             <div class="modal-body">
+
+                
                 <!-- Contenido del modal -->
                 <table id="tbCarrito" class="table table-striped shadow-lg mt-4" style="width:100%">
                     

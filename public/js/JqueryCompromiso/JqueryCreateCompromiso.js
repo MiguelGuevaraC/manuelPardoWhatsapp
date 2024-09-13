@@ -286,6 +286,13 @@ function initialCarritoTable() {
         language: carritoLanguage,
         search: carritoSearch,
         initComplete: carritoInit,
+        drawCallback: function (settings) {
+            var api = this.api();
+            var json = api.ajax.json();
+
+            console.log(json.recordsFiltered);
+            $("#nroCompromisos").text(json.recordsFiltered);
+        },
         rowId: "id",
         stripeClasses: ["odd-row", "even-row"],
         scrollY: "300px",
