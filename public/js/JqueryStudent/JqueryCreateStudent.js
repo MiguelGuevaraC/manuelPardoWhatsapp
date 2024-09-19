@@ -69,14 +69,14 @@ $(document).ready(function () {
                 $("#modalNuevoStudent").modal("hide");
                 // Mostrar alerta de espera
                 Swal.fire({
-                    title: 'Por favor espera...',
-                    text: 'Estamos procesando tu solicitud.',
+                    title: "Por favor espera...",
+                    text: "Estamos procesando tu solicitud.",
                     allowOutsideClick: false,
                     didOpen: () => {
                         Swal.showLoading();
                         // Ajustar el z-index para que SweetAlert esté por encima del modal
-                        $('.swal2-container').css('z-index', '2000');
-                    }
+                        $(".swal2-container").css("z-index", "2000");
+                    },
                 });
 
                 // Realizar la solicitud AJAX
@@ -91,7 +91,7 @@ $(document).ready(function () {
                         // Cerrar la alerta de SweetAlert
                         Swal.close();
                         // Aquí puedes manejar la respuesta del servidor
-                        
+
                         $("#tbStudents").DataTable().ajax.reload();
                     },
                     error: function (xhr, status, error) {
@@ -99,9 +99,9 @@ $(document).ready(function () {
                         Swal.close();
                         // Mostrar mensaje de error
                         Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Hubo un problema al procesar la solicitud.',
+                            icon: "error",
+                            title: "Error",
+                            text: "Hubo un problema al procesar la solicitud.",
                         });
                     },
                     headers: {
@@ -112,15 +112,13 @@ $(document).ready(function () {
             reader.readAsArrayBuffer(file);
         } else {
             Swal.fire({
-                icon: 'warning',
-                title: 'Archivo no seleccionado',
-                text: 'Por favor, selecciona un archivo Excel.',
+                icon: "warning",
+                title: "Archivo no seleccionado",
+                text: "Por favor, selecciona un archivo Excel.",
             });
         }
     });
 });
-
-
 
 $("#btonNuevo").click(function (e) {
     $("#registroStudent")[0].reset();

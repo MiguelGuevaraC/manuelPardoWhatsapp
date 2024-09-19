@@ -57,7 +57,7 @@ class CompromisoController extends Controller
         $filters = $request->input('filters', []);
 
         $query = Compromiso::with(['student'])->whereHas('student', function ($query) {
-            $query->where('user_id', Auth::user()->id);
+            // $query->where('user_id', Auth::user()->id);
             $query->where('state', 1);
         })
             ->where('state', 1);

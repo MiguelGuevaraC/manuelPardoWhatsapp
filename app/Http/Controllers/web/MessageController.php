@@ -127,7 +127,7 @@ class MessageController extends Controller
                 '{{seccion}}' => 1,
                 '{{nivel}}' => 10,
                 '{{montoPago}}' => 5,
-                '{{meses}}' => 40,
+                '{{meses}}' => 50,
                 '{{nombreApoderado}}' => 40,
                 '{{nombreAlumno}}' => 40,
             ];
@@ -156,6 +156,15 @@ class MessageController extends Controller
         $lengthParagraph2 = countSpecialChars($request->input('block2', ''));
         $lengthParagraph3 = countSpecialChars($request->input('block3', ''));
         $lengthParagraph4 = countSpecialChars($request->input('block4', ''));
+
+        $longestTitle = countSpecialChars($request->input('title', ''));
+        if($longestTitle > 65){
+            $excess = $longestTitle - 65;
+            return response()->json([
+                'error' => "La longitud del título es de $longestTitle caracteres, excede el límite de 65 caracteres por $excess.",
+            ], 422);
+        }
+        
     
         // Sumar las longitudes de los cuatro párrafos
         $totalLength = $lengthParagraph1 + $lengthParagraph2 + $lengthParagraph3 + $lengthParagraph4;

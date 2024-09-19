@@ -141,7 +141,9 @@ class SendWhatsappJob implements ShouldQueue
                         }
                     }
                 }
-                
+                $jsonMensajes = json_encode($mensajes);
+                // Log::info($jsonMensajes);
+                // Log::info($response);
                 Log::info('WhatsApp messages sent successfully');
             } else {
                 foreach ($whatsappSends as $phone => $messages) {
